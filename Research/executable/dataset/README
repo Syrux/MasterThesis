@@ -1,0 +1,9 @@
+This file contains dataset.
+
+Each folder contains 
+1. original :  dataset.txt
+2. what PPIC uses :  dataset.txt.sdb
+3. items correpondance between original and for PPIC
+4. what SPAM uses : dataset.txt.sdb64.sdb
+5. what SPMF algorithms use : dataset.txt.sdb.spmf
+

@@ -1,0 +1,67 @@
+CD4P - 10G
+DATA test.txt: 100.0% 483ms
+DATA test.txt: 21.0% 24ms
+DATA test.txt: 19.0% 4ms
+DATA protein.txt: 99.97% 388204ms
+DATA protein.txt: 99.975% 218849ms
+DATA protein.txt: 99.98% 124911ms
+DATA protein.txt: 99.985% 71952ms
+DATA protein.txt: 99.99% 54870ms
+DATA BIBLE.txt: 2.0% 114346ms
+DATA BIBLE.txt: 4.0% 118160ms
+DATA BIBLE.txt: 6.0% 154494ms
+DATA BIBLE.txt: 8.0% 143036ms
+DATA BIBLE.txt: 10.0% 117609ms
+DATA FIFA.txt: 6.0% 197944ms
+DATA FIFA.txt: 10.0% 43147ms
+DATA FIFA.txt: 14.0% 24529ms
+DATA FIFA.txt: 18.0% 23317ms
+DATA FIFA.txt: 22.0% 22095ms
+DATA Kosarak.txt: 0.2% 262589ms
+DATA Kosarak.txt: 0.4% 262037ms
+DATA Kosarak.txt: 0.6% 261587ms
+DATA Kosarak.txt: 0.8% 256581ms
+DATA Kosarak.txt: 1.0% 272613ms
+DATA LEVIATHAN.txt: 2.0% 21840ms
+DATA LEVIATHAN.txt: 4.0% 19239ms
+DATA LEVIATHAN.txt: 6.0% 17379ms
+DATA LEVIATHAN.txt: 8.0% 16824ms
+DATA LEVIATHAN.txt: 10.0% 16694ms
+DATA PubMed.txt: 1.0% 95263ms
+DATA PubMed.txt: 2.0% 91984ms
+DATA PubMed.txt: 3.0% 93220ms
+DATA PubMed.txt: 4.0% 90379ms
+DATA PubMed.txt: 5.0% 90256ms
+
+SPARK - 10G - 1 THREAD
+DATA test.txt: 19.0% 3997ms
+DATA test.txt: 21.0% 1697ms
+DATA test.txt: 100.0% 1577ms
+DATA Kosarak.txt: 1.0% 21442ms
+DATA Kosarak.txt: 0.8% 31816ms
+DATA Kosarak.txt: 0.6% 35638ms
+DATA Kosarak.txt: 0.4% 50986ms
+DATA Kosarak.txt: 0.2% 111086ms
+DATA LEVIATHAN.txt: 10.0% 17443ms
+DATA LEVIATHAN.txt: 8.0% 25575ms
+DATA LEVIATHAN.txt: 6.0% 38427ms
+DATA LEVIATHAN.txt: 4.0% 72690ms
+DATA LEVIATHAN.txt: 2.0% 228016ms
+DATA PubMed.txt: 5.0% 62884ms
+DATA PubMed.txt: 4.0% 87342ms
+DATA PubMed.txt: 3.0% 137777ms
+DATA PubMed.txt: 2.0% 239774ms
+DATA PubMed.txt: 1.0% 638488ms
+DATA BIBLE.txt: 10.0% 15533ms
+DATA BIBLE.txt: 8.0% 18844ms
+DATA BIBLE.txt: 6.0% 26006ms
+DATA BIBLE.txt: 4.0% 42173ms
+DATA BIBLE.txt: 2.0% 86938ms
+DATA protein.txt: 99.99% 1088813ms
+DATA protein.txt: 99.985% 6659712ms
+NO DATA FOR THE REST
+
+
+SPARK - 10G - 3 THREAD
+
+

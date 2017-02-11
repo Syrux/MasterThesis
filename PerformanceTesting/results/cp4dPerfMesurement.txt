@@ -1,0 +1,3 @@
+DATA test.txt: 100.0% 340ms
+DATA test.txt: 21.0% 8ms
+DATA test.txt: 19.0% 3ms

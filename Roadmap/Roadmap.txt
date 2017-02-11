@@ -1,0 +1,136 @@
+
+ROAD MAP 'CP based Sequence Mining on the cloud using spark' :
+
+	- Objective
+	
+		- The objective of this master thesis, is to devellop a scalable and efficient implementation
+			of the prefix-span algorithm, using Spark, and to release to develloped algorithm for the benefit of the Spark community.
+			
+			Ideally, this objective would be concretized by develloping an improvement of the, CP based, PPIC algorithm.
+			Leading to a performance improvement sufficient enough to propose, and see-through, the integration of the CP library Oscar into the conservative community of Spark.
+			
+			In case this ideal couldn't be realised due to unsufficient improvement in the results, otherwise attained improvements would still proposed to improve the existing algorithm,
+			and a Spark-package would be develloped and realised to propose the CP solution to any willing user. Meaning it wouldn't be part of the official library but still available.
+	
+	- Targeted learning outcomes (LO)
+	
+		- 1 : to demonstrate he/she masters a body of knowledge and basic
+				skills in science and/or engineering sciences, bound about his/her
+				thesis.
+
+		- 2 : to lead to completion a major, in amplitude and spent time,
+				engineering approach applied to the development of a product,
+				service or facility referred to the thesis.
+		
+		- 3 : to lead to completion a major, in amplitude and spent time,
+				research work aiming at the understanding and the contribution
+				to the resolution of an original scientific question of theoretical
+				or physical type.
+
+		- 4 : to organise and plan the master thesis work on the basis of
+				allocated resources and time constraints, of security (if applicable)
+				and of available competencies.
+
+		- 5 : to efficiently communicate both orally and in writing (in French
+				and/or in English) to realise the master thesis.
+				
+	- Schedule
+		
+		- Realised task :
+		
+			- 12 october : Through a presentation, discribe the goals of this master thesis, the differences between Spark and Hadoop,
+							the potential amelioration to the currently released algorithm, and an explanation of the fonctionment of said algorithm.
+			
+			- 22 october : Mesure the performances differences between the existing implementation of Spark and PPIC and analyse the results.
+			
+				Note : This step revealed that, altough the execution time of PPIC is way under the execution time of the current algorithm, the preprocessing 
+						needed before the execution could be launched was so demanding that the overall performances were, on 2 dataset out of 6, lesser than existing Spark algorithm.
+						
+						NB : The Spark algorithm tested at the time was searching for more solution than the PPIC algorithm. Since it took into account item permutation 
+							 Meaning running for the (1,2) 3 sequence would output 1,3; 2,3; and (1,2),3 altough PPIC outputed only the two first.
+						
+			- 23 october : Achieve an efficient implementation of the minPatternLength constraint and the min frequency constraint on the current Spark implementation.
+			
+			- 24 october : Modify the current implementation of Spark so that it doesn't take permutation into account anymore.
+			
+			- 29 october (actually achieved on november 2 due to complications) : replace the current local execution by the PPIC algorihtm and mesure performances.
+							Compare those performances to those of the original algorithms and to the perfomances of a full spark implementation that doesn't take permutation into account.
+							Perform those mesurement for different minimum local database sizes, compare the results.
+			
+						NB : The mesured perfomances of the sparkNP implementation (original spark without permutations) is a net improvement to both the original PPIC algorithm and the original spark implementation.
+								Surpassing them largely on 5 dataset out of 6 and partiably on the remaining dataset (Leviathan, were PPIC provide better performance for lower supports)
+								
+							 The performance of the PPIC-Spark implementation were relativly in line with the the perfomances of sparkNP for the tested points. For all tested local database sizes.
+							 Leading to the realisation that the perfomances test needed to be extended to lower support to observe larger differences.
+							 
+			- 9 november : Perfom an extended performance mesurement and compare the results.
+			
+						NB : The results for a 32 000 000 minmum local projected database didn't put any major performance difference into light. 
+						Larger local databases size (6 400 000 000) however, showed more differences, altough mixed in results.
+						
+						The PPIC-spark implementation being significantly better on the Bible and Kosarak dataset and
+						The sparkNP implementation showed a large improvement on the protein dataset, leaving the PPIC implementation in the dust
+						
+						Altough the perfomances differences are now more significative, they may not be sufficiently significative to motive the addition of the Oscar library into Spark. 
+						Further analysis must be realised on the protein dataset results to explain the difference in performances.
+						
+			- 10 november : Realise a Roadmap, as asked in the vice dean's presentation on the master thesis.
+						
+		- To be realised tasks :
+		
+			- For the end of november:
+
+				- modify the PPIC algorithm so that it takes permutations into account, replace the local execution of spark with it, and compare performances.
+				
+				- Analyse further the protein dataset results to explain the difference in performances.
+				
+			- For the end of december :
+			
+				- Once all PPIC algorithm are completed, depending on their performances, improve the merging of their input with the middleput of Spark, as to diminish further the preprocessing need,
+					hopefully improving the current spark algorithm in the process.
+				
+					- List of identified potential amelioration to date : 
+					
+						- Modify the spark implementation so that it already include a lastPosMap and firstPosMap. Mesure the perfomances of that improvement.
+			
+						- Precalculate the item-support array during the spark execution
+						
+					- Implement efficient regex and item constraints
+						
+				- Start an outline of the Paper
+				
+				- Determine whether the attained results seem suffisant to propose the PPIC based solution improvement.
+				
+		    - For the end of February :
+				
+				- Test perfomance improvement over a varying number of threads. Determine the bottle neck of scalability and improve algorithm if possible
+			
+				- Propose chosen amelioration to the Spark community. 
+				
+					- Best case scenario, start taking care of the insertion of the PPIC code inside spark library. Solve eventual bug and convince reviewer of the improvement.
+				
+					- Worst case scenario, propose a simpler modification of Spark without the addition of the PPIC based algorithm, which should be easily accepted.
+						Start working on a spark package release to make the PPIC improvement available nontheless (Supposing they at least equivalent, which is the case so far)
+						
+				- Continue work on paper
+				
+			- For the end of April :
+			
+				- Every implementation related work should be finished.
+					
+				- Continue work on paper, it should be mostly finished by the end of the month.
+					Ideally, ask for a first review by the assistant.
+						
+			- For the end of mars :
+			
+				- Give finishing touches to the paper and send it for review.
+			
+				- Prepare the final presentation (start and finish slides + start repetition).
+				
+			- May :
+				
+				- No work scheduled for this month. In case of delay in the planning (which shouldn't happen), this month will be used to finish the scheduled work.
+				
+			- June :
+			
+				- Deliver the results of the master thesis and present them orally.

@@ -1,0 +1,192 @@
+\documentclass[10pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{floatrow}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage{fullpage}
+\usepackage{float}
+\usepackage[justification=centering]{caption}
+\usepackage{listings}
+
+
+\title{Master thesis - Roadmap\\%[1.0em]
+CP based Sequence Mining on the cloud using spark}
+
+\author{Cyril de Vogelaere : 2814-11-00}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives of this master thesis : }
+
+The objective of this master thesis, is to develop a \textbf{scalable} and \textbf{efficient} implementation
+of the prefix-span algorithm, using Spark, and to \textbf{release the developed algorithm} for the benefit of the Spark community. \newline
+
+\textbf{Ideally}, this objective would be concretized by developing an improvement of the CP based PPIC algorithm. \textbf{Leading to a performance improvement sufficient enough to propose, and see-through, the integration of the CP library Oscar into the conservative community of Spark.}
+\newline
+
+\textbf{In case this ideal couldn't be realised} due to unsufficient improvement in the results, otherwise attained improvements would still be proposed to improve the existing algorithm,
+and \textbf{a Spark-package would be developed and released} to propose the CP based solution to any willing user. Meaning it wouldn't be part of the official library but still available.
+
+\section{Targeted learning outcomes (LO) :}
+
+I decided to target the five first learning outcomes, the sixth one not being applicable in this case.
+
+\begin{itemize}
+\item LO 1 : to \textbf{demonstrate} he/she masters a body of knowledge and basic
+\textbf{skills in} science and/or \textbf{engineering sciences}, bound about his/her
+thesis.
+\item LO 2 : to \textbf{lead to completion} a major, in amplitude and spent time,
+engineering approach applied to \textbf{the development of a product},
+service or facility referred to the thesis.
+\item LO 3 : to \textbf{lead to completion a major}, in amplitude and spent time,
+\textbf{research work} aiming at the understanding and the contribution
+to the resolution of an original scientific question of theoretical
+or physical type.
+\item LO 4 : to \textbf{organise and plan the master thesis work on the basis of
+allocated resources and time constraints}, of security (if applicable)
+and of available competencies.
+\item LO 5 : to \textbf{efficiently communicate both orally and in writing} (in French
+and/or in English) to realise the master thesis.
+\end{itemize}
+
+\section{Schedule :}
+
+\subsection{Realised task :}
+
+\begin{itemize}
+\item 12 October : Through a presentation, describe the goals of this master thesis, the differences between Spark and Hadoop, the potential amelioration to the currently released algorithm, and an explanation of the inner-working of said algorithm.
+
+\item 22 October : Measure the performances differences between the existing implementation of Spark and PPIC and analyse the results.
+
+\begin{itemize}
+
+\item NB : This step revealed that, although the execution time of PPIC is way under the execution time of the current algorithm, the preprocessing needed before the execution could be launched was so demanding that the overall performances were, on 2 dataset out of 6, lesser than existing Spark algorithm.
+
+\item NB2 : The Spark algorithm tested at the time was searching for more solution than the PPIC algorithm. Since it took into account item permutation. Meaning running for the (1,2) 3 sequence would output 1,3; 2,3; and (1,2),3 although PPIC outputted only the two first.
+
+\end{itemize}
+
+\item 23 October : Achieve an efficient implementation of the minPatternLength constraint and the min frequency constraint on the current Spark implementation.
+
+\item 24 October : Modify the current implementation of Spark so that it doesn't take permutation into account anymore.
+
+\item 29 October (actually achieved on November 2 due to complications) : replace the current local execution by the PPIC algorithm and measure performances.
+Compare those performances to those of the original algorithms and to the performances of a full spark implementation that doesn't take permutation into account.
+Perform those measurement for different minimum local database sizes, compare the results.
+
+\begin{itemize}
+
+\item NB : The measured performances of the sparkNP implementation (original spark without permutations) is a net improvement to both the original PPIC algorithm and the original spark implementation.
+Surpassing them largely on 5 dataset out of 6 and partially on the remaining dataset (Leviathan, were PPIC provide better performance for lower supports)\newline
+
+ The performance of the PPIC-Spark implementation were relatively in line with the the performances of sparkNP for the tested points. For all tested local database sizes.
+ Leading to the realisation that the performances test needed to be extended to lower support to observe larger differences.
+
+\end{itemize}
+
+\item 9 November : Perform an extended performance measurement and compare the results.
+
+\begin{itemize}
+
+\item NB : The results for a 32 000 000 minimum local projected database didn't put any major performance difference into light. 
+Larger local databases size (6 400 000 000) however, showed more differences, although mixed in results.
+\newline
+
+I observed that the PPIC-spark implementation was significantly better on the Bible and Kosarak dataset, and
+that the sparkNP implementation showed a large improvement on the protein dataset, being roughly two time faster than the Spark-PPIC implementation at all time. \newline
+
+Although the performances differences are now more significatives, they may not be sufficiently so to motive the addition of the Oscar library into Spark. 
+Further analysis must be realised on the protein dataset results to explain the difference in performances.
+
+\end{itemize}
+
+\item 10 November : Realise a Roadmap, as asked in the vice dean's presentation on the master thesis.
+\end{itemize}
+
+\subsection{To be realised tasks :}
+
+\begin{itemize}
+\item For the end of November:
+
+	\begin{itemize}
+	\item Modify the PPIC algorithm so that it takes permutations into account, replace the local execution of spark with it, and compare performances.
+	\item  Analyse further the protein dataset results to explain the difference in performances.
+	\end{itemize}
+	
+\item For the end of December :
+
+	\begin{itemize}
+ 	\item Once all PPIC algorithm are completed, depending on their performances, improve the merging of their input with the middleput of Spark, as to diminish further the preprocessing need,
+hopefully improving the current spark algorithm in the process.\newline
+	
+	List of identified potential amelioration to date : 
+
+	\begin{itemize}
+	
+	\item Modify the spark implementation so that it already include a lastPosMap and firstPosMap. Measure the performances of that improvement.
+
+	\item Precalculate the item-support array during the spark execution
+
+	\item Implement efficient regex and item constraints
+	\end{itemize}
+	
+	\item Start an outline of the Paper (in english)
+	\item Determine whether the attained results seem sufficient to propose the PPIC based solution improvement.
+	\end{itemize}
+
+\item For the end of February :
+
+	\begin{itemize}
+	\item Test performance improvement over a varying number of threads. Determine the bottle neck of scalability and improve algorithm if possible
+
+	\item Propose chosen amelioration to the Spark community. 
+
+		\begin{itemize}
+		\item Best case scenario : start taking care of the insertion of the PPIC code inside spark library. Solve eventual bug and convince reviewer of the improvement.
+
+		\item Worst case scenario : propose a simpler modification of Spark without the addition of the PPIC based algorithm, which should be easily accepted.
+Start working on a spark package release to make the PPIC improvement available nontheless (Supposing they at least equivalent, which is the case so far)
+		\end{itemize}
+
+	\item Continue work on the paper
+	\end{itemize}
+
+\item  For the end of Mars :
+
+	\begin{itemize}
+	\item Every implementation related work should be finished.
+
+	\item Continue work on paper, it should be mostly finished by the end of the month.
+Ideally, ask for a first review by the assistant.
+	\end{itemize}
+
+\item For the end of April :
+	\begin{itemize}
+	\item  Give finishing touches to the paper and send it for review.
+
+	\item Prepare the final presentation (start and finish slides + start repetition).
+	\end{itemize}
+
+\item May :
+
+	\begin{itemize}
+	\item  No work scheduled for this month. In case of delay in the planning (which shouldn't happen), this month will be used to finish the scheduled work.
+	\end{itemize}
+
+\item June :
+
+	\begin{itemize}
+	\item Deliver the results of the master thesis and present them orally.
+	\end{itemize}
+
+\end{itemize}
+
+\end{document}

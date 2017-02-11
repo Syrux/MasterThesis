@@ -1,0 +1,54 @@
+LINK : hg clone https://bitbucket.org/pschaus/cp4d
+
+EXEC : java -jar oscar.ppic.1.0.0.jar test.txt 1 0 -v -f 2
+
+TO ASK ABOUT :
+
+	- How often do you want to meet, so I can show my advancement ?
+	
+	- What assistant can I refer to for help ?
+
+	- The algorithm described in the paper is said to be part of oscar, but I couldn't find the file in oscar lib during my quick search.
+	
+	- Verify if what I need to implement is to be part of oscar. 
+		
+		If yes :
+	
+		- Where should I implement it to be coherent with the existing lib ?
+		
+		- Should I implement a 'spark framework' to ease future implementation ? (I suppose yes, but we never know)
+		
+			- If yes, then should I make a kind of bridge with CP where constraint can be used with spark ?
+				
+				MAP would execute the algo to be applied
+				REDUCE_BY_KEY would apply the constraint to know the number of support for the key (return 1 if all constraint satisfied for an elem, 0 otherwise)
+				NB: Plus something to decide the initial keys and the stop condition
+				
+				- What about Parallelize - Reduce kind of algorithm ?
+		
+		If no :
+		
+		- In what format then, stand alone program, new framework-ish algorithm ?
+	
+	- Some part of the CP algorithm such as the reversible vector technique don't really fit with a cloud philosophy. Check if it is alright to implement as I see fit for spark.
+		
+		NB: I should be able to keep PPID, PPDC and PPmixed + last pos improvement +
+		/!\ (SID, POSS) must be kept since most of the improvement is done there, we don't want the database rewritten. It would be very nice to only have the original db as an argument to run the whole thing.
+		
+		NNB: See if there is a way to make last pos reversible while using with spark => A priori response being no, but extensible check needed
+		
+	- Where can I run my algorithm on the cloud ? Amazon ? What budget do I have ? What account should I use ?
+	
+	- A the end of my work, comparison should be made to prove the use of my work. Have other algorithm been implemented using spark, so that I can use them for comparison purpose ?
+		
+		If none : 
+		
+		- Is reimplementing these less optimized algorithm in a cloud version, so that I can run comparison, scientifically accepted ? Since I did write both algorithm and could have manipulated the result ...
+			
+			If not : 
+			
+			- Then what should be done in the comparison part of my paper, should it be dropped altogether ? or replaced ?
+			
+			If yes :
+			
+			- I suppose the source code should then be supplied for verification purpose ? Can you confirm ?
