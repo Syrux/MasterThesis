@@ -10,7 +10,8 @@ To run work with spark :
 
 	- Import project in IntelliJ (using maven)
 
-File modified (that you shouldn't forget to push) :
+File modified (that I shouldn't forget to push) :
 
 	- POM.xml of mlib
+
 	- MyPrefixSpanTest.scala in MLlib test => to remove
