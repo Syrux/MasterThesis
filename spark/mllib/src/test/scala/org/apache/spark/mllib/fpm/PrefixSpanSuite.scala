@@ -1,44 +1,452 @@
-Yo john, Si tu écris quelque chose, fais le en bleu pour être sur que je le vois  :) 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.spark.mllib.fpm
 
-Si j’ai une petite question ou je pense que tu pourrais m’aider, je la mettrai en vert. Dit moi si tu vois une sol :)
+import scala.language.existentials
 
-CODE (for end of february) :
+import org.apache.spark.SparkFunSuite
+import org.apache.spark.mllib.util.MLlibTestSparkContext
+import org.apache.spark.util.Utils
 
-Re implement minPatternLength and MaxPatternLength more efficiently => DONE
+class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
 
-Max itemSet size in answer + calculate it from input
-Lazy computation makes computing itemSetSize expensive, since we must force early collect(). Find work around or may not be as good as expected.
-Lazy collect is better here, since it makes passing the problem between computer nearly free.
-Possible sol :
-Calculate with freqIndexFinder (but get result before clean) 
-Calculate for each local Exec (but Benefit only available in local exec ...)
+  test("PrefixSpan internal (integer seq, 0 delim) run, singleton itemsets") {
 
-Switch to local exec after X subproblem are created
+    /*
+      library("arulesSequences")
+      prefixSpanSeqs = read_baskets("prefixSpanSeqs", info = c("sequenceID","eventID","SIZE"))
+      freqItemSeq = cspade(
+        prefixSpanSeqs,
+        parameter = list(support =
+          2 / length(unique(transactionInfo(prefixSpanSeqs)$sequenceID)), maxlen = 2 ))
+      resSeq = as(freqItemSeq, "data.frame")
+      resSeq
+    */
 
+    val sequences = Array(
+      Array(0, 1, 0, 3, 0, 4, 0, 5, 0),
+      Array(0, 2, 0, 3, 0, 1, 0),
+      Array(0, 2, 0, 4, 0, 1, 0),
+      Array(0, 3, 0, 1, 0, 3, 0, 4, 0, 5, 0),
+      Array(0, 3, 0, 4, 0, 4, 0, 3, 0),
+      Array(0, 6, 0, 5, 0, 3, 0))
 
-LastPost array
-Should be implemented in postFix class for max efficiency
+    val rdd = sc.parallelize(sequences, 2).cache()
 
-FirstPos array
-Should be implemented in postFix class for max efficiency
+    val result1 = PrefixSpan.genFreqPatterns(
+      rdd, minCount = 2L, maxPatternLength = 50, minPatternLength = 1, maxLocalProjDBSize = 16L)
+    val expectedValue1 = Array(
+      (Array(0, 1, 0), 4L),
+      (Array(0, 1, 0, 3, 0), 2L),
+      (Array(0, 1, 0, 3, 0, 4, 0), 2L),
+      (Array(0, 1, 0, 3, 0, 4, 0, 5, 0), 2L),
+      (Array(0, 1, 0, 3, 0, 5, 0), 2L),
+      (Array(0, 1, 0, 4, 0), 2L),
+      (Array(0, 1, 0, 4, 0, 5, 0), 2L),
+      (Array(0, 1, 0, 5, 0), 2L),
+      (Array(0, 2, 0), 2L),
+      (Array(0, 2, 0, 1, 0), 2L),
+      (Array(0, 3, 0), 5L),
+      (Array(0, 3, 0, 1, 0), 2L),
+      (Array(0, 3, 0, 3, 0), 2L),
+      (Array(0, 3, 0, 4, 0), 3L),
+      (Array(0, 3, 0, 4, 0, 5, 0), 2L),
+      (Array(0, 3, 0, 5, 0), 2L),
+      (Array(0, 4, 0), 4L),
+      (Array(0, 4, 0, 5, 0), 2L),
+      (Array(0, 5, 0), 3L)
+    )
+    compareInternalResults(expectedValue1, result1.collect())
 
-Remove empty item by passing found items => DONE (+ as optionnal param, can switch to default comportement anytime if needed)
-Is there a way to estimate projected DataBase size without looking at all the sequences ? If there is I could improve my code, by switching some directly found item to local exec.
-Current implem may be faster for small datasets, should be faster otherwise
+    val result2 = PrefixSpan.genFreqPatterns(
+      rdd, minCount = 3, maxPatternLength = 50, minPatternLength = 1, maxLocalProjDBSize = 32L)
+    val expectedValue2 = Array(
+      (Array(0, 1, 0), 4L),
+      (Array(0, 3, 0), 5L),
+      (Array(0, 3, 0, 4, 0), 3L),
+      (Array(0, 4, 0), 4L),
+      (Array(0, 5, 0), 3L)
+    )
+    compareInternalResults(expectedValue2, result2.collect())
 
-Implement every PPIC options (Regex, ...) (This can be done in march if necessary)
+    val result3 = PrefixSpan.genFreqPatterns(
+      rdd, minCount = 2, maxPatternLength = 2, minPatternLength = 1, maxLocalProjDBSize = 32L)
+    val expectedValue3 = Array(
+      (Array(0, 1, 0), 4L),
+      (Array(0, 1, 0, 3, 0), 2L),
+      (Array(0, 1, 0, 4, 0), 2L),
+      (Array(0, 1, 0, 5, 0), 2L),
+      (Array(0, 2, 0, 1, 0), 2L),
+      (Array(0, 2, 0), 2L),
+      (Array(0, 3, 0), 5L),
+      (Array(0, 3, 0, 1, 0), 2L),
+      (Array(0, 3, 0, 3, 0), 2L),
+      (Array(0, 3, 0, 4, 0), 3L),
+      (Array(0, 3, 0, 5, 0), 2L),
+      (Array(0, 4, 0), 4L),
+      (Array(0, 4, 0, 5, 0), 2L),
+      (Array(0, 5, 0), 3L)
+    )
+    compareInternalResults(expectedValue3, result3.collect())
 
-(If time) Implement CP version of multi item
+    val result4 = PrefixSpan.genFreqPatterns(
+      rdd, minCount = 2L, maxPatternLength = 50, minPatternLength = 4, maxLocalProjDBSize = 16L)
+    val expectedValue4 = Array(
+      (Array(0, 1, 0, 3, 0, 4, 0, 5, 0), 2L)
+    )
+    compareInternalResults(expectedValue4, result4.collect())
 
-TESTS (for end of March) :
+    val result5 = PrefixSpan.genFreqPatterns(
+      rdd, minCount = 2L, maxPatternLength = 1, minPatternLength = 2, maxLocalProjDBSize = 16L)
+    val expectedValue5: Array[(Array[Int], Long)] = Array()
+    compareInternalResults(expectedValue5, result5.collect())
+  }
 
-	/!\ Must be done on cloud, so that data transfer time are taken into account /!\
+  test("PrefixSpan internal (integer seq, -1 delim) run, variable-size itemsets") {
+    val sequences = Array(
+      Array(0, 1, 0, 1, 2, 3, 0, 1, 3, 0, 4, 0, 3, 6, 0),
+      Array(0, 1, 4, 0, 3, 0, 2, 3, 0, 1, 5, 0),
+      Array(0, 5, 6, 0, 1, 2, 0, 4, 6, 0, 3, 0, 2, 0),
+      Array(0, 5, 0, 7, 0, 1, 6, 0, 3, 0, 2, 0, 3, 0))
+    val rdd = sc.parallelize(sequences, 2).cache()
+    val result = PrefixSpan.genFreqPatterns(
+      rdd, minCount = 2, maxPatternLength = 5, minPatternLength = 1, maxLocalProjDBSize = 128L)
 
-Test performance of standalone improvements
-Test combined performance
-Test performance with multiple number of submachines
+    /*
+      To verify results, create file "prefixSpanSeqs" with content
+      (format = (transactionID, idxInTransaction, numItemsinItemset, itemset)):
+        1 1 1 1
+        1 2 3 1 2 3
+        1 3 2 1 3
+        1 4 1 4
+        1 5 2 3 6
+        2 1 2 1 4
+        2 2 1 3
+        2 3 2 2 3
+        2 4 2 1 5
+        3 1 2 5 6
+        3 2 2 1 2
+        3 3 2 4 6
+        3 4 1 3
+        3 5 1 2
+        4 1 1 5
+        4 2 1 7
+        4 3 2 1 6
+        4 4 1 3
+        4 5 1 2
+        4 6 1 3
+      In R, run:
+        library("arulesSequences")
+        prefixSpanSeqs = read_baskets("prefixSpanSeqs", info = c("sequenceID","eventID","SIZE"))
+        freqItemSeq = cspade(prefixSpanSeqs,
+                             parameter = list(support = 0.5, maxlen = 5 ))
+        resSeq = as(freqItemSeq, "data.frame")
+        resSeq
 
-PAPER (for 20 april finished) :
+                    sequence support
+        1              <{1}>    1.00
+        2              <{2}>    1.00
+        3              <{3}>    1.00
+        4              <{4}>    0.75
+        5              <{5}>    0.75
+        6              <{6}>    0.75
+        7          <{1},{6}>    0.50
+        8          <{2},{6}>    0.50
+        9          <{5},{6}>    0.50
+        10       <{1,2},{6}>    0.50
+        11         <{1},{4}>    0.50
+        12         <{2},{4}>    0.50
+        13       <{1,2},{4}>    0.50
+        14         <{1},{3}>    1.00
+        15         <{2},{3}>    0.75
+        16           <{2,3}>    0.50
+        17         <{3},{3}>    0.75
+        18         <{4},{3}>    0.75
+        19         <{5},{3}>    0.50
+        20         <{6},{3}>    0.50
+        21     <{5},{6},{3}>    0.50
+        22     <{6},{2},{3}>    0.50
+        23     <{5},{2},{3}>    0.50
+        24     <{5},{1},{3}>    0.50
+        25     <{2},{4},{3}>    0.50
+        26     <{1},{4},{3}>    0.50
+        27   <{1,2},{4},{3}>    0.50
+        28     <{1},{3},{3}>    0.75
+        29       <{1,2},{3}>    0.50
+        30     <{1},{2},{3}>    0.50
+        31       <{1},{2,3}>    0.50
+        32         <{1},{2}>    1.00
+        33           <{1,2}>    0.50
+        34         <{3},{2}>    0.75
+        35         <{4},{2}>    0.50
+        36         <{5},{2}>    0.50
+        37         <{6},{2}>    0.50
+        38     <{5},{6},{2}>    0.50
+        39     <{6},{3},{2}>    0.50
+        40     <{5},{3},{2}>    0.50
+        41     <{5},{1},{2}>    0.50
+        42     <{4},{3},{2}>    0.50
+        43     <{1},{3},{2}>    0.75
+        44 <{5},{6},{3},{2}>    0.50
+        45 <{5},{1},{3},{2}>    0.50
+        46         <{1},{1}>    0.50
+        47         <{2},{1}>    0.50
+        48         <{3},{1}>    0.50
+        49         <{5},{1}>    0.50
+        50       <{2,3},{1}>    0.50
+        51     <{1},{3},{1}>    0.50
+        52   <{1},{2,3},{1}>    0.50
+        53     <{1},{2},{1}>    0.50
+     */
+    val expectedValue = Array(
+      (Array(0, 1, 0), 4L),
+      (Array(0, 2, 0), 4L),
+      (Array(0, 3, 0), 4L),
+      (Array(0, 4, 0), 3L),
+      (Array(0, 5, 0), 3L),
+      (Array(0, 6, 0), 3L),
+      (Array(0, 1, 0, 6, 0), 2L),
+      (Array(0, 2, 0, 6, 0), 2L),
+      (Array(0, 5, 0, 6, 0), 2L),
+      (Array(0, 1, 2, 0, 6, 0), 2L),
+      (Array(0, 1, 0, 4, 0), 2L),
+      (Array(0, 2, 0, 4, 0), 2L),
+      (Array(0, 1, 2, 0, 4, 0), 2L),
+      (Array(0, 1, 0, 3, 0), 4L),
+      (Array(0, 2, 0, 3, 0), 3L),
+      (Array(0, 2, 3, 0), 2L),
+      (Array(0, 3, 0, 3, 0), 3L),
+      (Array(0, 4, 0, 3, 0), 3L),
+      (Array(0, 5, 0, 3, 0), 2L),
+      (Array(0, 6, 0, 3, 0), 2L),
+      (Array(0, 5, 0, 6, 0, 3, 0), 2L),
+      (Array(0, 6, 0, 2, 0, 3, 0), 2L),
+      (Array(0, 5, 0, 2, 0, 3, 0), 2L),
+      (Array(0, 5, 0, 1, 0, 3, 0), 2L),
+      (Array(0, 2, 0, 4, 0, 3, 0), 2L),
+      (Array(0, 1, 0, 4, 0, 3, 0), 2L),
+      (Array(0, 1, 2, 0, 4, 0, 3, 0), 2L),
+      (Array(0, 1, 0, 3, 0, 3, 0), 3L),
+      (Array(0, 1, 2, 0, 3, 0), 2L),
+      (Array(0, 1, 0, 2, 0, 3, 0), 2L),
+      (Array(0, 1, 0, 2, 3, 0), 2L),
+      (Array(0, 1, 0, 2, 0), 4L),
+      (Array(0, 1, 2, 0), 2L),
+      (Array(0, 3, 0, 2, 0), 3L),
+      (Array(0, 4, 0, 2, 0), 2L),
+      (Array(0, 5, 0, 2, 0), 2L),
+      (Array(0, 6, 0, 2, 0), 2L),
+      (Array(0, 5, 0, 6, 0, 2, 0), 2L),
+      (Array(0, 6, 0, 3, 0, 2, 0), 2L),
+      (Array(0, 5, 0, 3, 0, 2, 0), 2L),
+      (Array(0, 5, 0, 1, 0, 2, 0), 2L),
+      (Array(0, 4, 0, 3, 0, 2, 0), 2L),
+      (Array(0, 1, 0, 3, 0, 2, 0), 3L),
+      (Array(0, 5, 0, 6, 0, 3, 0, 2, 0), 2L),
+      (Array(0, 5, 0, 1, 0, 3, 0, 2, 0), 2L),
+      (Array(0, 1, 0, 1, 0), 2L),
+      (Array(0, 2, 0, 1, 0), 2L),
+      (Array(0, 3, 0, 1, 0), 2L),
+      (Array(0, 5, 0, 1, 0), 2L),
+      (Array(0, 2, 3, 0, 1, 0), 2L),
+      (Array(0, 1, 0, 3, 0, 1, 0), 2L),
+      (Array(0, 1, 0, 2, 3, 0, 1, 0), 2L),
+      (Array(0, 1, 0, 2, 0, 1, 0), 2L))
 
-Think about the paper’s structure
+    compareInternalResults(expectedValue, result.collect())
 
+    val result2 = PrefixSpan.genFreqPatterns(
+      rdd, minCount = 2, maxPatternLength = 5, minPatternLength = 4, maxLocalProjDBSize = 128L)
+
+    val expectedValue2 = Array(
+      (Array(0, 1, 2, 0, 4, 0, 3, 0), 2L),
+      (Array(0, 5, 0, 6, 0, 3, 0, 2, 0), 2L),
+      (Array(0, 5, 0, 1, 0, 3, 0, 2, 0), 2L),
+      (Array(0, 1, 0, 2, 3, 0, 1, 0), 2L))
+
+    compareInternalResults(expectedValue2, result2.collect())
+  }
+
+  test("PrefixSpan projections with multiple partial starts") {
+    val sequences = Seq(
+      Array(Array(1, 2), Array(1, 2, 3)))
+    val rdd = sc.parallelize(sequences, 2)
+    val prefixSpan = new PrefixSpan()
+      .setMinSupport(1.0)
+      .setMaxPatternLength(2)
+    val model = prefixSpan.run(rdd)
+    val expected = Array(
+      (Array(Array(1)), 1L),
+      (Array(Array(1, 2)), 1L),
+      (Array(Array(1), Array(1)), 1L),
+      (Array(Array(1), Array(2)), 1L),
+      (Array(Array(1), Array(3)), 1L),
+      (Array(Array(1, 3)), 1L),
+      (Array(Array(2)), 1L),
+      (Array(Array(2, 3)), 1L),
+      (Array(Array(2), Array(1)), 1L),
+      (Array(Array(2), Array(2)), 1L),
+      (Array(Array(2), Array(3)), 1L),
+      (Array(Array(3)), 1L))
+    compareResults(expected, model.freqSequences.collect())
+
+    val prefixSpan2 = new PrefixSpan()
+      .setMinSupport(1.0)
+      .setMaxPatternLength(2)
+      .setMinPatternLength(2)
+    val model2 = prefixSpan2.run(rdd)
+    val expected2 = Array(
+      (Array(Array(1, 2)), 1L),
+      (Array(Array(1), Array(1)), 1L),
+      (Array(Array(1), Array(2)), 1L),
+      (Array(Array(1), Array(3)), 1L),
+      (Array(Array(1, 3)), 1L),
+      (Array(Array(2, 3)), 1L),
+      (Array(Array(2), Array(1)), 1L),
+      (Array(Array(2), Array(2)), 1L),
+      (Array(Array(2), Array(3)), 1L))
+    compareResults(expected2, model2.freqSequences.collect())
+  }
+
+  test("PrefixSpan Integer type, variable-size itemsets") {
+    val sequences = Seq(
+      Array(Array(1, 2), Array(3)),
+      Array(Array(1), Array(3, 2), Array(1, 2)),
+      Array(Array(1, 2), Array(5)),
+      Array(Array(6)))
+    val rdd = sc.parallelize(sequences, 2).cache()
+
+    val prefixSpan = new PrefixSpan()
+      .setMinSupport(0.5)
+      .setMaxPatternLength(5)
+
+    /*
+      To verify results, create file "prefixSpanSeqs2" with content
+      (format = (transactionID, idxInTransaction, numItemsinItemset, itemset)):
+        1 1 2 1 2
+        1 2 1 3
+        2 1 1 1
+        2 2 2 3 2
+        2 3 2 1 2
+        3 1 2 1 2
+        3 2 1 5
+        4 1 1 6
+      In R, run:
+        library("arulesSequences")
+        prefixSpanSeqs = read_baskets("prefixSpanSeqs", info = c("sequenceID","eventID","SIZE"))
+        freqItemSeq = cspade(prefixSpanSeqs,
+                             parameter = 0.5, maxlen = 5 ))
+        resSeq = as(freqItemSeq, "data.frame")
+        resSeq
+
+           sequence support
+        1     <{1}>    0.75
+        2     <{2}>    0.75
+        3     <{3}>    0.50
+        4 <{1},{3}>    0.50
+        5   <{1,2}>    0.75
+     */
+
+    val model = prefixSpan.run(rdd)
+    val expected = Array(
+      (Array(Array(1)), 3L),
+      (Array(Array(2)), 3L),
+      (Array(Array(3)), 2L),
+      (Array(Array(1), Array(3)), 2L),
+      (Array(Array(1, 2)), 3L)
+    )
+    compareResults(expected, model.freqSequences.collect())
+  }
+
+  test("PrefixSpan String type, variable-size itemsets") {
+    // This is the same test as "PrefixSpan Int type, variable-size itemsets" except
+    // mapped to Strings
+    val intToString = (1 to 6).zip(Seq("a", "b", "c", "d", "e", "f")).toMap
+    val sequences = Seq(
+      Array(Array(1, 2), Array(3)),
+      Array(Array(1), Array(3, 2), Array(1, 2)),
+      Array(Array(1, 2), Array(5)),
+      Array(Array(6))).map(seq => seq.map(itemSet => itemSet.map(intToString)))
+    val rdd = sc.parallelize(sequences, 2).cache()
+
+    val prefixSpan = new PrefixSpan()
+      .setMinSupport(0.5)
+      .setMaxPatternLength(5)
+
+    val model = prefixSpan.run(rdd)
+    val expected = Array(
+      (Array(Array(1)), 3L),
+      (Array(Array(2)), 3L),
+      (Array(Array(3)), 2L),
+      (Array(Array(1), Array(3)), 2L),
+      (Array(Array(1, 2)), 3L)
+    ).map { case (pattern, count) =>
+      (pattern.map(itemSet => itemSet.map(intToString)), count)
+    }
+    compareResults(expected, model.freqSequences.collect())
+  }
+
+  test("model save/load") {
+    val sequences = Seq(
+      Array(Array(1, 2), Array(3)),
+      Array(Array(1), Array(3, 2), Array(1, 2)),
+      Array(Array(1, 2), Array(5)),
+      Array(Array(6)))
+    val rdd = sc.parallelize(sequences, 2).cache()
+
+    val prefixSpan = new PrefixSpan()
+      .setMinSupport(0.5)
+      .setMaxPatternLength(5)
+    val model = prefixSpan.run(rdd)
+
+    val tempDir = Utils.createTempDir()
+    val path = tempDir.toURI.toString
+    try {
+      model.save(sc, path)
+      val newModel = PrefixSpanModel.load(sc, path)
+      val originalSet = model.freqSequences.collect().map { x =>
+        (x.sequence.map(_.toSet).toSeq, x.freq)
+      }.toSet
+      val newSet = newModel.freqSequences.collect().map { x =>
+        (x.sequence.map(_.toSet).toSeq, x.freq)
+      }.toSet
+      assert(originalSet === newSet)
+    } finally {
+      Utils.deleteRecursively(tempDir)
+    }
+  }
+
+  private def compareResults[Item](
+      expectedValue: Array[(Array[Array[Item]], Long)],
+      actualValue: Array[PrefixSpan.FreqSequence[Item]]): Unit = {
+    val expectedSet = expectedValue.map { case (pattern: Array[Array[Item]], count: Long) =>
+      (pattern.map(itemSet => itemSet.toSet).toSeq, count)
+    }.toSet
+    val actualSet = actualValue.map { x =>
+      (x.sequence.map(_.toSet).toSeq, x.freq)
+    }.toSet
+    assert(expectedSet === actualSet)
+  }
+
+  private def compareInternalResults(
+      expectedValue: Array[(Array[Int], Long)],
+      actualValue: Array[(Array[Int], Long)]): Unit = {
+    val expectedSet = expectedValue.map(x => (x._1.toSeq, x._2)).toSet
+    val actualSet = actualValue.map(x => (x._1.toSeq, x._2)).toSet
+    assert(expectedSet === actualSet)
+  }
+}
