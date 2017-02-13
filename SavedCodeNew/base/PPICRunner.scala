@@ -56,36 +56,40 @@ private[fpm] class PPICRunner(val minSup: Long,
   var epsilon = 0
   var nbSequences = 0
 
-  def preProcessPostfixes(postfixes: Array[Postfix]): Array[Array[Int]] = {
+  def preProcessPostfixes(postfixes: Array[Postfix]): Array[Postfix] = {
 
-    val preprocessed = scala.collection.mutable.ArrayBuffer.empty[Array[Int]]
     postfixSupport = collection.mutable.Map[Int, Int]()
     val itemSupportedByThisSequence = collection.mutable.Map[Int, Boolean]()
+    var numberOfItemPerItemSetCounter = 0
 
     for (postfix <- postfixes) {
-      var firstZeroEncoutered = false
-
-      preprocessed.append(postfix.items.flatMap(x => {
-        if (firstZeroEncoutered && x != epsilon) {
+      // Find frequent items
+      for (i <- Range(1, postfix.items.length)) {
+        val x = postfix.items(i)
+        if (x != epsilon) {
           if (!itemSupportedByThisSequence.contains(x)) {
             itemSupportedByThisSequence.put(x, true)
           }
-          Some(x)
+          numberOfItemPerItemSetCounter += 1
         }
-        else if (x == epsilon) {
-          firstZeroEncoutered = true
-          None
+        else {
+          if (numberOfItemPerItemSetCounter > 1) {
+            throw new IllegalArgumentException(
+              "Among the postfixes, some ItemSet contain more than one item")
+          }
+          numberOfItemPerItemSetCounter = 0
         }
-        else None
-      }))
-
+      }
+      // Store them
       itemSupportedByThisSequence.keys.foreach(x =>
         postfixSupport.update(x, postfixSupport.getOrElse(x, 0) + 1)
       )
+      // Clean for next iter
       itemSupportedByThisSequence.clear()
+      numberOfItemPerItemSetCounter = 0
     }
 
-    preprocessed.toArray
+    postfixes
   }
 
   def updateTranslationMap(value: Int): Int = {
@@ -99,13 +103,18 @@ private[fpm] class PPICRunner(val minSup: Long,
     numItems
   }
 
-  def preProcessArrayToSDB(array: Array[Int], index: Int): Array[Int] = {
+  def preProcessArrayToSDB(postfix: Postfix, index: Int): Array[Int] = {
 
     // Current index (+1 shift)
+    var isFirstItem = true
     var curIndex = 0
     // Filter zero items
-    val res = array.flatMap(x => {
-      if (postfixSupport.getOrElse(x, 0) >= minSup) {
+    val res = postfix.items.flatMap(x => {
+      if (isFirstItem) {
+        isFirstItem = false
+        None
+      }
+      else if (postfixSupport.getOrElse(x, 0) >= minSup) {
         // Update cur index
         curIndex +=1
         // Get word translation
@@ -145,25 +154,25 @@ private[fpm] class PPICRunner(val minSup: Long,
   }
 
   /**
-   * Build a matrix whose content are the next last position of items,
-   * this can take quite a bit of time to compute but, when usefull,
-   * allows an effective speed up.
-   *
-   * @param lastPosOfItem
-   *
-   * LAST POS SID
-   * 0 0
-   * 3 2
-   * 7 0
-   * 5 3
-   * 6 4
-   *
-   * @return
-   *
-   * LAST POS DB
-   * 3 3 5 5 6 7 0
-   * 2 3 4 0
-   */
+    * Build a matrix whose content are the next last position of items,
+    * this can take quite a bit of time to compute but, when usefull,
+    * allows an effective speed up.
+    *
+    * @param lastPosOfItem
+    *
+    * LAST POS SID
+    * 0 0
+    * 3 2
+    * 7 0
+    * 5 3
+    * 6 4
+    *
+    * @return
+    *
+    * LAST POS DB
+    * 3 3 5 5 6 7 0
+    * 2 3 4 0
+    */
   def createSdbPosList(lastPosOfItem : Array[Array[Int]]): Array[Array[Int]] = {
 
     // Transpose lastPosOfItem list while filtering out 1 and 0,
@@ -204,20 +213,27 @@ private[fpm] class PPICRunner(val minSup: Long,
 
   def initCPVariables(): Array[CPIntVar] = {
 
-    // Create and fill stack
+    // Create item List
     val listOfitem = new scala.collection.mutable.Stack[Int]
     for(i <- itemSupportCounter.indices) {
       if (itemSupportCounter(i) >= minSup) listOfitem.push(i)
     }
-    // Put 0 elem
-    listOfitem.push(0)
+
+    // Recalculate max Pattern Length
+    val recalculatedMaxPatternLength = {
+      if (maxPatternLength == 0) lenSeqMax
+      else maxPatternLength
+    }
 
     // Create list of CPIntVar
-    val CPVariables = Array.fill (
-      math.min(lenSeqMax, maxPatternLength))(CPIntVar.sparse(listOfitem))
-    listOfitem.pop()
-    for (i <- 0 until minPatternLength)
-      CPVariables(i) = CPIntVar.sparse(listOfitem)
+    val CPVariables = new Array[CPIntVar](recalculatedMaxPatternLength)
+    for (i <- Range(0, minPatternLength)){
+      CPVariables(i) = CPIntVar.sparse(listOfitem) //Item that cannot be epsilon
+    }
+    listOfitem.push(0) //Put epsilon as a possibility
+    for (i <- Range(math.max(0, minPatternLength), recalculatedMaxPatternLength)){
+      CPVariables(i) = CPIntVar.sparse(listOfitem) //Item that can be epsilon
+    }
 
     // Return
     CPVariables
@@ -262,27 +278,6 @@ private[fpm] class PPICRunner(val minSup: Long,
 
     val sdbPosList = createSdbPosList(lastItemPosInSid)
 
-    // RUN
-    val solutions = scala.collection.mutable.ArrayBuffer.empty[(Array[Int], Long)]
-    val c = new PPIC(CPVariables, sdb, sdbPosList,
-      firstItemPosInSid, lastItemPosInSid, supportCounter, minSup, numItems)
-    // val c = new PPICfix413(CPVariables, sdb,
-    //    firstItemPosList, lastItemPosList, supportCounter, minSup, numItems + 1)
-    add(c)
-    this.solver.onSolution {
-      val curSol = scala.collection.mutable.ArrayBuffer.empty[Int]
-      CPVariables.foreach(x => {
-        if (x.value != epsilon) {
-          curSol += 0
-          curSol += translationMapReverse.getOrElse(x.value, -1)
-        }
-      })
-      curSol += 0
-      solutions += ((curSol.toArray, c.curPrefixSupport))
-    }
-    this.solver.search(binaryStatic(CPVariables))
-    this.solver.start()
-
     // PRINT
     /*
     println("Postfixes")
@@ -303,9 +298,43 @@ private[fpm] class PPICRunner(val minSup: Long,
     firstItemPosInSid.foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
     println("lastItemPosInSid")
     lastItemPosInSid.foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
+    println("MaxPatternLength ", maxPatternLength)
+    println("MinPatternLength ", minPatternLength)
     println("RUN STOP")
     println()
     */
+
+    // RUN
+    val solutions = scala.collection.mutable.ArrayBuffer.empty[(Array[Int], Long)]
+    val c = new PPIC(CPVariables, sdb, sdbPosList,
+      firstItemPosInSid, lastItemPosInSid, supportCounter, minSup, numItems)
+
+    // In case no sol returned for inputs, catch NoSolutionException
+    try {
+      add(c)
+    } catch {
+      case noSol: oscar.cp.core.NoSolutionException => return Iterator()
+      case e: Exception => throw e
+    }
+
+    // What to do with a solution
+    this.solver.onSolution {
+      val curSol = scala.collection.mutable.ArrayBuffer.empty[Int]
+      CPVariables.foreach(x => {
+        if (x.value != epsilon) {
+          curSol += 0
+          curSol += translationMapReverse.getOrElse(x.value, -1)
+        }
+      })
+      curSol += 0
+      solutions += ((curSol.toArray, c.curPrefixSupport))
+    }
+
+    // Search strategy
+    this.solver.search(binaryStatic(CPVariables))
+    //Start solver
+    this.solver.start()
+
     solutions.toIterator
   }
 }

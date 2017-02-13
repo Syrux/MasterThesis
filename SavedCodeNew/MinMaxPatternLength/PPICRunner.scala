@@ -56,36 +56,40 @@ private[fpm] class PPICRunner(val minSup: Long,
   var epsilon = 0
   var nbSequences = 0
 
-  def preProcessPostfixes(postfixes: Array[Postfix]): Array[Array[Int]] = {
+  def preProcessPostfixes(postfixes: Array[Postfix]): Array[Postfix] = {
 
-    val preprocessed = scala.collection.mutable.ArrayBuffer.empty[Array[Int]]
     postfixSupport = collection.mutable.Map[Int, Int]()
     val itemSupportedByThisSequence = collection.mutable.Map[Int, Boolean]()
+    var numberOfItemPerItemSetCounter = 0
 
     for (postfix <- postfixes) {
-      var firstZeroEncoutered = false
-
-      preprocessed.append(postfix.items.flatMap(x => {
-        if (firstZeroEncoutered && x != epsilon) {
+      // Find frequent items
+      for (i <- Range(1, postfix.items.length)) {
+        val x = postfix.items(i)
+        if (x != epsilon) {
           if (!itemSupportedByThisSequence.contains(x)) {
             itemSupportedByThisSequence.put(x, true)
           }
-          Some(x)
+          numberOfItemPerItemSetCounter += 1
         }
-        else if (x == epsilon) {
-          firstZeroEncoutered = true
-          None
+        else {
+          if (numberOfItemPerItemSetCounter > 1) {
+            throw new IllegalArgumentException(
+              "Among the postfixes, some ItemSet contain more than one item")
+          }
+          numberOfItemPerItemSetCounter = 0
         }
-        else None
-      }))
-
+      }
+      // Store them
       itemSupportedByThisSequence.keys.foreach(x =>
         postfixSupport.update(x, postfixSupport.getOrElse(x, 0) + 1)
       )
+      // Clean for next iter
       itemSupportedByThisSequence.clear()
+      numberOfItemPerItemSetCounter = 0
     }
 
-    preprocessed.toArray
+    postfixes
   }
 
   def updateTranslationMap(value: Int): Int = {
@@ -99,13 +103,18 @@ private[fpm] class PPICRunner(val minSup: Long,
     numItems
   }
 
-  def preProcessArrayToSDB(array: Array[Int], index: Int): Array[Int] = {
+  def preProcessArrayToSDB(postfix: Postfix, index: Int): Array[Int] = {
 
     // Current index (+1 shift)
+    var isFirstItem = true
     var curIndex = 0
     // Filter zero items
-    val res = array.flatMap(x => {
-      if (postfixSupport.getOrElse(x, 0) >= minSup) {
+    val res = postfix.items.flatMap(x => {
+      if (isFirstItem) {
+        isFirstItem = false
+        None
+      }
+      else if (postfixSupport.getOrElse(x, 0) >= minSup) {
         // Update cur index
         curIndex +=1
         // Get word translation
@@ -145,25 +154,25 @@ private[fpm] class PPICRunner(val minSup: Long,
   }
 
   /**
-   * Build a matrix whose content are the next last position of items,
-   * this can take quite a bit of time to compute but, when usefull,
-   * allows an effective speed up.
-   *
-   * @param lastPosOfItem
-   *
-   * LAST POS SID
-   * 0 0
-   * 3 2
-   * 7 0
-   * 5 3
-   * 6 4
-   *
-   * @return
-   *
-   * LAST POS DB
-   * 3 3 5 5 6 7 0
-   * 2 3 4 0
-   */
+    * Build a matrix whose content are the next last position of items,
+    * this can take quite a bit of time to compute but, when usefull,
+    * allows an effective speed up.
+    *
+    * @param lastPosOfItem
+    *
+    * LAST POS SID
+    * 0 0
+    * 3 2
+    * 7 0
+    * 5 3
+    * 6 4
+    *
+    * @return
+    *
+    * LAST POS DB
+    * 3 3 5 5 6 7 0
+    * 2 3 4 0
+    */
   def createSdbPosList(lastPosOfItem : Array[Array[Int]]): Array[Array[Int]] = {
 
     // Transpose lastPosOfItem list while filtering out 1 and 0,
