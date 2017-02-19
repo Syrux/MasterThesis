@@ -266,8 +266,6 @@ class PrefixSpan private (
       }
     }.persist(StorageLevel.MEMORY_AND_DISK)
 
-    dataInternalRepr.collect()
-
     val results = genFreqPatterns(dataInternalRepr, frequentItemsAndCounts, minCount,
       maxPatternLength, minPatternLength, maxItemPerItemSet, subProblemLimit, maxLocalProjDBSize)
 
