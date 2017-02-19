@@ -193,8 +193,8 @@ class PrefixSpan private (
         if (result.nonEmpty) {
           containsFreqItems = true
           allItems ++= result.sorted
+		  allItems += 0
         }
-        allItems += 0
       }
       if (containsFreqItems) {
         Iterator.single(allItems.result())
