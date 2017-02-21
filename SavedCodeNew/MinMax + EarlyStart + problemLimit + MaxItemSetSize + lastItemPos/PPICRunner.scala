@@ -238,6 +238,10 @@ private[fpm] class PPICRunner(val minSup: Long,
     result.result()
   }
 
+  /**
+    * @param supportedItemCounter
+    * @return A Array of constraints
+    */
   def initCPVariables(supportedItemCounter: Array[Int]): Array[CPIntVar] = {
 
     // Create item List
