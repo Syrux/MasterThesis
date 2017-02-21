@@ -42,181 +42,208 @@ private[fpm] class PPICRunner(val minSup: Long,
                               val maxPatternLength: Int)
   extends CPModel with App with Logging with Serializable{
 
+  // To know which item are supported
+  var supportedOriginalItem = collection.mutable.Map[Int, Int]()
   // One to one translation map
-  var postfixSupport = collection.mutable.Map[Int, Int]()
   var translationMap = collection.mutable.Map[Int, Int]()
   var translationMapReverse = collection.mutable.Map[Int, Int]()
   // Support for each value
-  var itemSupportCounter = scala.collection.mutable.ArrayBuffer.empty[Int]
-  var firstItemPosInSid: Array[Array[Int]] = Array(Array(0))
-  var lastItemPosInSid: Array[Array[Int]] = Array(Array(0))
+  var supportedItemCounter = scala.collection.mutable.ArrayBuilder.make[Int]
+  var firstItemPosInSid = scala.collection.mutable.ArrayBuilder.make[Array[Int]]
+  var lastItemPosInSid = scala.collection.mutable.ArrayBuilder.make[Array[Int]]
   // Variables
   var lenSeqMax = 0
   var numItems = 0
   var epsilon = 0
   var nbSequences = 0
 
-  def preProcessPostfixes(postfixes: Array[Postfix]): Array[Postfix] = {
+  /**
+    * This function find the frequency of each item in the postfixes.
+    * Storing them in the postfixSupport map, so that un-frequent
+    * items can be cleaned later.
+    *
+    * It also check whether the input is valid or not,
+    * throwing an IllegalArgumentException if it isn't
+    *
+    * @param postfixes
+    * @return The inputed postfixes
+    */
+  def findFrequentItems(postfixes: Array[Postfix]): Unit = {
 
-    postfixSupport = collection.mutable.Map[Int, Int]()
+    supportedOriginalItem = collection.mutable.Map[Int, Int]()
     val itemSupportedByThisSequence = collection.mutable.Map[Int, Boolean]()
     var numberOfItemPerItemSetCounter = 0
 
     for (postfix <- postfixes) {
-      // Find frequent items
+      // Find frequent items in the sequence (/!\ skip first item /!\)
       for (i <- Range(1, postfix.items.length)) {
         val x = postfix.items(i)
         if (x != epsilon) {
+          // And item to the supported items
           if (!itemSupportedByThisSequence.contains(x)) {
             itemSupportedByThisSequence.put(x, true)
           }
           numberOfItemPerItemSetCounter += 1
         }
         else {
+          // Check if PPIC can still be used
           if (numberOfItemPerItemSetCounter > 1) {
+            // PPIC cannot be used
             throw new IllegalArgumentException(
               "Among the postfixes, some ItemSet contain more than one item")
           }
           numberOfItemPerItemSetCounter = 0
         }
       }
-      // Store them
+      // Store frequent item of current sequence
       itemSupportedByThisSequence.keys.foreach(x =>
-        postfixSupport.update(x, postfixSupport.getOrElse(x, 0) + 1)
+        supportedOriginalItem.update(x, supportedOriginalItem.getOrElse(x, 0) + 1)
       )
-      // Clean for next iter
+      // Clean Map for next iter (Avoid additional garbage collection)
       itemSupportedByThisSequence.clear()
       numberOfItemPerItemSetCounter = 0
     }
-
-    postfixes
+    // Filter item to keep only frequent ones
+    supportedOriginalItem.filter(kv => kv._2 >= minSup)
   }
 
+  /**
+    * Adds an entry to the translation map.
+    *
+    * @param value : An item supported by the sequences
+    * @return the new representation of the old value, which
+    *         will be used as a substitute for the actual
+    *         value in the algorithm.
+    *         (The new reprensentation is an Int > 0)
+    */
   def updateTranslationMap(value: Int): Int = {
 
     // Add new value in reverse map
     numItems += 1
     translationMapReverse.update(numItems, value)
-    // Create new support counter
-    itemSupportCounter += postfixSupport.getOrElseUpdate(value, 0)
-    // Add value in translation map
+    // Save number of support for that item
+    supportedItemCounter += supportedOriginalItem.getOrElse(value, 0)
+    // Return the new representation
     numItems
   }
 
-  def preProcessArrayToSDB(postfix: Postfix, index: Int): Array[Int] = {
+  /**
+    * Clean a sequence to remove un-frequent item
+    * (0 being un-frequent by default). Items are
+    * also renamed to be conveniently used with arrays
+    *
+    * Example :
+    * 0 89 0 104 0 104 0 72
+    * 0 89 0 104
+    *
+    * Becomes :
+    * 1 2 2
+    * 1 2
+    *
+    * @param postfix : A sequence
+    * @return The sequence cleaned from un-frequent items
+    */
+  def preProcessArrayToSDB(postfix: Postfix): Option[Array[Int]] = {
 
-    // Current index (+1 shift)
+    // Init
     var isFirstItem = true
-    var curIndex = 0
-    // Filter zero items
-    val res = postfix.items.flatMap(x => {
+    val numberOfSupportedItem = supportedOriginalItem.size + 1
+    val firstItemPosInSeq = Array.fill(numberOfSupportedItem)(0)
+    val lastItemPosInSeq = Array.fill(numberOfSupportedItem)(0)
+    var nbElemAdded = 0
+    // Filter items to clean sequence
+    val cleanedSequence = postfix.items.flatMap(x => {
       if (isFirstItem) {
+        // Ignore first Item, it's already part of the prefixes
         isFirstItem = false
         None
       }
-      else if (postfixSupport.getOrElse(x, 0) >= minSup) {
-        // Update cur index
-        curIndex +=1
-        // Get word translation
+      else if (supportedOriginalItem.contains(x)) {
+        // Item supported => Get representation (creating new repr if necessary)
         val trans = translationMap.getOrElseUpdate(x, updateTranslationMap(x))
+        // Update last pos found in current sequence for current item
+        nbElemAdded += 1
+        lastItemPosInSeq(trans) = nbElemAdded
+        // If necessary, update first pos in current sequence for current item
+        if (firstItemPosInSeq(trans) == 0) {
+          firstItemPosInSeq(trans) = nbElemAdded
+        }
         Some(trans)
       }
-      else None
+      else None // Item no supported
     })
-    // Compute lenSeqMax
-    res
-  }
 
-  def createPosLists(sdb : Array[Array[Int]]): Array[Array[Int]] = {
-
-    // Create result sdb
-    val finalSdb = scala.collection.mutable.ArrayBuffer.empty[Array[Int]]
-    // Parse old sdb, sequence by sequence
-    for (i <- sdb.indices) {
-      // Parse a sequence
-      val currentSequence = scala.collection.mutable.ArrayBuffer.empty[Int]
-      for (j <- sdb(i).indices) {
-        // Current item
-        val cur = sdb(i)(j)
-        currentSequence.append(cur)
-        // Update PosInSid lists and itemSupportCounter
-        lastItemPosInSid(cur)(i) = currentSequence.length
-        if (firstItemPosInSid(cur)(i) == 0) {
-          firstItemPosInSid(cur)(i) = currentSequence.length
-        }
-      }
-      if (currentSequence.length > 0) {
-        if (currentSequence.length > lenSeqMax) lenSeqMax = currentSequence.length
-        finalSdb.append(currentSequence.toArray)
-      }
+    // Return resulting sequence if non empty
+    if (cleanedSequence.length > 0) {
+      // Update lenSeqMax if necessary
+      if (cleanedSequence.length > lenSeqMax) lenSeqMax = cleanedSequence.length
+      // Update first/last pos list
+      firstItemPosInSid += firstItemPosInSeq
+      lastItemPosInSid += lastItemPosInSeq
+      // Return cleaned sequence
+      Some(cleanedSequence)
     }
-    finalSdb.toArray
+    else None // Omit sequence
   }
 
   /**
-    * Build a matrix whose content are the next last position of items,
-    * this can take quite a bit of time to compute but, when usefull,
-    * allows an effective speed up.
+    * Build a matrix whose cell contain the next last position of an item,
+    * Allowing O(1) jump to the next interesting position and producing
+    * an important speed-up !
     *
     * @param lastPosOfItem
     *
     * LAST POS SID
-    * 0 0
-    * 3 2
-    * 7 0
-    * 5 3
-    * 6 4
+    * 0 3 7 5 6
+    * 0 2 0 3 4
     *
     * @return
     *
     * LAST POS DB
     * 3 3 5 5 6 7 0
     * 2 3 4 0
+    *
+    * /!\ 0 only to indicate ends of seq /!\
+    *
     */
   def createSdbPosList(lastPosOfItem : Array[Array[Int]]): Array[Array[Int]] = {
 
-    // Transpose lastPosOfItem list while filtering out 1 and 0,
-    // then sort each line In increasing order
-    val transposedBuilder = Array.fill(nbSequences)(scala.collection.mutable.ArrayBuffer.empty[Int])
-    for (item <- lastPosOfItem) {
-      var i = 0
-      while (i < item.length) {
-        if (item(i) > 1) transposedBuilder(i) +=  item(i)
-        i += 1
-      }
-    }
-    val transposedMatrix = transposedBuilder.map(_.toArray.sorted)
-
     // Build last pos matrix
-    val result = scala.collection.mutable.ArrayBuffer.empty[Array[Int]]
-    for(sequence <- transposedMatrix) {
+    val result = scala.collection.mutable.ArrayBuilder.make[Array[Int]]
+    for(posList <- lastPosOfItem) {
+      //Init
+      // Filter out one and zero from sequence, then sort result
+      val sortedPosList = posList.filter(_ > 1).sorted
       var i = 0 // Indice for next last pos to add
-      var j = 1 // Position in sequence
-      val resultLine = scala.collection.mutable.ArrayBuffer.empty[Int]
-      while (i < sequence.length) {
-        if (j < sequence(i)) {
+      var j = 0 // Position in sequence
+      // Generate sequence
+      val resultLine =
+        if (sortedPosList.isEmpty) Array(0)
+        else Array.ofDim[Int](sortedPosList.last)
+      while (i < sortedPosList.length) {
+        if (j + 1 < sortedPosList(i)) {
           // Add position of next last pos to list
-          resultLine += sequence(i)
+          resultLine(j) = sortedPosList(i)
           j += 1
         }
         else i += 1
       }
       // Finish line with a 0 for termination
-      resultLine += 0
+      resultLine(j) = 0
       // Append line
-      result.append(resultLine.toArray)
+      result += resultLine
     }
 
     // Return resulting last pos List
-    result.toArray
+    result.result()
   }
 
-  def initCPVariables(): Array[CPIntVar] = {
+  def initCPVariables(supportedItemCounter: Array[Int]): Array[CPIntVar] = {
 
     // Create item List
     val listOfitem = new scala.collection.mutable.Stack[Int]
-    for(i <- itemSupportCounter.indices) {
-      if (itemSupportCounter(i) >= minSup) listOfitem.push(i)
+    for(i <- supportedItemCounter.indices) {
+      if (supportedItemCounter(i) >= minSup) listOfitem.push(i)
     }
 
     // Recalculate max Pattern Length
@@ -228,9 +255,9 @@ private[fpm] class PPICRunner(val minSup: Long,
     // Create list of CPIntVar
     val CPVariables = new Array[CPIntVar](recalculatedMaxPatternLength)
     for (i <- Range(0, minPatternLength)){
-      CPVariables(i) = CPIntVar.sparse(listOfitem) //Item that cannot be epsilon
+      CPVariables(i) = CPIntVar.sparse(listOfitem) //Item that cannot be epsilon (0)
     }
-    listOfitem.push(0) //Put epsilon as a possibility
+    listOfitem.push(0) // Add epsilon as a possibility
     for (i <- Range(math.max(0, minPatternLength), recalculatedMaxPatternLength)){
       CPVariables(i) = CPIntVar.sparse(listOfitem) //Item that can be epsilon
     }
@@ -249,45 +276,44 @@ private[fpm] class PPICRunner(val minSup: Long,
     */
   def run(postfixes: Array[Postfix]): Iterator[(Array[Int], Long)] = {
 
-    // INIT (+To avoid null reference)
+    // Various init done to avoid null reference)
+    // Init translation maps
     translationMap = collection.mutable.Map[Int, Int]()
     translationMapReverse = collection.mutable.Map[Int, Int]()
-    itemSupportCounter = scala.collection.mutable.ArrayBuffer.empty[Int]
-    itemSupportCounter += 0
+    // Init support counter
+    supportedItemCounter = scala.collection.mutable.ArrayBuilder.make[Int]
+    supportedItemCounter += 0 // Add support for epsilon item
+    // Init first and last pos list
+    firstItemPosInSid = scala.collection.mutable.ArrayBuilder.make[Array[Int]]
+    lastItemPosInSid = scala.collection.mutable.ArrayBuilder.make[Array[Int]]
 
-    // INIT SDB
-    var curIndex = -1
-    val partialSDB: Array[Array[Int]] = preProcessPostfixes(postfixes).flatMap(x => {
-      // Find list of non-empty sequences
-      // Find Sequence
-      curIndex+=1
-      val resSeq = preProcessArrayToSDB(x, curIndex)
-      // Return resulting sequence if non empty
-      if(resSeq.length > 0) Some(resSeq)
-      else None
-    })
+    // Clean postfixes
+    findFrequentItems(postfixes)
+    val sdb: Array[Array[Int]] = postfixes.flatMap(x => preProcessArrayToSDB(x))
 
-    numItems += 1
-    nbSequences = partialSDB.length
-    firstItemPosInSid = Array.fill(numItems)(Array.fill(nbSequences)(0))
-    lastItemPosInSid = Array.fill(numItems)(Array.fill(nbSequences)(0))
-    val sdb = createPosLists(partialSDB)
-
-    // CHECK FOR NON-EMPTY SDB
-    if(lenSeqMax == 0) {
-      // If empty, return empty Iterator
+    // Check if a solution can be outputted
+    if(lenSeqMax == 0 || lenSeqMax < minPatternLength ||
+      (maxPatternLength > 0 && maxPatternLength < minPatternLength)) {
+      // No matter what, a solution cannot be outputteds, abort
       return Iterator()
     }
+    numItems += 1
+    nbSequences = sdb.length
 
-    // INIT CONSTRAINT VARIABLE
-    val supportCounter = itemSupportCounter.toArray
+    // Extract final version of pos lists
+    val firstPosOfItem = firstItemPosInSid.result()
+    val lastPosOfItem = lastItemPosInSid.result()
 
-    val CPVariables = initCPVariables()
+    // Init constraint variables
+    val itemsSupport = supportedItemCounter.result()
+    val CPVariables = initCPVariables(itemsSupport)
 
-    val sdbPosList = createSdbPosList(lastItemPosInSid)
+    // Init SDB pos matrix
+    val sdbPosList = createSdbPosList(lastPosOfItem)
 
     // PRINT
     /*
+    println("")
     println("Postfixes")
     postfixes.foreach(x => {x.items.foreach(x=> {print(x); print(" ")}); println()})
     println("Variables")
@@ -300,12 +326,12 @@ private[fpm] class PPICRunner(val minSup: Long,
     println("sdbLastPos")
     sdbPosList.foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
     println("supportCounter")
-    supportCounter.foreach(x=> {print(x); print(" ")})
+    supportedItemCounter.result().foreach(x=> {print(x); print(" ")})
     println()
     println("firstItemPosInSid")
-    firstItemPosInSid.foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
+    firstItemPosInSid.result().foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
     println("lastItemPosInSid")
-    lastItemPosInSid.foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
+    lastItemPosInSid.result().foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
     println("MaxPatternLength ", maxPatternLength)
     println("MinPatternLength ", minPatternLength)
     println("RUN STOP")
@@ -315,7 +341,7 @@ private[fpm] class PPICRunner(val minSup: Long,
     // RUN
     val solutions = scala.collection.mutable.ArrayBuffer.empty[(Array[Int], Long)]
     val c = new PPIC(CPVariables, sdb, sdbPosList,
-      firstItemPosInSid, lastItemPosInSid, supportCounter, minSup, numItems)
+      firstPosOfItem, lastPosOfItem, itemsSupport, minSup, numItems)
 
     // In case no sol returned for inputs, catch NoSolutionException
     try {
@@ -363,13 +389,18 @@ private[fpm] class PPICRunner(val minSup: Long,
   *           s3 ab
   *           s4 bcd
   *
-  * @param lastPosOfItem is the last real position of an item in a sequence,
+  * @param firstPosOfItem is the first real position of an item (a) in a sequence (s1),
   *                      if 0 it is not present
-  *                       s1  s2  s3  s4
-  *                    a  1   2   1   0
-  *                    b  4   3   2   1
-  *                    c  5   4   0   2
-  *                    d  0   0   0   3
+  *
+  * @param lastPosOfItem is the last real position of an item (a) in a sequence (s1),
+  *                      if 0 it is not present
+  *
+  *                           a   b   c   d
+  *                       s1  1   4   5   0
+  *                       s1  2   3   4   0
+  *                       s1  1   2   0   0
+  *                       s1  0   1   2   3
+  *
   * @param itemsSupport is the initial support (number of sequences where an
   *                     item appeared) of all items a : 3, b : 4, c : 3, d : 1
   * @param minsup is a threshold support, item must appear
@@ -595,11 +626,11 @@ class PPIC(val P: Array[CPIntVar],
       // println(i+" $$ sid = "+sid+" start = "+start)
       var pos = start
 
-      if (lastPosOfItem(prefix)(sid) != 0) {
+      if (lastPosOfItem(sid)(prefix) != 0) {
         // here we know at least that prefix is present in sequence sid
 
         // search for next value "prefix" in the sequence starting from
-        if (lastPosOfItem(prefix)(sid) - 1 >= pos) {
+        if (lastPosOfItem(sid)(prefix) - 1 >= pos) {
           // we are sure prefix next position is available,
           // so we add the sequence in the new projected data base
 
@@ -608,7 +639,7 @@ class PPIC(val P: Array[CPIntVar],
           // find next position of prefix
           if (start == -1) {
 
-            pos = firstPosOfItem(prefix)(sid) - 1
+            pos = firstPosOfItem(sid)(prefix) - 1
 
           } else {
 
