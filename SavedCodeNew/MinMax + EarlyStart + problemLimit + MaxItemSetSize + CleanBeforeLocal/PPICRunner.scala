@@ -218,8 +218,8 @@ private[fpm] class PPICRunner(val minSup: Long,
       var j = 0 // Position in sequence
       // Generate sequence
       val resultLine =
-        if (sortedPosList.isEmpty) Array(0)
-        else Array.ofDim[Int](sortedPosList.last)
+      if (sortedPosList.isEmpty) Array(0)
+      else Array.ofDim[Int](sortedPosList.last)
       while (i < sortedPosList.length) {
         if (j + 1 < sortedPosList(i)) {
           // Add position of next last pos to list

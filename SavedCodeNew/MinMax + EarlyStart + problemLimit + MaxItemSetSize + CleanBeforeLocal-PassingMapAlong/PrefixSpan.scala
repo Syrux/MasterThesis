@@ -563,6 +563,8 @@ object PrefixSpan extends Logging {
       val curSeq = mutable.ArrayBuilder.make[Int]
       val newPartialStarts = mutable.ArrayBuilder.make[Int]
       var numberOfItemPerItemSetCounter = 0
+	  // /!\ for empty prefix only /!\
+      if (prefix.items.isEmpty) curSeq += 0
       // Change sequence
       for (i <- postfix.items.indices){
         val item = postfix.items(i)

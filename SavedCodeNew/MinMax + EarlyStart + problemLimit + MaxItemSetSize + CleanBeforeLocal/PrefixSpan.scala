@@ -518,7 +518,7 @@ object PrefixSpan extends Logging {
     // Variable to hold whether we can use PPIC
     var canUsePPIC = true
 
-    // Find frequent items
+    // Find frequent itemss.isEmpty) 0
     for (postfix <- postfixes) {
       // Find items in current sequence
       for (i <- Range(1, postfix.items.length)) {
@@ -551,6 +551,8 @@ object PrefixSpan extends Logging {
       val curSeq = mutable.ArrayBuilder.make[Int]
       val newPartialStarts = mutable.ArrayBuilder.make[Int]
       var numberOfItemPerItemSetCounter = 0
+      // /!\ for empty prefix only /!\
+      if (prefix.items.isEmpty) curSeq += 0
       // Change sequence
       for (i <- postfix.items.indices){
         val item = postfix.items(i)
