@@ -10,6 +10,16 @@ To run work with spark :
 
 	- Import project in IntelliJ (using maven)
 
+To run version of code saved in SavedCode :
+
+	- Change file which are in .\spark\mllib\src\main\scala\org\apache\spark\mllib\fpm\ ...
+
+	- For test, if present, change file in:
+	
+		.\spark\mllib\src\test\scala\org\apache\spark\mllib\fpm\PrefixSpanSuite.scala
+
+		/!\ Version containing minPatternLength relies on the test file saved there /!\
+
 File modified (that I shouldn't forget to push) :
 
 	- POM.xml of mlib
