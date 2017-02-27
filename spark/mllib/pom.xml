@@ -35,6 +35,16 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>1.0.19</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang.modules</groupId>
+      <artifactId>scala-parser-combinators_2.11</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+    <dependency>
       <groupId>oscar</groupId>
       <artifactId>oscar-cp_2.11</artifactId>
       <version>3.1.0-SNAPSHOT</version>

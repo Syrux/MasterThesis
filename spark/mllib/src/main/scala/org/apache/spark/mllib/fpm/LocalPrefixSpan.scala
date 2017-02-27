@@ -29,7 +29,6 @@ import org.apache.spark.internal.Logging
  */
 private[fpm] class LocalPrefixSpan(
     val minCount: Long,
-    val minPatternLength: Int,
     val maxPatternLength: Int) extends Logging with Serializable {
   import PrefixSpan.Postfix
   import LocalPrefixSpan.ReversedPrefix
@@ -54,8 +53,7 @@ private[fpm] class LocalPrefixSpan(
   private def genFreqPatterns(
       prefix: ReversedPrefix,
       postfixes: Array[Postfix]): Iterator[(ReversedPrefix, Long)] = {
-
-    if ((maxPatternLength > 0 && maxPatternLength == prefix.length) || postfixes.length < minCount) {
+    if (maxPatternLength == prefix.length || postfixes.length < minCount) {
       return Iterator.empty
     }
     // find frequent items
@@ -71,13 +69,7 @@ private[fpm] class LocalPrefixSpan(
     // project and recursively call genFreqPatterns
     freqItems.toIterator.flatMap { case (item, count) =>
       val newPrefix = prefix :+ item
-      if (newPrefix.length >= minPatternLength) {
-        Iterator.single((newPrefix, count)) ++ {
-          val projected = postfixes.map(_.project(item)).filter(_.nonEmpty)
-          genFreqPatterns(newPrefix, projected)
-        }
-      }
-      else {
+      Iterator.single((newPrefix, count)) ++ {
         val projected = postfixes.map(_.project(item)).filter(_.nonEmpty)
         genFreqPatterns(newPrefix, projected)
       }

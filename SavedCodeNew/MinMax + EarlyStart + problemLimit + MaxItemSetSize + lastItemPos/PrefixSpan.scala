@@ -82,6 +82,7 @@ import org.apache.spark.storage.StorageLevel
 @Since("1.5.0")
 class PrefixSpan private (
                            private var minSupport: Double,
+                           private var canUsePPIC: Boolean,
                            private var maxPatternLength: Int,
                            private var minPatternLength: Int,
                            private var maxItemPerItemSet: Int,
@@ -95,7 +96,7 @@ class PrefixSpan private (
     *   maxItemPerItemSet: `0`, subProblemLimit: `0`, maxLocalProjDBSize: `32000000L`}.
     */
   @Since("1.5.0")
-  def this() = this(0.1, 0, 1, 0, 0, 32000000L)
+  def this() = this(0.1, false, 0, 1, 0, 0, 32000000L)
 
   /**
     * Get the minimal support (i.e. the frequency of occurrence before a pattern is considered
@@ -112,6 +113,22 @@ class PrefixSpan private (
     require(minSupport >= 0 && minSupport <= 1,
       s"The minimum support value must be in [0, 1], but got $minSupport.")
     this.minSupport = minSupport
+    this
+  }
+
+  /**
+    * Get the minimal support (i.e. the frequency of occurrence before a pattern is considered
+    * frequent).
+    */
+  @Since("1.5.0")
+  def getCanUsePPIC: Boolean = canUsePPIC
+
+  /**
+    * Sets the minimal support level (default: `0.1`).
+    */
+  @Since("1.5.0")
+  def setCanUsePPIC(input: Boolean): this.type = {
+    this.canUsePPIC = input
     this
   }
 
@@ -272,7 +289,7 @@ class PrefixSpan private (
       }
     }.persist(StorageLevel.MEMORY_AND_DISK)
 
-    val results = genFreqPatterns(dataInternalRepr, frequentItemsAndCounts, minCount,
+    val results = genFreqPatterns(dataInternalRepr, canUsePPIC, frequentItemsAndCounts, minCount,
       maxPatternLength, minPatternLength, maxItemPerItemSet, subProblemLimit, maxLocalProjDBSize)
 
     def toPublicRepr(pattern: Array[Int]): Array[Array[Item]] = {
@@ -352,7 +369,7 @@ object PrefixSpan extends Logging {
                                     maxPatternLength: Int,
                                     maxLocalProjDBSize: Long): RDD[(Array[Int], Long)] = {
 
-    genFreqPatterns(data.map(seq => (seq, genLastPosMap(seq))), Array(), minCount, maxPatternLength, 0,
+    genFreqPatterns(data.map(seq => (seq, genLastPosMap(seq))), false, Array(), minCount, maxPatternLength, 0,
       0, 0, maxLocalProjDBSize)
   }
 
@@ -363,12 +380,13 @@ object PrefixSpan extends Logging {
                                     minPatternLength: Int,
                                     maxLocalProjDBSize: Long): RDD[(Array[Int], Long)] = {
 
-    genFreqPatterns(data.map(seq => (seq, genLastPosMap(seq))), Array(), minCount, maxPatternLength, minPatternLength,
+    genFreqPatterns(data.map(seq => (seq, genLastPosMap(seq))), false, Array(), minCount, maxPatternLength, minPatternLength,
       0, 0, maxLocalProjDBSize)
   }
 
   private[fpm] def genFreqPatterns(
                                     data: RDD[(Array[Int], mutable.Map[Int, Int])],
+                                    canUsePPIC: Boolean,
                                     freqItems: Array[(Int, Long)],
                                     minCount: Long,
                                     maxPatternLength: Int,
@@ -497,16 +515,27 @@ object PrefixSpan extends Logging {
         else maxPatternLength - prefix.length
         val newMinPatternLength = minPatternLength - prefix.length
         val spaceRemainingInCurrentItem = maxItemPerItemSet - (prefix.items.length - prefix.items.lastIndexOf(0) - 1)
-        // Spark
-        val localPrefixSpan = new LocalPrefixSpan(minCount, newMinPatternLength,
-          newMaxPatternLength, maxItemPerItemSet, spaceRemainingInCurrentItem)
-        // PPIC
-        //val localPrefixSpan = new PPICRunner(minCount, newMinPatternLength, newMaxPatternLength)
 
-        // TODO: We collect projected postfixes into memory. We should also compare the performance
-        // TODO: of keeping them on shuffle files.
-        localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
-          (prefix.items ++ pattern, count)
+        if (canUsePPIC) {
+          // PPIC
+          val localPrefixSpan = new PPICRunner(minCount, newMinPatternLength, newMaxPatternLength)
+
+          // TODO: We collect projected postfixes into memory. We should also compare the performance
+          // TODO: of keeping them on shuffle files.
+          localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
+            (prefix.items ++ pattern, count)
+          }
+        }
+        else {
+          // Spark
+          val localPrefixSpan = new LocalPrefixSpan(minCount, newMinPatternLength,
+            newMaxPatternLength, maxItemPerItemSet, spaceRemainingInCurrentItem)
+
+          // TODO: We collect projected postfixes into memory. We should also compare the performance
+          // TODO: of keeping them on shuffle files.
+          localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
+            (prefix.items ++ pattern, count)
+          }
         }
       }
       // Union local frequent patterns and distributed ones.

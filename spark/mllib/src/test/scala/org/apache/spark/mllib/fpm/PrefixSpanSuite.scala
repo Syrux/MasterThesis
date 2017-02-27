@@ -48,7 +48,7 @@ class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
     val rdd = sc.parallelize(sequences, 2).cache()
 
     val result1 = PrefixSpan.genFreqPatterns(
-      rdd, minCount = 2L, maxPatternLength = 50, minPatternLength = 1, maxLocalProjDBSize = 16L)
+      rdd, minCount = 2L, maxPatternLength = 50, maxLocalProjDBSize = 16L)
     val expectedValue1 = Array(
       (Array(0, 1, 0), 4L),
       (Array(0, 1, 0, 3, 0), 2L),
@@ -73,7 +73,7 @@ class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
     compareInternalResults(expectedValue1, result1.collect())
 
     val result2 = PrefixSpan.genFreqPatterns(
-      rdd, minCount = 3, maxPatternLength = 50, minPatternLength = 1, maxLocalProjDBSize = 32L)
+      rdd, minCount = 3, maxPatternLength = 50, maxLocalProjDBSize = 32L)
     val expectedValue2 = Array(
       (Array(0, 1, 0), 4L),
       (Array(0, 3, 0), 5L),
@@ -84,7 +84,7 @@ class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
     compareInternalResults(expectedValue2, result2.collect())
 
     val result3 = PrefixSpan.genFreqPatterns(
-      rdd, minCount = 2, maxPatternLength = 2, minPatternLength = 1, maxLocalProjDBSize = 32L)
+      rdd, minCount = 2, maxPatternLength = 2, maxLocalProjDBSize = 32L)
     val expectedValue3 = Array(
       (Array(0, 1, 0), 4L),
       (Array(0, 1, 0, 3, 0), 2L),
@@ -102,18 +102,6 @@ class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
       (Array(0, 5, 0), 3L)
     )
     compareInternalResults(expectedValue3, result3.collect())
-
-    val result4 = PrefixSpan.genFreqPatterns(
-      rdd, minCount = 2L, maxPatternLength = 50, minPatternLength = 4, maxLocalProjDBSize = 16L)
-    val expectedValue4 = Array(
-      (Array(0, 1, 0, 3, 0, 4, 0, 5, 0), 2L)
-    )
-    compareInternalResults(expectedValue4, result4.collect())
-
-    val result5 = PrefixSpan.genFreqPatterns(
-      rdd, minCount = 2L, maxPatternLength = 1, minPatternLength = 2, maxLocalProjDBSize = 16L)
-    val expectedValue5: Array[(Array[Int], Long)] = Array()
-    compareInternalResults(expectedValue5, result5.collect())
   }
 
   test("PrefixSpan internal (integer seq, -1 delim) run, variable-size itemsets") {
@@ -124,7 +112,7 @@ class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
       Array(0, 5, 0, 7, 0, 1, 6, 0, 3, 0, 2, 0, 3, 0))
     val rdd = sc.parallelize(sequences, 2).cache()
     val result = PrefixSpan.genFreqPatterns(
-      rdd, minCount = 2, maxPatternLength = 5, minPatternLength = 1, maxLocalProjDBSize = 128L)
+      rdd, minCount = 2, maxPatternLength = 5, maxLocalProjDBSize = 128L)
 
     /*
       To verify results, create file "prefixSpanSeqs" with content
@@ -268,17 +256,6 @@ class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
       (Array(0, 1, 0, 2, 0, 1, 0), 2L))
 
     compareInternalResults(expectedValue, result.collect())
-
-    val result2 = PrefixSpan.genFreqPatterns(
-      rdd, minCount = 2, maxPatternLength = 5, minPatternLength = 4, maxLocalProjDBSize = 128L)
-
-    val expectedValue2 = Array(
-      (Array(0, 1, 2, 0, 4, 0, 3, 0), 2L),
-      (Array(0, 5, 0, 6, 0, 3, 0, 2, 0), 2L),
-      (Array(0, 5, 0, 1, 0, 3, 0, 2, 0), 2L),
-      (Array(0, 1, 0, 2, 3, 0, 1, 0), 2L))
-
-    compareInternalResults(expectedValue2, result2.collect())
   }
 
   test("PrefixSpan projections with multiple partial starts") {
@@ -303,23 +280,6 @@ class PrefixSpanSuite extends SparkFunSuite with MLlibTestSparkContext {
       (Array(Array(2), Array(3)), 1L),
       (Array(Array(3)), 1L))
     compareResults(expected, model.freqSequences.collect())
-
-    val prefixSpan2 = new PrefixSpan()
-      .setMinSupport(1.0)
-      .setMaxPatternLength(2)
-      .setMinPatternLength(2)
-    val model2 = prefixSpan2.run(rdd)
-    val expected2 = Array(
-      (Array(Array(1, 2)), 1L),
-      (Array(Array(1), Array(1)), 1L),
-      (Array(Array(1), Array(2)), 1L),
-      (Array(Array(1), Array(3)), 1L),
-      (Array(Array(1, 3)), 1L),
-      (Array(Array(2, 3)), 1L),
-      (Array(Array(2), Array(1)), 1L),
-      (Array(Array(2), Array(2)), 1L),
-      (Array(Array(2), Array(3)), 1L))
-    compareResults(expected2, model2.freqSequences.collect())
   }
 
   test("PrefixSpan Integer type, variable-size itemsets") {

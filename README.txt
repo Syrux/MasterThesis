@@ -1,6 +1,6 @@
 To run work with spark :
 
-	- Run "sbt package" command in spark folder
+	- Run "sbt package" command in spark folder (Otherwise SQL will not compile in intelliJ alone)
 
 		- If missing some memory to exec, use command :
 	
