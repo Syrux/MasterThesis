@@ -26,17 +26,19 @@ import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
 
 import org.json4s.DefaultFormats
-import org.json4s.JsonDSL._
 import org.json4s.jackson.JsonMethods.{compact, render}
+import org.json4s.JsonDSL._
 
-import org.apache.spark.SparkContext
 import org.apache.spark.annotation.Since
 import org.apache.spark.api.java.JavaRDD
 import org.apache.spark.api.java.JavaSparkContext.fakeClassTag
 import org.apache.spark.internal.Logging
 import org.apache.spark.mllib.util.{Loader, Saveable}
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+import org.apache.spark.SparkContext
+import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.ScalaReflection
 import org.apache.spark.sql.types._
 import org.apache.spark.storage.StorageLevel
@@ -47,12 +49,32 @@ import org.apache.spark.storage.StorageLevel
  * Efficiently by Prefix-Projected Pattern Growth
  * (see <a href="http://doi.org/10.1109/ICDE.2001.914830">here</a>).
  *
- * @param minSupport the minimal support level of the sequential pattern, any pattern that appears
- *                   more than (minSupport * size-of-the-dataset) times will be output
+ * @param minSupport the minimal support level of the sequential pattern, any pattern that
+ *                   appears more than (minSupport * size-of-the-dataset) times will be output
+ *
  * @param maxPatternLength the maximal length of the sequential pattern, any pattern that appears
  *                         less than maxPatternLength will be output
- * @param maxLocalProjDBSize The maximum number of items (including delimiters used in the internal
- *                           storage format) allowed in a projected database before local
+ *
+ * @param minPatternLength the minimal length of the sequential pattern, any pattern that appears
+ *                         with a larger or equal length, will be output
+ *
+ * @param subProblemLimit The SOFT limit on the number of subProblems that should be created
+ *                        before switching to a local execution. This may improve performances
+ *                        in network of very capable machine, or when dealing with
+ *                        small problems.
+ *
+ *                        The recommended value would be AT LEAST the number of available
+ *                        machines squared. Since the slowest subProblem will determine
+ *                        the total computation time !
+ *
+ *                        If put to 0, the parameter will be ignored.
+ *                        If put to 1, the algorithm directly switch to a local exec
+ *
+ *                        Basically just a more precise way of managing subproblems number than
+ *                        maxLocalProjDBSize.
+ *
+ * @param maxLocalProjDBSize The maximum number of items (including delimiters used in the
+ *                           internal storage format) allowed in a projected database before local
  *                           processing. If a projected database exceeds this size, another
  *                           iteration of distributed prefix growth is run.
  *
@@ -61,18 +83,21 @@ import org.apache.spark.storage.StorageLevel
  */
 @Since("1.5.0")
 class PrefixSpan private (
-    private var minSupport: Double,
-    private var canUsePPIC: Boolean,
-    private var maxPatternLength: Int,
-    private var maxLocalProjDBSize: Long) extends Logging with Serializable {
+                           private var minSupport: Double,
+                           private var maxPatternLength: Int,
+                           private var minPatternLength: Int,
+                           private var maxItemPerItemSet: Int,
+                           private var subProblemLimit: Long,
+                           private var maxLocalProjDBSize: Long) extends Logging with Serializable {
   import PrefixSpan._
 
   /**
    * Constructs a default instance with default parameters
-   * {minSupport: `0.1`, maxPatternLength: `10`, maxLocalProjDBSize: `32000000L`}.
+   * {minSupport: `0.1`, maxPatternLength: `0`, minPatternLength: `1`,
+   *   maxItemPerItemSet: `0`, subProblemLimit: `0`, maxLocalProjDBSize: `32000000L`}.
    */
   @Since("1.5.0")
-  def this() = this(0.1, false, 10, 32000000L)
+  def this() = this(0.1, 0, 1, 0, 0, 32000000L)
 
   /**
    * Get the minimal support (i.e. the frequency of occurrence before a pattern is considered
@@ -93,36 +118,78 @@ class PrefixSpan private (
   }
 
   /**
-    * Get the minimal support (i.e. the frequency of occurrence before a pattern is considered
-    * frequent).
-    */
-  @Since("1.5.0")
-  def getCanUsePPIC: Boolean = canUsePPIC
-
-  /**
-    * Sets the minimal support level (default: `0.1`).
-    */
-  @Since("1.5.0")
-  def setCanUsePPIC(input: Boolean): this.type = {
-    this.canUsePPIC = input
-    this
-  }
-
-  /**
-   * Gets the maximal pattern length (i.e. the length of the longest sequential pattern to consider.
+   * Gets the maximal pattern length
+   * (i.e. the length of the longest sequential pattern to consider)
    */
   @Since("1.5.0")
   def getMaxPatternLength: Int = maxPatternLength
 
   /**
-   * Sets maximal pattern length (default: `10`).
+   * Sets maximal pattern length (default: `0`).
    */
   @Since("1.5.0")
   def setMaxPatternLength(maxPatternLength: Int): this.type = {
-    // TODO: support unbounded pattern length when maxPatternLength = 0
-    require(maxPatternLength >= 1,
-      s"The maximum pattern length value must be greater than 0, but got $maxPatternLength.")
+    require(maxPatternLength >= 0,
+      s"The maximum pattern length value cannot be negative, but got $maxPatternLength.")
     this.maxPatternLength = maxPatternLength
+    this
+  }
+
+  /**
+   * Gets the minimal pattern length
+   * (i.e. the length of the smallest sequential pattern to consider)
+   */
+  @Since("1.5.0")
+  def getMinPatternLength: Int = minPatternLength
+
+  /**
+   * Sets minimal pattern length (default: `1`).
+   */
+  @Since("1.5.0")
+  def setMinPatternLength(minPatternLength: Int): this.type = {
+    require(minPatternLength >= 1,
+      s"The minimum pattern length value cannot be less than one, but got $minPatternLength.")
+    this.minPatternLength = minPatternLength
+    this
+  }
+
+  /**
+   * Gets the maximum number of item and ItemSet can have in the solutions
+   */
+  @Since("1.5.0")
+  def getMaxItemPerItemSet: Int = maxItemPerItemSet
+
+  /**
+   * Sets the maximum number of item and ItemSet can have in the solutions
+   *
+   * If put to 0, no limit will be imposed
+   */
+  @Since("1.5.0")
+  def setMaxItemPerItemSet(maxItemPerItemSet: Int): this.type = {
+    require(maxItemPerItemSet >= 0,
+      s"MaxItemPerItemSet cannot be less than zero, but got $maxItemPerItemSet.")
+    this.maxItemPerItemSet = maxItemPerItemSet
+    this
+  }
+
+  /**
+   * Gets the soft subProblem limit
+   * (i.e. the soft limit on the number of subProblems created, before which we force a local exec)
+   */
+  @Since("1.5.0")
+  def getSubProblemLimit: Long = subProblemLimit
+
+  /**
+   * Sets the soft subProblem limit (default: `0`).
+   *
+   * If put to 0, the parameter will be ignored.
+   * If put to 1, the algorithm directly switch to a local exec
+   */
+  @Since("1.5.0")
+  def setSubProblemLimit(subProblemLimit: Long): this.type = {
+    require(subProblemLimit >= 0,
+      s"The soft subProblem limit cannot be less than zero, but got $subProblemLimit.")
+    this.subProblemLimit = subProblemLimit
     this
   }
 
@@ -162,20 +229,23 @@ class PrefixSpan private (
 
     // Find frequent items.
     val freqItemAndCounts = data.flatMap { itemsets =>
-        val uniqItems = mutable.Set.empty[Item]
-        itemsets.foreach { _.foreach { item =>
-          uniqItems += item
-        }}
-        uniqItems.toIterator.map((_, 1L))
-      }.reduceByKey(_ + _)
+      val uniqItems = mutable.Set.empty[Item]
+      itemsets.foreach { _.foreach { item =>
+        uniqItems += item
+      }}
+      uniqItems.toIterator.map((_, 1L))
+    }.reduceByKey(_ + _)
       .filter { case (_, count) =>
         count >= minCount
       }.collect()
     val freqItems = freqItemAndCounts.sortBy(-_._2).map(_._1)
     logInfo(s"number of frequent items: ${freqItems.length}")
 
-    // Keep only frequent items from input sequences and convert them to internal storage.
+    // Convert freqItemArray
     val itemToInt = freqItems.zipWithIndex.toMap
+    val frequentItemsAndCounts = freqItemAndCounts.map(x => (itemToInt(x._1) + 1, x._2) )
+
+    // Keep only frequent items from input sequences and convert them to internal storage.
     val dataInternalRepr = data.flatMap { itemsets =>
       val allItems = mutable.ArrayBuilder.make[Int]
       var containsFreqItems = false
@@ -191,7 +261,7 @@ class PrefixSpan private (
         if (result.nonEmpty) {
           containsFreqItems = true
           allItems ++= result.sorted
-		  allItems += 0
+          allItems += 0
         }
       }
       if (containsFreqItems) {
@@ -201,7 +271,8 @@ class PrefixSpan private (
       }
     }.persist(StorageLevel.MEMORY_AND_DISK)
 
-    val results = genFreqPatterns(dataInternalRepr, minCount, canUsePPIC, maxPatternLength, maxLocalProjDBSize)
+    val results = genFreqPatterns(dataInternalRepr, frequentItemsAndCounts, minCount,
+      maxPatternLength, minPatternLength, maxItemPerItemSet, subProblemLimit, maxLocalProjDBSize)
 
     def toPublicRepr(pattern: Array[Int]): Array[Array[Item]] = {
       val sequenceBuilder = mutable.ArrayBuilder.make[Array[Item]]
@@ -237,8 +308,9 @@ class PrefixSpan private (
    * @return a [[PrefixSpanModel]] that contains the frequent sequential patterns
    */
   @Since("1.5.0")
-  def run[Item, Itemset <: jl.Iterable[Item], Sequence <: jl.Iterable[Itemset]](
-      data: JavaRDD[Sequence]): PrefixSpanModel[Item] = {
+  def run[Item, Itemset <: jl.Iterable[Item],
+  Sequence <: jl.Iterable[Itemset]](data : JavaRDD[Sequence]): PrefixSpanModel[Item] = {
+
     implicit val tag = fakeClassTag[Item]
     run(data.rdd.map(_.asScala.map(_.asScala.toArray).toArray))
   }
@@ -247,14 +319,6 @@ class PrefixSpan private (
 
 @Since("1.5.0")
 object PrefixSpan extends Logging {
-
-  private[fpm] def genFreqPatterns(
-                                    data: RDD[Array[Int]],
-                                    minCount: Long,
-                                    maxPatternLength: Int,
-                                    maxLocalProjDBSize: Long): RDD[(Array[Int], Long)] = {
-    genFreqPatterns(data, minCount, false, maxPatternLength, maxLocalProjDBSize)
-  }
 
   /**
    * Find the complete set of frequent sequential patterns in the input sequences.
@@ -266,11 +330,36 @@ object PrefixSpan extends Logging {
    * @see [[Postfix]]
    */
   private[fpm] def genFreqPatterns(
-      data: RDD[Array[Int]],
-      minCount: Long,
-      canUsePPIC: Boolean,
-      maxPatternLength: Int,
-      maxLocalProjDBSize: Long): RDD[(Array[Int], Long)] = {
+                                    data: RDD[Array[Int]],
+                                    minCount: Long,
+                                    maxPatternLength: Int,
+                                    maxLocalProjDBSize: Long): RDD[(Array[Int], Long)] = {
+
+    genFreqPatterns(data, Array(), minCount, maxPatternLength, 0,
+      0, 0, maxLocalProjDBSize)
+  }
+
+  private[fpm] def genFreqPatterns(
+                                    data: RDD[Array[Int]],
+                                    minCount: Long,
+                                    maxPatternLength: Int,
+                                    minPatternLength: Int,
+                                    maxLocalProjDBSize: Long): RDD[(Array[Int], Long)] = {
+
+    genFreqPatterns(data, Array(), minCount, maxPatternLength, minPatternLength,
+      0, 0, maxLocalProjDBSize)
+  }
+
+  private[fpm] def genFreqPatterns(
+                                    data: RDD[Array[Int]],
+                                    freqItems: Array[(Int, Long)],
+                                    minCount: Long,
+                                    maxPatternLength: Int,
+                                    minPatternLength: Int,
+                                    maxItemPerItemSet: Int,
+                                    subProblemLimit: Long,
+                                    maxLocalProjDBSize: Long): RDD[(Array[Int], Long)] = {
+
     val sc = data.sparkContext
 
     if (data.getStorageLevel == StorageLevel.NONE) {
@@ -283,49 +372,100 @@ object PrefixSpan extends Logging {
     val localFreqPatterns = mutable.ArrayBuffer.empty[(Array[Int], Long)]
     // Prefixes whose projected databases are small.
     val smallPrefixes = mutable.Map.empty[Int, Prefix]
-    val emptyPrefix = Prefix.empty
     // Prefixes whose projected databases are large.
-    var largePrefixes = mutable.Map(emptyPrefix.id -> emptyPrefix)
+    var largePrefixes = mutable.Map.empty[Int, Prefix]// (emptyPrefix.id -> emptyPrefix)
+
+    // If no known prefixes or immediate local exec required.
+    if (freqItems.isEmpty || subProblemLimit == 1) {
+      val emptyPrefix = Prefix.empty
+      largePrefixes += emptyPrefix.id -> emptyPrefix
+    }
+    else {
+      // Use known start prefixes if available
+      for ((item, count) <- freqItems) {
+        // Create prefix from item
+        val prefix = Prefix.create(item)
+        // Add to prefix to process
+        largePrefixes += prefix.id -> prefix
+        // If respect condition, add to solutions
+        if (prefix.length >= minPatternLength) {
+          // If pattern longer than minPatternLength, add it to sol list
+          localFreqPatterns += ((prefix.items :+ 0, count))
+        }
+        // TODO : Find a way to calculate their projected database un-expensively, if possible
+        // TODO : IF already small enough, put them in small prefixes instead
+      }
+    }
+
+    // Solve in cloud
     while (largePrefixes.nonEmpty) {
+      // Warning for too many subProblems created
       val numLocalFreqPatterns = localFreqPatterns.length
       logInfo(s"number of local frequent patterns: $numLocalFreqPatterns")
       if (numLocalFreqPatterns > 1000000) {
         logWarning(
           s"""
              | Collected $numLocalFreqPatterns local frequent patterns. You may want to consider:
-             |   1. increase minSupport,
-             |   2. decrease maxPatternLength,
-             |   3. increase maxLocalProjDBSize.
+             |   1. increasing minSupport,
+             |   2. decreasing maxPatternLength,
+             |   3. increasing maxLocalProjDBSize.
+             |   4. setting a smaller subProblemLimit
            """.stripMargin)
       }
       logInfo(s"number of small prefixes: ${smallPrefixes.size}")
       logInfo(s"number of large prefixes: ${largePrefixes.size}")
-      val largePrefixArray = largePrefixes.values.toArray
-      val freqPrefixes = postfixes.flatMap { postfix =>
+      // Check subProblemLimit
+      if (subProblemLimit > 0 && smallPrefixes.size + largePrefixes.size >= subProblemLimit) {
+        // Enforce limit by transfering all large prefixes to the small prefix array
+        largePrefixes.values.foreach(prefix => smallPrefixes += prefix.id -> prefix)
+        largePrefixes.clear()
+      }
+      else {
+        // Limit hasn't been reached, divide in further subProblems
+        val largePrefixArray = largePrefixes.values.toArray
+        val freqPrefixes = postfixes.flatMap { postfix =>
           largePrefixArray.flatMap { prefix =>
-            postfix.project(prefix).genPrefixItems.map { case (item, postfixSize) =>
+            // Determine whether to search in current item
+            // This is determined through maxItemPerItemSet
+            val shouldSearchInCurItem =
+              if (maxItemPerItemSet > 0 &&
+                prefix.items.length - prefix.items.lastIndexOf(0) - 1 >= maxItemPerItemSet) {
+                false
+              }
+              else true
+            // Enforce maxItemPerItemSet through search
+            postfix.project(prefix)
+              .genPrefixItems(shouldSearchInCurItem).map { case (item, postfixSize) =>
+
               ((prefix.id, item), (1L, postfixSize))
             }
           }
         }.reduceByKey { case ((c0, s0), (c1, s1)) =>
           (c0 + c1, s0 + s1)
         }.filter { case (_, (c, _)) => c >= minCount }
-        .collect()
-      val newLargePrefixes = mutable.Map.empty[Int, Prefix]
-      freqPrefixes.foreach { case ((id, item), (count, projDBSize)) =>
-        val newPrefix = largePrefixes(id) :+ item
-        localFreqPatterns += ((newPrefix.items :+ 0, count))
-        if (newPrefix.length < maxPatternLength) {
-          if (projDBSize > maxLocalProjDBSize) {
-            newLargePrefixes += newPrefix.id -> newPrefix
-          } else {
-            smallPrefixes += newPrefix.id -> newPrefix
+          .collect()
+        val newLargePrefixes = mutable.Map.empty[Int, Prefix]
+        freqPrefixes.foreach { case ((id, item), (count, projDBSize)) =>
+          val newPrefix = largePrefixes(id) :+ item
+          // If pattern longer than minPatternLength, add it to sol list
+          if (newPrefix.length >= minPatternLength) {
+            localFreqPatterns += ((newPrefix.items :+ 0, count))
+          }
+          // Consider pattern only if valid
+          if (maxPatternLength == 0 || newPrefix.length < maxPatternLength) {
+            // Add new prefix to prefixes to explore
+            if (projDBSize > maxLocalProjDBSize) {
+              newLargePrefixes += newPrefix.id -> newPrefix
+            } else {
+              smallPrefixes += newPrefix.id -> newPrefix
+            }
           }
         }
+        largePrefixes = newLargePrefixes
       }
-      largePrefixes = newLargePrefixes
     }
 
+    // Solve using local exec
     var freqPatterns = sc.parallelize(localFreqPatterns, 1)
 
     val numSmallPrefixes = smallPrefixes.size
@@ -338,23 +478,36 @@ object PrefixSpan extends Logging {
           (prefix.id, postfix.project(prefix).compressed)
         }.filter(_._2.nonEmpty)
       }.groupByKey().flatMap { case (id, projPostfixes) =>
+        // Init variables
         val prefix = bcSmallPrefixes.value(id)
-        if (canUsePPIC) {
+        val newMaxPatternLength =
+          if (maxPatternLength == 0) 0
+          else maxPatternLength - prefix.length
+        val newMinPatternLength = minPatternLength - prefix.length
+        // Clean sequences
+        val cleaningResult = cleanSequences(projPostfixes, prefix, minCount)
+
+        // Search
+        if (cleaningResult._2) {
           // PPIC
-          val localPrefixSpan = new PPICRunner(minCount, 0,
-            maxPatternLength - prefix.length)
-          // TODO: We collect projected postfixes into memory. We should also compare the performance
-          // TODO: of keeping them on shuffle files.
-          localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
+          val localPrefixSpan = new PPICRunner(minCount, newMinPatternLength, newMaxPatternLength)
+
+          // TODO: We collect projected postfixes into memory. We should also compare the
+          // TODO: performance of keeping them on shuffle files.
+          localPrefixSpan.run(cleaningResult._1).map { case (pattern, count) =>
             (prefix.items ++ pattern, count)
           }
         }
         else {
           // Spark
-          val localPrefixSpan = new LocalPrefixSpan(minCount, maxPatternLength - prefix.length)
-          // TODO: We collect projected postfixes into memory. We should also compare the performance
-          // TODO: of keeping them on shuffle files.
-          localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
+          val spaceRemainingInCurrentItem = maxItemPerItemSet -
+            (prefix.items.length - prefix.items.lastIndexOf(0) - 1)
+          val localPrefixSpan = new LocalPrefixSpan(minCount, newMinPatternLength,
+            newMaxPatternLength, maxItemPerItemSet, spaceRemainingInCurrentItem)
+
+          // TODO: We collect projected postfixes into memory. We should also compare the
+          // TODO: performance of keeping them on shuffle files.
+          localPrefixSpan.run(cleaningResult._1).map { case (pattern, count) =>
             (prefix.items ++ pattern, count)
           }
         }
@@ -364,6 +517,88 @@ object PrefixSpan extends Logging {
     }
 
     freqPatterns
+  }
+
+  private[fpm] def cleanSequences(postfixes: Iterable[Postfix],
+                                  prefix: Prefix,
+                                  minSupport: Long): (Array[Postfix], Boolean) = {
+
+    // Init
+    // Map to collect item frequency
+    val frequentItems = collection.mutable.Map[Int, Long]()
+    // Map to collect item frequency in a sequence
+    val itemSupportedByThisSequence = collection.mutable.Map[Int, Boolean]()
+    // Variable to hold whether we can use PPIC
+    var canUsePPIC = true
+
+    // Find frequent itemss.isEmpty) 0
+    for (postfix <- postfixes) {
+      // Find items in current sequence
+      for (i <- Range(1, postfix.items.length)) {
+        val x = postfix.items(i)
+        if (x != 0) {
+          if (!itemSupportedByThisSequence.contains(x)) {
+            itemSupportedByThisSequence.put(x, true)
+          }
+        }
+      }
+      // Store them for the next sequence
+      itemSupportedByThisSequence.keys.foreach(x =>
+        frequentItems.update(x, frequentItems.getOrElse(x, 0L) + 1)
+      )
+      // Clean for next iter
+      itemSupportedByThisSequence.clear()
+    }
+
+    // Item in current prefix are supported by default !
+    for (item <- prefix.items) {
+      frequentItems.update(item, minSupport + 1)
+    }
+
+    // Clean sequences
+    val cleanedSequences = mutable.ArrayBuilder.make[Postfix]
+    for (postfix <- postfixes) {
+      // Init
+      var isNotEmpty = false
+      var lastItemAdded = 0
+      val curSeq = mutable.ArrayBuilder.make[Int]
+      val newPartialStarts = mutable.ArrayBuilder.make[Int]
+      var numberOfItemPerItemSetCounter = 0
+      // /!\ for empty prefix only /!\
+      if (prefix.items.isEmpty) curSeq += 0
+      // Change sequence
+      for (i <- postfix.items.indices) {
+        val item = postfix.items(i)
+        // Add cur item if necessary
+        if (item == 0) {
+          if (numberOfItemPerItemSetCounter > 0) {
+            curSeq += item
+            lastItemAdded += 1
+            // Check if we can use PPIC
+            if (numberOfItemPerItemSetCounter > 1) {
+              canUsePPIC = false
+            }
+            numberOfItemPerItemSetCounter = 0
+          }
+        }
+        else if (frequentItems.getOrElse(item, 0L) >= minSupport) {
+          curSeq += item
+          lastItemAdded += 1
+          isNotEmpty = true
+          numberOfItemPerItemSetCounter += 1
+        }
+        // Correct partial start
+        if (postfix.partialStarts.contains(i)) {
+          newPartialStarts += lastItemAdded - 1
+        }
+      }
+      // Add sequence if worthy of being added
+      if (isNotEmpty) {
+        cleanedSequences += new Postfix(curSeq.result(), 0, newPartialStarts.result())
+      }
+    }
+    // Return
+    (cleanedSequences.result(), canUsePPIC)
   }
 
   /**
@@ -394,6 +629,9 @@ object PrefixSpan extends Logging {
     /** Gets the next unique ID. */
     private def nextId: Int = counter.incrementAndGet()
 
+    /** Create a new prefix from received item. */
+    def create(item: Int): Prefix = new Prefix(Array(0, item), 1)
+
     /** An empty [[Prefix]] instance. */
     val empty: Prefix = new Prefix(Array.empty, 0)
   }
@@ -420,9 +658,9 @@ object PrefixSpan extends Logging {
    * @param partialStarts start indices of possible partial projections, strictly increasing
    */
   private[fpm] class Postfix(
-      val items: Array[Int],
-      val start: Int = 0,
-      val partialStarts: Array[Int] = Array.empty) extends Serializable {
+                              val items: Array[Int],
+                              val start: Int = 0,
+                              val partialStarts: Array[Int] = Array.empty) extends Serializable {
 
     require(items.last == 0, s"The last item in a postfix must be zero, but got ${items.last}.")
     if (partialStarts.nonEmpty) {
@@ -447,30 +685,33 @@ object PrefixSpan extends Logging {
      * There are two types of prefix items:
      *   a) The item can be assembled to the last itemset of the prefix. For example,
      *      the postfix of `<(12)(123)>1` w.r.t. `<1>` is `<(_2)(123)1>`. The prefix items of this
-     *      postfix can be assembled to `<1>` is `_2` and `_3`, resulting new prefixes `<(12)>` and
-     *      `<(13)>`. We flip the sign in the output to indicate that this is a partial prefix item.
+     *      postfix can be assembled to `<1>` is `_2` and `_3`, resulting new prefixes `<(12)>`
+     *      and `<(13)>`.
+     *      We flip the sign in the output to indicate that this is a partial prefix item.
      *   b) The item can be appended to the prefix. Taking the same example above, the prefix items
      *      can be appended to `<1>` is `1`, `2`, and `3`, resulting new prefixes `<11>`, `<12>`,
      *      and `<13>`.
-     * @return an iterator of (prefix item, corresponding postfix size). If the item is negative, it
-     *         indicates a partial prefix item, which should be assembled to the last itemset of the
-     *         current prefix. Otherwise, the item should be appended to the current prefix.
+     * @return an iterator of (prefix item, corresponding postfix size). If the item is negative,
+     *         it indicates a partial prefix item, which should be assembled to the last itemset
+     *         of the current prefix. Otherwise, the item should be appended to the current prefix.
      */
-    def genPrefixItems: Iterator[(Int, Long)] = {
+    def genPrefixItems(shouldSearchInCurItem: Boolean): Iterator[(Int, Long)] = {
       val n1 = items.length - 1
-      // For each unique item (subject to sign) in this sequence, we output exact one split.
+      // For each unique item (subject to sign) in this sequence, we output exactly one split.
       // TODO: use PrimitiveKeyOpenHashMap
       val prefixes = mutable.Map.empty[Int, Long]
       // a) items that can be assembled to the last itemset of the prefix
-      partialStarts.foreach { start =>
-        var i = start
-        var x = -items(i)
-        while (x != 0) {
-          if (!prefixes.contains(x)) {
-            prefixes(x) = n1 - i
+      if (shouldSearchInCurItem) {
+        partialStarts.foreach { start =>
+          var i = start
+          var x = -items(i)
+          while (x != 0) {
+            if (!prefixes.contains(x)) {
+              prefixes(x) = n1 - i
+            }
+            i += 1
+            x = -items(i)
           }
-          i += 1
-          x = -items(i)
         }
       }
       // b) items that can be appended to the prefix
@@ -594,8 +835,8 @@ object PrefixSpan extends Logging {
    */
   @Since("1.5.0")
   class FreqSequence[Item] @Since("1.5.0") (
-      @Since("1.5.0") val sequence: Array[Array[Item]],
-      @Since("1.5.0") val freq: Long) extends Serializable {
+                                             @Since("1.5.0") val sequence: Array[Array[Item]],
+                                             @Since("1.5.0") val freq: Long) extends Serializable {
     /**
      * Returns sequence as a Java List of lists for Java users.
      */
@@ -605,13 +846,13 @@ object PrefixSpan extends Logging {
 }
 
 /**
- * Model fitted by [[PrefixSpan]]
+ * Model fitted by [[PrefixSpan]].
  * @param freqSequences frequent sequences
  * @tparam Item item type
  */
 @Since("1.5.0")
 class PrefixSpanModel[Item] @Since("1.5.0") (
-    @Since("1.5.0") val freqSequences: RDD[PrefixSpan.FreqSequence[Item]])
+  @Since("1.5.0") val freqSequences: RDD[PrefixSpan.FreqSequence[Item]])
   extends Saveable with Serializable {
 
   /**
