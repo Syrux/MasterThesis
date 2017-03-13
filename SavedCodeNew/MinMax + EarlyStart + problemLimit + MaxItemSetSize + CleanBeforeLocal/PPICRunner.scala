@@ -18,10 +18,8 @@
 package org.apache.spark.mllib.fpm
 
 import oscar.algo.reversible.ReversibleInt
-
 import oscar.cp._
 import oscar.cp.CPIntVar
-
 import oscar.cp.core._
 import oscar.cp.core.CPOutcome._
 
@@ -29,14 +27,14 @@ import org.apache.spark.internal.Logging
 import org.apache.spark.mllib.fpm.PrefixSpan.Postfix
 
 /**
-  * Calculate all patterns of a projected database in local mode.
-  * PPIC can only be used when each itemSet contains at most one item inside it.
-  * If the conditions are respected, it is generally much faster than the localPrefixSpan algorithm
-  *
-  * @param minSup minimal support for a frequent pattern
-  * @param minPatternLength min pattern length for a frequent pattern
-  * @param maxPatternLength max pattern length for a frequent pattern
-  */
+ * Calculate all patterns of a projected database in local mode.
+ * PPIC can only be used when each itemSet contains at most one item inside it.
+ * If the conditions are respected, it is generally much faster than the localPrefixSpan algorithm
+ *
+ * @param minSup minimal support for a frequent pattern
+ * @param minPatternLength min pattern length for a frequent pattern
+ * @param maxPatternLength max pattern length for a frequent pattern
+ */
 private[fpm] class PPICRunner(val minSup: Long,
                               val minPatternLength: Int,
                               val maxPatternLength: Int)
@@ -58,16 +56,16 @@ private[fpm] class PPICRunner(val minSup: Long,
   var nbSequences = 0
 
   /**
-    * This function find the frequency of each item in the postfixes.
-    * Storing them in the postfixSupport map, so that un-frequent
-    * items can be cleaned later.
-    *
-    * It also check whether the input is valid or not,
-    * throwing an IllegalArgumentException if it isn't
-    *
-    * @param postfixes
-    * @return The inputed postfixes
-    */
+   * This function find the frequency of each item in the postfixes.
+   * Storing them in the postfixSupport map, so that un-frequent
+   * items can be cleaned later.
+   *
+   * It also check whether the input is valid or not,
+   * throwing an IllegalArgumentException if it isn't
+   *
+   * @param postfixes
+   * @return The inputed postfixes
+   */
   def findFrequentItems(postfixes: Array[Postfix]): Unit = {
 
     supportedOriginalItem = collection.mutable.Map[Int, Int]()
@@ -108,14 +106,14 @@ private[fpm] class PPICRunner(val minSup: Long,
   }
 
   /**
-    * Adds an entry to the translation map.
-    *
-    * @param value : An item supported by the sequences
-    * @return the new representation of the old value, which
-    *         will be used as a substitute for the actual
-    *         value in the algorithm.
-    *         (The new reprensentation is an Int > 0)
-    */
+   * Adds an entry to the translation map.
+   *
+   * @param value : An item supported by the sequences
+   * @return the new representation of the old value, which
+   *         will be used as a substitute for the actual
+   *         value in the algorithm.
+   *         (The new reprensentation is an Int > 0)
+   */
   def updateTranslationMap(value: Int): Int = {
 
     // Add new value in reverse map
@@ -128,21 +126,21 @@ private[fpm] class PPICRunner(val minSup: Long,
   }
 
   /**
-    * Clean a sequence to remove un-frequent item
-    * (0 being un-frequent by default). Items are
-    * also renamed to be conveniently used with arrays
-    *
-    * Example :
-    * 0 89 0 104 0 104 0 72
-    * 0 89 0 104
-    *
-    * Becomes :
-    * 1 2 2
-    * 1 2
-    *
-    * @param postfix : A sequence
-    * @return The sequence cleaned from un-frequent items
-    */
+   * Clean a sequence to remove un-frequent item
+   * (0 being un-frequent by default). Items are
+   * also renamed to be conveniently used with arrays
+   *
+   * Example :
+   * 0 89 0 104 0 104 0 72
+   * 0 89 0 104
+   *
+   * Becomes :
+   * 1 2 2
+   * 1 2
+   *
+   * @param postfix : A sequence
+   * @return The sequence cleaned from un-frequent items
+   */
   def preProcessArrayToSDB(postfix: Postfix): Option[Array[Int]] = {
 
     // Init
@@ -187,31 +185,31 @@ private[fpm] class PPICRunner(val minSup: Long,
   }
 
   /**
-    * Build a matrix whose cell contain the next last position of an item,
-    * Allowing O(1) jump to the next interesting position and producing
-    * an important speed-up !
-    *
-    * @param lastPosOfItem
-    *
-    * LAST POS SID
-    * 0 3 7 5 6
-    * 0 2 0 3 4
-    *
-    * @return
-    *
-    * LAST POS DB
-    * 3 3 5 5 6 7 0
-    * 2 3 4 0
-    *
-    * /!\ 0 only to indicate ends of seq /!\
-    *
-    */
+   * Build a matrix whose cell contain the next last position of an item,
+   * Allowing O(1) jump to the next interesting position and producing
+   * an important speed-up !
+   *
+   * @param lastPosOfItem
+   *
+   * LAST POS SID
+   * 0 3 7 5 6
+   * 0 2 0 3 4
+   *
+   * @return
+   *
+   * LAST POS DB
+   * 3 3 5 5 6 7 0
+   * 2 3 4 0
+   *
+   * /!\ 0 only to indicate ends of seq /!\
+   *
+   */
   def createSdbPosList(lastPosOfItem : Array[Array[Int]]): Array[Array[Int]] = {
 
     // Build last pos matrix
     val result = scala.collection.mutable.ArrayBuilder.make[Array[Int]]
     for(posList <- lastPosOfItem) {
-      //Init
+      // Init
       // Filter out one and zero from sequence, then sort result
       val sortedPosList = posList.filter(_ > 1).sorted
       var i = 0 // Indice for next last pos to add
@@ -239,9 +237,9 @@ private[fpm] class PPICRunner(val minSup: Long,
   }
 
   /**
-    * @param supportedItemCounter
-    * @return A Array of constraints
-    */
+   * @param supportedItemCounter
+   * @return A Array of constraints
+   */
   def initCPVariables(supportedItemCounter: Array[Int]): Array[CPIntVar] = {
 
     // Create item List
@@ -258,12 +256,12 @@ private[fpm] class PPICRunner(val minSup: Long,
 
     // Create list of CPIntVar
     val CPVariables = new Array[CPIntVar](recalculatedMaxPatternLength)
-    for (i <- Range(0, minPatternLength)){
-      CPVariables(i) = CPIntVar.sparse(listOfitem) //Item that cannot be epsilon (0)
+    for (i <- Range(0, minPatternLength)) {
+      CPVariables(i) = CPIntVar.sparse(listOfitem) // Item that cannot be epsilon (0)
     }
     listOfitem.push(0) // Add epsilon as a possibility
-    for (i <- Range(math.max(0, minPatternLength), recalculatedMaxPatternLength)){
-      CPVariables(i) = CPIntVar.sparse(listOfitem) //Item that can be epsilon
+    for (i <- Range(math.max(0, minPatternLength), recalculatedMaxPatternLength)) {
+      CPVariables(i) = CPIntVar.sparse(listOfitem) // Item that can be epsilon
     }
 
     // Return
@@ -271,13 +269,13 @@ private[fpm] class PPICRunner(val minSup: Long,
   }
 
   /**
-    * Find the complete set of frequent sequential patterns in the input sequences.
-    *
-    * @param postfixes: An array of postfixes such that each ItemSet contains at most one item.
-    *                 If this condition is not respected, an exception will be thrown.
-    *
-    * @return frequent patterns
-    */
+   * Find the complete set of frequent sequential patterns in the input sequences.
+   *
+   * @param postfixes: An array of postfixes such that each ItemSet contains at most one item.
+   *                 If this condition is not respected, an exception will be thrown.
+   *
+   * @return frequent patterns
+   */
   def run(postfixes: Array[Postfix]): Iterator[(Array[Int], Long)] = {
 
     // Various init done to avoid null reference)
@@ -370,7 +368,7 @@ private[fpm] class PPICRunner(val minSup: Long,
 
     // Search strategy
     this.solver.search(binaryStatic(CPVariables))
-    //Start solver
+    // Start solver
     this.solver.start()
 
     solutions.toIterator
@@ -378,41 +376,41 @@ private[fpm] class PPICRunner(val minSup: Long,
 }
 
 /**
-  * PPIC [Constraint Programming & Sequential Pattern Mining with Prefix projection method]
-  * is the CP version of Prefix projection method of Sequential Pattern Mining
-  * (with several improvements) which is based on projected database
-  * (We use here pseudo-projected-database \{(sid, pos) \}).
-  *
-  * This constraint generate all available solution given such parameters
-  *
-  * @param P, is pattern where $P_i$ is the item in position $i$ in $P$
-  * @param SDB, [sequence database] it is a set of sequences.
-  *           Each line $SDB_i$ or $t_i$ represent a sequence
-  *           s1 abcbc
-  *           s2 babc
-  *           s3 ab
-  *           s4 bcd
-  *
-  * @param firstPosOfItem is the first real position of an item (a) in a sequence (s1),
-  *                      if 0 it is not present
-  *
-  * @param lastPosOfItem is the last real position of an item (a) in a sequence (s1),
-  *                      if 0 it is not present
-  *
-  *                           a   b   c   d
-  *                       s1  1   4   5   0
-  *                       s1  2   3   4   0
-  *                       s1  1   2   0   0
-  *                       s1  0   1   2   3
-  *
-  * @param itemsSupport is the initial support (number of sequences where an
-  *                     item appeared) of all items a : 3, b : 4, c : 3, d : 1
-  * @param minsup is a threshold support, item must appear
-  *               in at least minsup sequences $support(item)>=minsup$
-  * @param nItems is the number of items in SDB
-  *
-  * @author John Aoga (johnaoga@gmail.com) and Pierre Schaus (pschaus@gmail.com)
-  */
+ * PPIC [Constraint Programming & Sequential Pattern Mining with Prefix projection method]
+ * is the CP version of Prefix projection method of Sequential Pattern Mining
+ * (with several improvements) which is based on projected database
+ * (We use here pseudo-projected-database \{(sid, pos) \}).
+ *
+ * This constraint generate all available solution given such parameters
+ *
+ * @param P, is pattern where $P_i$ is the item in position $i$ in $P$
+ * @param SDB, [sequence database] it is a set of sequences.
+ *           Each line $SDB_i$ or $t_i$ represent a sequence
+ *           s1 abcbc
+ *           s2 babc
+ *           s3 ab
+ *           s4 bcd
+ *
+ * @param firstPosOfItem is the first real position of an item (a) in a sequence (s1),
+ *                      if 0 it is not present
+ *
+ * @param lastPosOfItem is the last real position of an item (a) in a sequence (s1),
+ *                      if 0 it is not present
+ *
+ *                           a   b   c   d
+ *                       s1  1   4   5   0
+ *                       s1  2   3   4   0
+ *                       s1  1   2   0   0
+ *                       s1  0   1   2   3
+ *
+ * @param itemsSupport is the initial support (number of sequences where an
+ *                     item appeared) of all items a : 3, b : 4, c : 3, d : 1
+ * @param minsup is a threshold support, item must appear
+ *               in at least minsup sequences $support(item)>=minsup$
+ * @param nItems is the number of items in SDB
+ *
+ * @author John Aoga (johnaoga@gmail.com) and Pierre Schaus (pschaus@gmail.com)
+ */
 class PPIC(val P: Array[CPIntVar],
            val SDB: Array[Array[Int]],
            val SDBlastPos: Array[Array[Int]],
@@ -463,11 +461,11 @@ class PPIC(val P: Array[CPIntVar],
   private[this] var pruneSuccess = true
 
   /**
-    * Entry in constraint, function for all init
-    *
-    * @param l
-    * @return The outcome of the first propagation and consistency check
-    */
+   * Entry in constraint, function for all init
+   *
+   * @param l
+   * @return The outcome of the first propagation and consistency check
+   */
   final override def setup(l: CPPropagStrength): CPOutcome = {
     if (propagate() == Failure) Failure
     else {
@@ -481,10 +479,10 @@ class PPIC(val P: Array[CPIntVar],
   }
 
   /**
-    * propagate
-    *
-    * @return the outcome i.e. Failure, Success or Suspend
-    */
+   * propagate
+   *
+   * @return the outcome i.e. Failure, Success or Suspend
+   */
   final override def propagate(): CPOutcome = {
     var v = curPosInP.value
 
@@ -511,10 +509,10 @@ class PPIC(val P: Array[CPIntVar],
 
 
   /**
-    * when $P_i = epsilon$, then $P_i+1 = epsilon$
-    *
-    * @param i current position in P
-    */
+   * when $P_i = epsilon$, then $P_i+1 = epsilon$
+   *
+   * @param i current position in P
+   */
   def enforceEpsilonFrom(i: Int): Unit = {
     var j = i
     while (j < lenPatternSeq) {
@@ -524,15 +522,15 @@ class PPIC(val P: Array[CPIntVar],
   }
 
   /**
-    * P[curPosInP.value] has just been bound to "prefix"
-    * all the indices before (< currPosInP) are already bound
-    *
-    * if prefix is not epsilon we can compute next pseudo-projected-database
-    * with projectSDB function
-    *
-    * @param prefix
-    * @return the Boolean is to say if current prefix is a solution or not
-    */
+   * P[curPosInP.value] has just been bound to "prefix"
+   * all the indices before (< currPosInP) are already bound
+   *
+   * if prefix is not epsilon we can compute next pseudo-projected-database
+   * with projectSDB function
+   *
+   * @param prefix
+   * @return the Boolean is to say if current prefix is a solution or not
+   */
   private def filterPrefixProjection(prefix: Int): Boolean = {
     val i = curPosInP.value + 1
     // println("filter prefix "+prefix+" at position "+i)
@@ -563,10 +561,10 @@ class PPIC(val P: Array[CPIntVar],
   val dom = Array.ofDim[Int](nItems)
 
   /**
-    * pruning strategy
-    *
-    * @param i current position in P
-    */
+   * pruning strategy
+   *
+   * @param i current position in P
+   */
   private def prune(i: Int): Unit = {
     val j = i
 
@@ -595,11 +593,11 @@ class PPIC(val P: Array[CPIntVar],
 
 
   /**
-    * Computing of next pseudo projected database
-    *
-    * @param prefix
-    * @return
-    */
+   * Computing of next pseudo projected database
+   *
+   * @param prefix
+   * @return
+   */
   private def projectSDB(prefix: Int): Int = {
     val startInit = psdbStart.value
     val sizeInit = psdbSize.value

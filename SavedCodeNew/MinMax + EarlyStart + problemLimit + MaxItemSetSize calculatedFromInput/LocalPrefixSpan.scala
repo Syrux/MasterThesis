@@ -58,7 +58,8 @@ private[fpm] class LocalPrefixSpan(
       prefix: ReversedPrefix,
       postfixes: Array[Postfix]): Iterator[(ReversedPrefix, Long)] = {
 
-    if ((maxPatternLength > 0 && maxPatternLength == prefix.length) || postfixes.length < minCount) {
+    if ((maxPatternLength > 0 && maxPatternLength == prefix.length)
+      || postfixes.length < minCount) {
       return Iterator.empty
     }
     // Determine whether to search in current item

@@ -22,26 +22,27 @@ import scala.collection.mutable
 import org.apache.spark.internal.Logging
 
 /**
-  * Calculate all patterns of a projected database in local mode.
-  *
-  * @param minCount minimal count for a frequent pattern
-  * @param maxPatternLength max pattern length for a frequent pattern
-  */
+ * Calculate all patterns of a projected database in local mode.
+ *
+ * @param minCount minimal count for a frequent pattern
+ * @param maxPatternLength max pattern length for a frequent pattern
+ */
 private[fpm] class LocalPrefixSpan(
                                     val minCount: Long,
                                     val minPatternLength: Int,
                                     val maxPatternLength: Int,
                                     val maxItemPerItemSet: Int,
-                                    val spaceRemainingInCurrentItem: Int) extends Logging with Serializable {
+                                    val spaceRemainingInCurrentItem: Int)
+  extends Logging with Serializable {
 
   import PrefixSpan.Postfix
   import LocalPrefixSpan.ReversedPrefix
 
   /**
-    * Generates frequent patterns on the input array of postfixes.
-    * @param postfixes an array of postfixes
-    * @return an iterator of (frequent pattern, count)
-    */
+   * Generates frequent patterns on the input array of postfixes.
+   * @param postfixes an array of postfixes
+   * @return an iterator of (frequent pattern, count)
+   */
   def run(postfixes: Array[Postfix]): Iterator[(Array[Int], Long)] = {
     genFreqPatterns(ReversedPrefix.empty, postfixes).map { case (prefix, count) =>
       (prefix.toSequence, count)
@@ -49,16 +50,17 @@ private[fpm] class LocalPrefixSpan(
   }
 
   /**
-    * Recursively generates frequent patterns.
-    * @param prefix current prefix
-    * @param postfixes projected postfixes w.r.t. the prefix
-    * @return an iterator of (prefix, count)
-    */
+   * Recursively generates frequent patterns.
+   * @param prefix current prefix
+   * @param postfixes projected postfixes w.r.t. the prefix
+   * @return an iterator of (prefix, count)
+   */
   private def genFreqPatterns(
                                prefix: ReversedPrefix,
                                postfixes: Array[Postfix]): Iterator[(ReversedPrefix, Long)] = {
 
-    if ((maxPatternLength > 0 && maxPatternLength == prefix.length) || postfixes.length < minCount) {
+    if ((maxPatternLength > 0 && maxPatternLength == prefix.length)
+      || postfixes.length < minCount) {
       return Iterator.empty
     }
     // Determine whether to search in current item
@@ -105,14 +107,14 @@ private[fpm] class LocalPrefixSpan(
 private object LocalPrefixSpan {
 
   /**
-    * Represents a prefix stored as a list in reversed order.
-    * @param items items in the prefix in reversed order
-    * @param length length of the prefix, not counting delimiters
-    */
+   * Represents a prefix stored as a list in reversed order.
+   * @param items items in the prefix in reversed order
+   * @param length length of the prefix, not counting delimiters
+   */
   class ReversedPrefix private (val items: List[Int], val length: Int) extends Serializable {
     /**
-      * Expands the prefix by one item.
-      */
+     * Expands the prefix by one item.
+     */
     def :+(item: Int): ReversedPrefix = {
       require(item != 0)
       if (item < 0) {
@@ -123,8 +125,8 @@ private object LocalPrefixSpan {
     }
 
     /**
-      * Converts this prefix to a sequence.
-      */
+     * Converts this prefix to a sequence.
+     */
     def toSequence: Array[Int] = (0 :: items).toArray.reverse
   }
 
