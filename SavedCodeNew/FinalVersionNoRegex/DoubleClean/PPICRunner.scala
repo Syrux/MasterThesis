@@ -292,38 +292,49 @@ private[fpm] class PPICRunner(val minSup: Long,
     for ((itemName: Int, operator: String, count: Int) <- itemConstraints) {
 
       if (! translationMap.contains(itemName)) {
-        return Failure
+        if (count > 0 && operator.matches("^(>=|==|>|=)$")) {
+          return Failure // Impossible to satisfy, since item missing
+        }
+        else if (count == 0 && operator.matches("^(!=|>|<)$")) {
+          return Failure // Impossible to satisfy, item missing + nonsense (< 0 item)
+        }
+        else if (count < 0 && operator.matches("^(<=|==|<|=)$")) {
+          return Failure // Impossible to satisfy, received nonsense
+        }
+        // Else continue iter : Constraint is already enforced
       }
-      val translatedName = translationMap.get(itemName).get
+      else {
+        val translatedName = translationMap.get(itemName).get
 
-      operator match {
-        case "==" | "=" =>
-          valueOccurence += ((translatedName, CPIntVar(count)))
-        case "<=" =>
-          valueOccurence += ((translatedName, CPIntVar(0 to count)))
-        case ">=" =>
-          if (count > recalculatedMPL) return Failure
-          valueOccurence += ((translatedName, CPIntVar(count to recalculatedMPL)))
-        case "<" =>
-          valueOccurence += ((translatedName, CPIntVar(0  to (count - 1))))
-        case ">" =>
-          if (count + 1 > recalculatedMPL) return Failure
-          valueOccurence += ((translatedName, CPIntVar((count + 1) to recalculatedMPL)))
-        case "!=" =>
-          if (0 > count && count < recalculatedMPL) {
-            valueOccurence += ((translatedName, CPIntVar((0 to (count - 1)) ++
-              ((count + 1) to recalculatedMPL))))
-          }
-          else if (count == 0) {
+        operator match {
+          case "==" | "=" =>
+            valueOccurence += ((translatedName, CPIntVar(count)))
+          case "<=" =>
+            valueOccurence += ((translatedName, CPIntVar(0 to count)))
+          case ">=" =>
+            if (count > recalculatedMPL) return Failure
+            valueOccurence += ((translatedName, CPIntVar(count to recalculatedMPL)))
+          case "<" =>
+            valueOccurence += ((translatedName, CPIntVar(0  to (count - 1))))
+          case ">" =>
             if (count + 1 > recalculatedMPL) return Failure
             valueOccurence += ((translatedName, CPIntVar((count + 1) to recalculatedMPL)))
-          }
-          else if (count == recalculatedMPL) {
-            if (recalculatedMPL - 1 < 0) return Failure
-            valueOccurence += ((translatedName, CPIntVar(0 to (recalculatedMPL -1))))
-          }
-        case _ =>
-          require(false, s"Illegal operator in itemConstraints. Received $operator.")
+          case "!=" =>
+            if (count > 0 && count < recalculatedMPL) {
+              valueOccurence += ((translatedName, CPIntVar((0 to (count - 1)) ++
+                ((count + 1) to recalculatedMPL))))
+            }
+            else if (count == 0) {
+              if (recalculatedMPL == 0) return Failure
+              valueOccurence += ((translatedName, CPIntVar((count + 1) to recalculatedMPL)))
+            }
+            else if (count == recalculatedMPL) {
+              if (recalculatedMPL - 1 < 0) return Failure
+              valueOccurence += ((translatedName, CPIntVar(0 to (recalculatedMPL -1))))
+            }
+          case _ =>
+            require(false, s"Illegal operator in itemConstraints. Received $operator.")
+        }
       }
     }
     // Get resulting array
