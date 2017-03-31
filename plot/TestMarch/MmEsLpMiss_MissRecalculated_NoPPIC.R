@@ -23,13 +23,13 @@ legend("bottomright", legend=c("BaseSpark", "MaxItemRecalculated_0_Spark", "MaxI
 #DATA
 x <- c(0.9999, 0.99988, 0.99987, 0.99986)*100
 
-zero <- c(275420, 339255, 446968, 536502)/1000
-one <- c(238087, 303443, 400054, 502641)/1000
-two <- c(246642, 325997, 412565, 521219)/1000
-three <- c(236651, 301788, 407506, 513278)/1000
+zero <- c(343017, 473810, 596472, 697465)/1000
+one <- c(308961, 439082, 540702, 669324)/1000
+two <- c(308885, 434039, 541505, 675497)/1000
+three <- c(307861, 437715, 544172, 684101)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(236, 536))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(307, 697))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -41,13 +41,13 @@ legend("bottomright", legend=c("BaseSpark", "MaxItemRecalculated_0_Spark", "MaxI
 #DATA
 x <- c(0.003, 0.0028, 0.0026, 0.0024, 0.0022, 0.002)*100
 
-zero <- c(14897, 16315, 17535, 20827, 22818, 25235)/1000
-one <- c(20236, 22150, 23631, 27191, 29648, 34172)/1000
-two <- c(21229, 23290, 24595, 27718, 30258, 33798)/1000
-three <- c(21401, 22983, 25073, 28179, 30700, 34493)/1000
+zero <- c(15474, 14856, 17149, 18875, 21231, 24935)/1000
+one <- c(19793, 21194, 23145, 24331, 27508, 32018)/1000
+two <- c(19734, 21323, 23261, 24561, 27626, 31468)/1000
+three <- c(20269, 21718, 23429, 24793, 27910, 31845)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(14, 34))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(14, 32))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)

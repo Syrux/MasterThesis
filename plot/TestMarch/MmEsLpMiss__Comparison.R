@@ -19,11 +19,11 @@ legend("bottomright", legend=c("MmEsLpMiss_NoPPIC", "MmEsLpMiss_PPIC"), lty=c(1,
 #DATA
 x <- c(0.9999, 0.99988, 0.99987, 0.99986)*100
 
-zero <- c(237057, 312765, 396253, 496434)/1000
-one <- c(246882, 312195, 434838, 520212)/1000
+zero <- c(301100, 429886, 536385, 666723)/1000
+one <- c(316549, 446706, 554299, 686114)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(237, 520))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(301, 686))
 lines(x, one, col="red", type="o", pch=1)
 title(main="protein", cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
 grid()
@@ -33,11 +33,11 @@ legend("bottomright", legend=c("MmEsLpMiss_NoPPIC", "MmEsLpMiss_PPIC"), lty=c(1,
 #DATA
 x <- c(0.003, 0.0028, 0.0026, 0.0024, 0.0022, 0.002)*100
 
-zero <- c(19298, 20000, 21258, 23093, 25354, 30151)/1000
-one <- c(18246, 18937, 20654, 21961, 24087, 29184)/1000
+zero <- c(16291, 17919, 18273, 20873, 22570, 24924)/1000
+one <- c(15922, 16873, 18065, 19459, 21731, 24384)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(18, 30))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(15, 24))
 lines(x, one, col="red", type="o", pch=1)
 title(main="Kosarak-70", cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
 grid()

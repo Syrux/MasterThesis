@@ -23,13 +23,13 @@ legend("bottomright", legend=c("BasePPIC", "MaxItemRecalculated_0_PPIC", "MaxIte
 #DATA
 x <- c(0.9999, 0.99988, 0.99987, 0.99986)*100
 
-zero <- c(273254, 352139, 433728, 530863)/1000
-one <- c(243626, 307116, 413307, 495401)/1000
-two <- c(235277, 295048, 413916, 504205)/1000
-three <- c(237642, 303690, 421487, 504810)/1000
+zero <- c(359711, 490719, 613541, 726131)/1000
+one <- c(307612, 464197, 576235, 696708)/1000
+two <- c(308457, 444165, 545535, 688441)/1000
+three <- c(312132, 441823, 545013, 677614)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(235, 530))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(307, 726))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -41,13 +41,13 @@ legend("bottomright", legend=c("BasePPIC", "MaxItemRecalculated_0_PPIC", "MaxIte
 #DATA
 x <- c(0.003, 0.0028, 0.0026, 0.0024, 0.0022, 0.002)*100
 
-zero <- c(10677, 11312, 11903, 13425, 14473, 15247)/1000
-one <- c(19441, 20622, 22333, 24252, 25868, 29437)/1000
-two <- c(20644, 22135, 23450, 25863, 27527, 31071)/1000
-three <- c(20016, 21593, 23633, 25231, 27344, 31958)/1000
+zero <- c(10592, 10615, 11709, 12472, 13241, 15153)/1000
+one <- c(18647, 20060, 22353, 22557, 24497, 27268)/1000
+two <- c(18864, 19987, 22158, 23059, 25192, 28220)/1000
+three <- c(18623, 20121, 22541, 23080, 26632, 28760)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(10, 31))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(10, 28))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)

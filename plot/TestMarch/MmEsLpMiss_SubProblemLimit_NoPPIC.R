@@ -23,13 +23,13 @@ legend("bottomright", legend=c("NoLimit", "LimitNbExec", "LimitNbExecSquared", "
 #DATA
 x <- c(0.9999, 0.99988, 0.99987, 0.99986)*100
 
-zero <- c(231268, 296554, 388088, 488678)/1000
-one <- c(164307, 213825, 348029, 487128)/1000
-two <- c(178114, 197888, 248414, 293311)/1000
-three <- c(235876, 262651, 351629, 427733)/1000
+zero <- c(313297, 442825, 544055, 681310)/1000
+one <- c(159263, 204338, 242120, 302086)/1000
+two <- c(202401, 210236, 244044, 262536)/1000
+three <- c(310667, 296331, 341564, 377200)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(164, 488))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(159, 681))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -41,13 +41,13 @@ legend("bottomright", legend=c("NoLimit", "LimitNbExec", "LimitNbExecSquared", "
 #DATA
 x <- c(0.003, 0.0028, 0.0026, 0.0024, 0.0022, 0.002)*100
 
-zero <- c(19955, 19965, 20884, 24271, 28317, 32497)/1000
-one <- c(17423, 19339, 23927, 25398, 28748, 33336)/1000
-two <- c(14796, 17521, 19014, 20657, 23632, 27897)/1000
-three <- c(13913, 15525, 17230, 19098, 21885, 24052)/1000
+zero <- c(17428, 19026, 19383, 21996, 22934, 26508)/1000
+one <- c(14327, 13727, 15221, 17748, 20672, 22164)/1000
+two <- c(15565, 17185, 17015, 20066, 22117, 27040)/1000
+three <- c(13980, 14303, 15660, 18296, 19762, 24820)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(13, 33))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(13, 27))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)

@@ -19,11 +19,11 @@ legend("bottomright", legend=c("BaseSpark", "lastPos_NoPPIC"), lty=c(1,1),lwd=c(
 #DATA
 x <- c(0.9999, 0.99988, 0.99987, 0.99986)*100
 
-zero <- c(275420, 339255, 446968, 536502)/1000
-one <- c(237424, 295879, 395786, 520362)/1000
+zero <- c(343017, 473810, 596472, 697465)/1000
+one <- c(315546, 436795, 529721, 679101)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(237, 536))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(315, 697))
 lines(x, one, col="red", type="o", pch=1)
 title(main="protein", cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
 grid()
@@ -33,11 +33,11 @@ legend("bottomright", legend=c("BaseSpark", "lastPos_NoPPIC"), lty=c(1,1),lwd=c(
 #DATA
 x <- c(0.003, 0.0028, 0.0026, 0.0024, 0.0022, 0.002)*100
 
-zero <- c(14897, 16315, 17535, 20827, 22818, 25235)/1000
-one <- c(32420, 32080, 36021, 41805, 44025, 55484)/1000
+zero <- c(15474, 14856, 17149, 18875, 21231, 24935)/1000
+one <- c(24445, 26331, 27988, 31849, 35671, 41785)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(14, 55))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(14, 41))
 lines(x, one, col="red", type="o", pch=1)
 title(main="Kosarak-70", cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
 grid()

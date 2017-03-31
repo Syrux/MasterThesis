@@ -19,11 +19,11 @@ legend("bottomright", legend=c("BasePPIC", "firstPos_PPIC"), lty=c(1,1),lwd=c(2,
 #DATA
 x <- c(0.9999, 0.99988, 0.99987, 0.99986)*100
 
-zero <- c(273254, 352139, 433728, 530863)/1000
-one <- c(233953, 297675, 391983, 472554)/1000
+zero <- c(359711, 490719, 613541, 726131)/1000
+one <- c(309208, 452549, 559197, 697818)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(233, 530))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(309, 726))
 lines(x, one, col="red", type="o", pch=1)
 title(main="protein", cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
 grid()
@@ -33,11 +33,11 @@ legend("bottomright", legend=c("BasePPIC", "firstPos_PPIC"), lty=c(1,1),lwd=c(2,
 #DATA
 x <- c(0.003, 0.0028, 0.0026, 0.0024, 0.0022, 0.002)*100
 
-zero <- c(10677, 11312, 11903, 13425, 14473, 15247)/1000
-one <- c(19159, 20027, 21617, 23328, 25965, 30033)/1000
+zero <- c(10592, 10615, 11709, 12472, 13241, 15153)/1000
+one <- c(19982, 21280, 22647, 25012, 27708, 31294)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(10, 30))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(10, 31))
 lines(x, one, col="red", type="o", pch=1)
 title(main="Kosarak-70", cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
 grid()

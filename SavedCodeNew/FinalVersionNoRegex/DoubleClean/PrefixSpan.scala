@@ -754,7 +754,7 @@ object PrefixSpan extends Logging {
                                    postfixes: Iterable[Postfix],
                                    prefix: Prefix,
                                    minSupport: Long,
-                                   bannedItems: Array[Int]): (Array[Postfix], Boolean, Boolean) = {
+                                   bannedItems: Array[Int]): (Array[Postfix], Boolean) = {
 
     // Init
     // Map to collect item frequency
@@ -766,17 +766,12 @@ object PrefixSpan extends Logging {
 
     // Find frequent items
     for (postfix <- postfixes) {
-
-      var lastItemWasZero = true
       // Find items in current sequence
       for (i <- Range(0, postfix.items.length)) {
         val x = postfix.items(i)
         if (x != 0) {
-          if (!lastItemWasZero) canUsePPIC = false
-          lastItemWasZero = false
           itemSupportedByThisSequence.put(x, true)
         }
-        else lastItemWasZero = true
       }
       // Store them for the next sequence
       itemSupportedByThisSequence.keys.foreach(x =>
@@ -785,14 +780,6 @@ object PrefixSpan extends Logging {
       // Clean for next iter
       itemSupportedByThisSequence.clear()
     }
-
-    /*
-    // If PPIC can be used, return since it will clean again at the start of PPIC
-    if (canUsePPIC) {
-      (postfixes.toArray, true, false)
-    }
-    */
-    canUsePPIC = true
 
     // Remove banned Items
     for (x <- bannedItems) {
@@ -851,7 +838,7 @@ object PrefixSpan extends Logging {
       }
     }
     // Return
-    (cleanedSequences.result(), canUsePPIC, true)
+    (cleanedSequences.result(), canUsePPIC)
   }
 
   /**

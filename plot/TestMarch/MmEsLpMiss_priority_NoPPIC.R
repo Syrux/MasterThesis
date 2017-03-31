@@ -6,12 +6,12 @@ par(mfrow=c(2,4), cex.lab=1.5, cex.axis=1.5, cex.main=1.5, cex.sub=1.5)
 x <- c(0.01, 0.009, 0.008, 0.007, 0.006, 0.005, 0.004, 0.003, 0.002, 0.001)*100
 
 zero <- c(52796, 54313, 65238, 76671, 96842, 121262, 156699, 234465, 413217, 1092148)/1000
-one <- c(38128, 46788, 48489, 61613, 67884, 79108, 108154, 207608, 261070, 639070)/1000
-two <- c(70355, 80105, 93172, 111521, 137114, 175595, 236760, 348016, 610344, 1614060)/1000
-three <- c(66220, 74141, 86797, 104387, 126594, 161994, 220511, 325093, 575726, 1530155)/1000
+one <- c(35327, 40771, 42341, 52978, 57984, 67874, 90287, 159773, 203204, 490661)/1000
+two <- c(72428, 81467, 93920, 111908, 140241, 181582, 246418, 355963, 625055, 1669685)/1000
+three <- c(75497, 83898, 99486, 118842, 143893, 184353, 248709, 372327, 645193, 1697014)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(38, 1614))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(35, 1697))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -23,13 +23,13 @@ legend("bottomright", legend=c("BaseSpark", "MmEsLpMiss_priority_NoSubLimit_NoPP
 #DATA
 x <- c(0.9999, 0.99988, 0.99987, 0.99986)*100
 
-zero <- c(275420, 339255, 446968, 536502)/1000
-one <- c(223444, 279687, 355598, 441702)/1000
-two <- c(175447, 217250, 363478, 501232)/1000
-three <- c(228867, 222107, 297504, 386401)/1000
+zero <- c(343017, 473810, 596472, 697465)/1000
+one <- c(320794, 441620, 557941, 714822)/1000
+two <- c(174618, 224436, 292674, 384518)/1000
+three <- c(234010, 273482, 320215, 344295)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(175, 536))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(174, 714))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -41,13 +41,13 @@ legend("bottomright", legend=c("BaseSpark", "MmEsLpMiss_priority_NoSubLimit_NoPP
 #DATA
 x <- c(0.003, 0.0028, 0.0026, 0.0024, 0.0022, 0.002)*100
 
-zero <- c(14897, 16315, 17535, 20827, 22818, 25235)/1000
-one <- c(18428, 19989, 21428, 24471, 26377, 29563)/1000
-two <- c(17883, 22338, 22122, 25558, 28943, 32872)/1000
-three <- c(16420, 17952, 20291, 25231, 30171, 31996)/1000
+zero <- c(15474, 14856, 17149, 18875, 21231, 24935)/1000
+one <- c(20573, 22161, 24907, 25763, 30539, 33786)/1000
+two <- c(18018, 23163, 22830, 27463, 28260, 34785)/1000
+three <- c(18701, 19968, 22274, 26020, 32513, 35339)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(14, 32))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(14, 35))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -60,12 +60,12 @@ legend("bottomright", legend=c("BaseSpark", "MmEsLpMiss_priority_NoSubLimit_NoPP
 x <- c(0.1, 0.09, 0.08, 0.07, 0.06, 0.05, 0.04, 0.03, 0.02, 0.01)*100
 
 zero <- c(2295, 2312, 2516, 3105, 3496, 4080, 5163, 7414, 13505, 33000)/1000
-one <- c(3057, 3140, 3755, 4053, 4261, 5021, 6358, 7960, 13482, 28140)/1000
-two <- c(2572, 2934, 2945, 3568, 4354, 5625, 7521, 10401, 18365, 49316)/1000
-three <- c(2463, 2768, 3034, 3455, 4132, 5448, 8323, 9900, 17329, 47465)/1000
+one <- c(3028, 3405, 3331, 3817, 4058, 4656, 5653, 6616, 10822, 25181)/1000
+two <- c(2608, 2963, 2992, 3626, 4433, 6041, 7682, 10801, 18849, 51408)/1000
+three <- c(2710, 4476, 3240, 3598, 4556, 6043, 7968, 11084, 19479, 52663)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(2, 49))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(2, 52))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -78,12 +78,12 @@ legend("bottomright", legend=c("BaseSpark", "MmEsLpMiss_priority_NoSubLimit_NoPP
 x <- c(0.05, 0.04, 0.03, 0.02, 0.01, 0.005)*100
 
 zero <- c(6549, 7547, 9177, 14644, 25945, 60113)/1000
-one <- c(10255, 11734, 12629, 17206, 28700, 60516)/1000
-two <- c(7455, 9057, 12074, 18472, 37575, 109656)/1000
-three <- c(7434, 9679, 12143, 17644, 35362, 104460)/1000
+one <- c(10496, 11560, 12400, 15485, 26753, 46554)/1000
+two <- c(7611, 9265, 12110, 18862, 37882, 114851)/1000
+three <- c(7825, 9413, 12632, 19581, 40233, 115922)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(6, 109))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(6, 115))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -96,12 +96,12 @@ legend("bottomright", legend=c("BaseSpark", "MmEsLpMiss_priority_NoSubLimit_NoPP
 x <- c(0.14, 0.12, 0.1, 0.09, 0.08, 0.07, 0.06, 0.05)*100
 
 zero <- c(34465, 79626, 221550, 449631, 834468, 1476503, 2639619, 5160952)/1000
-one <- c(49889, 76901, 171911, 295509, 578230, 1081152, 1547595, 3591853)/1000
-two <- c(49119, 122774, 356852, 697736, 1303324, 2311685, 4175362, 8310574)/1000
-three <- c(47775, 117683, 345522, 676277, 1251842, 2225407, 4069512, 8077980)/1000
+one <- c(36556, 58911, 151618, 230629, 374071, 766731, 1375863, 2259819)/1000
+two <- c(50880, 123846, 362230, 707257, 1313220, 2329573, 4216235, 8337291)/1000
+three <- c(53769, 133028, 393140, 766600, 1420618, 2558353, 4634818, 9211057)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(34, 8310))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(34, 9211))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -114,12 +114,12 @@ legend("bottomright", legend=c("BaseSpark", "MmEsLpMiss_priority_NoSubLimit_NoPP
 x <- c(0.0017, 0.00165, 0.0016, 0.00155, 0.0015, 0.00145, 0.0014, 0.00135, 0.0013)*100
 
 zero <- c(21433, 30124, 46018, 45696, 45741, 47937, 48250, 48646, 48981)/1000
-one <- c(20961, 33878, 48214, 51686, 53229, 52068, 57365, 68912, 70215)/1000
-two <- c(23126, 41080, 66782, 65529, 66632, 67390, 67689, 69938, 70125)/1000
-three <- c(16117, 38585, 60055, 60771, 61410, 62660, 63270, 64455, 65114)/1000
+one <- c(22905, 30341, 41264, 45446, 44633, 48266, 50873, 59252, 53648)/1000
+two <- c(16338, 40305, 64947, 65720, 65657, 66669, 68444, 68277, 69027)/1000
+three <- c(22625, 41679, 67243, 68088, 68304, 69750, 71259, 71228, 71881)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(16, 70))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(16, 71))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
@@ -132,12 +132,12 @@ legend("bottomright", legend=c("BaseSpark", "MmEsLpMiss_priority_NoSubLimit_NoPP
 x <- c(0.0015, 0.00145, 0.0014, 0.00135, 0.0013, 0.00125, 0.0012, 0.00115, 0.0011)*100
 
 zero <- c(13258, 14335, 14949, 26537, 30083, 28606, 28885, 34413, 32900)/1000
-one <- c(20958, 23792, 26859, 38911, 45616, 45268, 52733, 62457, 71755)/1000
-two <- c(11711, 12493, 13070, 31031, 32040, 32844, 34816, 36979, 38237)/1000
-three <- c(11667, 12688, 12924, 27894, 30123, 30601, 31008, 34777, 35904)/1000
+one <- c(22671, 25567, 29293, 39235, 43190, 45021, 49891, 57757, 66451)/1000
+two <- c(12204, 12371, 13147, 29587, 31667, 32147, 33048, 37173, 37629)/1000
+three <- c(12517, 12972, 13656, 31177, 33593, 33810, 34709, 37757, 38907)/1000
 
 #PLOT
-plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(11, 71))
+plot(x, zero, log = "xy", type="o", pch=0, xlab="Minsup(%)",ylab="Time (s logscale)", col="blue", xlim = rev(range(x)), ylim=c(12, 66))
 lines(x, one, col="red", type="o", pch=1)
 lines(x, two, col="magenta", type="o", pch=4)
 lines(x, three, col="green", type="o", pch=5)
