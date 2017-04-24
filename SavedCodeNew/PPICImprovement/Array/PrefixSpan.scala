@@ -182,7 +182,7 @@ class PrefixSpan private (
         if (result.nonEmpty) {
           containsFreqItems = true
           allItems ++= result.sorted
-		  allItems += 0
+          allItems += 0
         }
       }
       if (containsFreqItems) {
@@ -277,6 +277,7 @@ object PrefixSpan extends Logging {
     val emptyPrefix = Prefix.empty
     // Prefixes whose projected databases are large.
     var largePrefixes = mutable.Map(emptyPrefix.id -> emptyPrefix)
+
     while (largePrefixes.nonEmpty) {
       val numLocalFreqPatterns = localFreqPatterns.length
       logInfo(s"number of local frequent patterns: $numLocalFreqPatterns")
@@ -331,21 +332,10 @@ object PrefixSpan extends Logging {
       }.groupByKey().flatMap { case (id, projPostfixes) =>
         val prefix = bcSmallPrefixes.value(id)
 
-        // TODO: We collect projected postfixes into memory. We should also compare the performance
-        // TODO: of keeping them on shuffle files.
-        if (canUsePPIC) {
-          val localPrefixSpan = new PPICRunner(minCount, 0,
-            maxPatternLength - prefix.length)
-          localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
-            (prefix.items ++ pattern, count)
-          }
-        }
-        else {
-          // Spark
-          val localPrefixSpan = new LocalPrefixSpan(minCount, maxPatternLength - prefix.length)
-          localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
-            (prefix.items ++ pattern, count)
-          }
+        val localPrefixSpan = new PPICSpark(prefix.items, minCount, 0,
+          maxPatternLength - prefix.length, !canUsePPIC)
+        localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
+          (prefix.items ++ pattern, count)
         }
       }
       // Union local frequent patterns and distributed ones.

@@ -102,7 +102,7 @@ private[fpm] class PPICRunner(val minSup: Long,
       numberOfItemPerItemSetCounter = 0
     }
     // Filter item to keep only frequent ones
-    supportedOriginalItem.filter(kv => kv._2 >= minSup)
+    supportedOriginalItem = supportedOriginalItem.filter(kv => kv._2 >= minSup)
   }
 
   /**

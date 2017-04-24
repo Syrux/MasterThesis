@@ -525,16 +525,21 @@ object PrefixSpan extends Logging {
     // Variable to hold whether we can use PPIC
     var canUsePPIC = true
 
-    // Find frequent itemss.isEmpty) 0
+    // Find frequent items
     for (postfix <- postfixes) {
+
+      var lastItemWasZero =
+        if (prefix.items.length >= 2) prefix.items(prefix.items.length - 2) == 0
+        else false
       // Find items in current sequence
-      for (i <- Range(1, postfix.items.length)) {
+      for (i <- Range(0, postfix.items.length)) {
         val x = postfix.items(i)
         if (x != 0) {
-          if (!itemSupportedByThisSequence.contains(x)) {
-            itemSupportedByThisSequence.put(x, true)
-          }
+          if (!lastItemWasZero) canUsePPIC = false
+          lastItemWasZero = false
+          itemSupportedByThisSequence.put(x, true)
         }
+        else lastItemWasZero = true
       }
       // Store them for the next sequence
       itemSupportedByThisSequence.keys.foreach(x =>
@@ -544,54 +549,74 @@ object PrefixSpan extends Logging {
       itemSupportedByThisSequence.clear()
     }
 
-    // Item in current prefix are supported by default !
-    for (item <- prefix.items) {
-      frequentItems.update(item, minSupport + 1)
+    if (canUsePPIC) {
+      return (postfixes.toArray, true)
     }
+    canUsePPIC = true
 
     // Clean sequences
+    var lenSeqMax = 0
     val cleanedSequences = mutable.ArrayBuilder.make[Postfix]
     for (postfix <- postfixes) {
       // Init
-      var isNotEmpty = false
       var lastItemAdded = 0
+      var partialProjectionAddedSinceLastZero = false
       val curSeq = mutable.ArrayBuilder.make[Int]
-      val newPartialStarts = mutable.ArrayBuilder.make[Int]
+      val newPartialStarts = scala.collection.mutable.ArrayBuffer.empty[Int]
       var numberOfItemPerItemSetCounter = 0
-      // /!\ for empty prefix only /!\
-      if (prefix.items.isEmpty) curSeq += 0
       // Change sequence
-      for (i <- postfix.items.indices) {
+      // Special case for first item, which must always be kept
+      if (postfix.items.length > 0) {
+        curSeq += postfix.items(0) // Always take first item (whether 0 or not, supported or not)
+        if(postfix.items(0) != 0) {
+          numberOfItemPerItemSetCounter += 1
+        }
+        lastItemAdded += 1
+        // Correct partial start
+        if (postfix.partialStarts.contains(0)) {
+          newPartialStarts.append(0)
+          partialProjectionAddedSinceLastZero = true
+        }
+      }
+      // Iter for all other items
+      for (i <- Range(1, postfix.items.length)) {
         val item = postfix.items(i)
         // Add cur item if necessary
         if (item == 0) {
           if (numberOfItemPerItemSetCounter > 0) {
             curSeq += item
             lastItemAdded += 1
+            partialProjectionAddedSinceLastZero = false
             // Check if we can use PPIC
             if (numberOfItemPerItemSetCounter > 1) {
               canUsePPIC = false
             }
             numberOfItemPerItemSetCounter = 0
           }
+          else if (partialProjectionAddedSinceLastZero && newPartialStarts.size > 0) {
+            // If item emptied, remove partial start
+            newPartialStarts.remove(newPartialStarts.length - 1)
+          }
         }
         else if (frequentItems.getOrElse(item, 0L) >= minSupport) {
           curSeq += item
           lastItemAdded += 1
-          isNotEmpty = true
           numberOfItemPerItemSetCounter += 1
         }
         // Correct partial start
-        if (postfix.partialStarts.contains(i)) {
-          newPartialStarts += lastItemAdded - 1
+        if (postfix.partialStarts.contains(i) && lastItemAdded > 0) {
+          partialProjectionAddedSinceLastZero = true
+          newPartialStarts.append(lastItemAdded -1)
         }
       }
       // Add sequence if worthy of being added
-      if (isNotEmpty) {
-        cleanedSequences += new Postfix(curSeq.result(), 0, newPartialStarts.result())
+      if (lastItemAdded > 1) { // Must be at least x 0 to be a sequence
+        if (lastItemAdded > lenSeqMax) lenSeqMax = lastItemAdded
+        cleanedSequences += new Postfix(curSeq.result(), 0, newPartialStarts.toArray)
       }
     }
     // Return
+    if (lenSeqMax < 4) canUsePPIC = false // must be x 0 y 0 at least
     (cleanedSequences.result(), canUsePPIC)
   }
 

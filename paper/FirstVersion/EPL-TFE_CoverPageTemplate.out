@@ -1,0 +1,34 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Option for Scalability :}{}% 2
+\BOOKMARK [1][-]{section.3}{Solution Correctness - Verification Procedure}{}% 3
+\BOOKMARK [1][-]{section.4}{Performance Testing Procedure}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{Performance Testing Datasets}{section.4}% 5
+\BOOKMARK [2][-]{subsection.4.2}{Performance Testing Procedure}{section.4}% 6
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Distribution Choice \046 Cluster Architecture}{subsection.4.2}% 7
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Program Parameters}{subsection.4.2}% 8
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Number of Partitions}{subsection.4.2}% 9
+\BOOKMARK [3][-]{subsubsection.4.2.4}{Measurement Span}{subsection.4.2}% 10
+\BOOKMARK [1][-]{section.5}{The PrefixSpan Algorithm}{}% 11
+\BOOKMARK [1][-]{section.6}{PPIC and Spark's Original Implementation}{}% 12
+\BOOKMARK [2][-]{subsection.6.1}{Spark's original Implementation}{section.6}% 13
+\BOOKMARK [2][-]{subsection.6.2}{PPIC's Original Implementation}{section.6}% 14
+\BOOKMARK [2][-]{subsection.6.3}{Performance Comparison}{section.6}% 15
+\BOOKMARK [1][-]{section.7}{Improving the Performances}{}% 16
+\BOOKMARK [2][-]{subsection.7.1}{A First Implementation}{section.7}% 17
+\BOOKMARK [2][-]{subsection.7.2}{Improving the Link}{section.7}% 18
+\BOOKMARK [3][-]{subsubsection.7.2.1}{Adding Functionalities \046 Improving Middle-put Translation}{subsection.7.2}% 19
+\BOOKMARK [2][-]{subsection.7.3}{Improving Spark}{section.7}% 20
+\BOOKMARK [3][-]{subsubsection.7.3.1}{Automation of the choice between PPIC and Spark's local execution}{subsection.7.3}% 21
+\BOOKMARK [3][-]{subsubsection.7.3.2}{Additional Pre-processing Before the Local Execution}{subsection.7.3}% 22
+\BOOKMARK [3][-]{subsubsection.7.3.3}{First/Last Position List}{subsection.7.3}% 23
+\BOOKMARK [3][-]{subsubsection.7.3.4}{Priority scheduling in local execution}{subsection.7.3}% 24
+\BOOKMARK [3][-]{subsubsection.7.3.5}{Specialize Spark's scalable stage for single-item problems}{subsection.7.3}% 25
+\BOOKMARK [2][-]{subsection.7.4}{Improving PPIC}{section.7}% 26
+\BOOKMARK [3][-]{subsubsection.7.4.1}{Pushing PPIC's Ideas farther}{subsection.7.4}% 27
+\BOOKMARK [3][-]{subsubsection.7.4.2}{An Implementation Closer to Spark}{subsection.7.4}% 28
+\BOOKMARK [1][-]{section.8}{Final Version}{}% 29
+\BOOKMARK [1][-]{section.9}{Scalability Tests}{}% 30
+\BOOKMARK [1][-]{section.10}{Performances Under Optimal Parameters}{}% 31
+\BOOKMARK [1][-]{section.11}{Conclusion}{}% 32
+\BOOKMARK [1][-]{section.12}{Annexes}{}% 33
+\BOOKMARK [2][-]{subsection.12.1}{Additional Performance Comparisons :}{section.12}% 34

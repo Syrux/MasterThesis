@@ -274,8 +274,8 @@ class PrefixSpan private (
           containsFreqItems = true
           allItems ++= result.sorted
           allItems += 0
-          positionInArray += 1
         }
+		positionInArray += 1
       }
       if (containsFreqItems) {
         Some((allItems.result(), firstPosMap))
