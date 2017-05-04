@@ -1,13 +1,13 @@
 \select@language {english}
 \contentsline {section}{\numberline {1}Introduction}{4}{section.1}
-\contentsline {section}{\numberline {2}Option for Scalability :}{5}{section.2}
+\contentsline {section}{\numberline {2}Option for Scalability :}{4}{section.2}
 \contentsline {section}{\numberline {3}Solution Correctness - Verification Procedure}{6}{section.3}
 \contentsline {section}{\numberline {4}Performance Testing Procedure}{6}{section.4}
 \contentsline {subsection}{\numberline {4.1}Performance Testing Datasets}{6}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Performance Testing Procedure}{7}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Distribution Choice \& Cluster Architecture}{7}{subsubsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2}Performance Testing Procedure}{6}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Distribution Choice \& Cluster Architecture}{6}{subsubsection.4.2.1}
 \contentsline {subsubsection}{\numberline {4.2.2}Program Parameters}{7}{subsubsection.4.2.2}
-\contentsline {subsubsection}{\numberline {4.2.3}Number of Partitions}{8}{subsubsection.4.2.3}
+\contentsline {subsubsection}{\numberline {4.2.3}Number of Partitions}{7}{subsubsection.4.2.3}
 \contentsline {subsubsection}{\numberline {4.2.4}Measurement Span}{8}{subsubsection.4.2.4}
 \contentsline {section}{\numberline {5}The PrefixSpan Algorithm}{8}{section.5}
 \contentsline {section}{\numberline {6}PPIC and Spark's Original Implementation}{8}{section.6}
@@ -18,21 +18,22 @@
 \contentsline {subsection}{\numberline {7.1}A First Implementation}{12}{subsection.7.1}
 \contentsline {subsection}{\numberline {7.2}Improving the Link}{15}{subsection.7.2}
 \contentsline {subsubsection}{\numberline {7.2.1}Adding Functionalities \& Improving Middle-put Translation}{15}{subsubsection.7.2.1}
-\contentsline {subsection}{\numberline {7.3}Improving Spark}{17}{subsection.7.3}
-\contentsline {subsubsection}{\numberline {7.3.1}Automation of the choice between PPIC and Spark's local execution}{17}{subsubsection.7.3.1}
-\contentsline {subsubsection}{\numberline {7.3.2}Additional Pre-processing Before the Local Execution}{18}{subsubsection.7.3.2}
-\contentsline {subsubsection}{\numberline {7.3.3}First/Last Position List}{20}{subsubsection.7.3.3}
-\contentsline {subsubsection}{\numberline {7.3.4}Priority scheduling in local execution}{22}{subsubsection.7.3.4}
-\contentsline {paragraph}{\numberline {7.3.4.1}Analysing sub-problem creation}{22}{paragraph.7.3.4.1}
-\contentsline {paragraph}{\numberline {7.3.4.2}Sort sub-problem on the reducer}{22}{paragraph.7.3.4.2}
-\contentsline {paragraph}{\numberline {7.3.4.3}Sort sub-problem on the mapper}{24}{paragraph.7.3.4.3}
-\contentsline {subsubsection}{\numberline {7.3.5}Specialize Spark's scalable stage for single-item problems}{24}{subsubsection.7.3.5}
-\contentsline {subsection}{\numberline {7.4}Improving PPIC}{24}{subsection.7.4}
-\contentsline {subsubsection}{\numberline {7.4.1}Pushing PPIC's Ideas farther}{24}{subsubsection.7.4.1}
-\contentsline {subsubsection}{\numberline {7.4.2}An Implementation Closer to Spark}{26}{subsubsection.7.4.2}
-\contentsline {section}{\numberline {8}Final Version}{26}{section.8}
-\contentsline {section}{\numberline {9}Scalability Tests}{27}{section.9}
-\contentsline {section}{\numberline {10}Performances Under Optimal Parameters}{27}{section.10}
-\contentsline {section}{\numberline {11}Conclusion}{27}{section.11}
-\contentsline {section}{\numberline {12}Annexes}{27}{section.12}
-\contentsline {subsection}{\numberline {12.1}Additional Performance Comparisons :}{27}{subsection.12.1}
+\contentsline {subsection}{\numberline {7.3}Improving Spark}{18}{subsection.7.3}
+\contentsline {subsubsection}{\numberline {7.3.1}Automation of the Choice Between PPIC and Spark's Local Execution}{18}{subsubsection.7.3.1}
+\contentsline {subsubsection}{\numberline {7.3.2}Additional Pre-processing Before the Local Execution}{19}{subsubsection.7.3.2}
+\contentsline {subsubsection}{\numberline {7.3.3}First/Last Position List}{21}{subsubsection.7.3.3}
+\contentsline {subsubsection}{\numberline {7.3.4}Specialize Spark's scalable stage for single-item problems}{21}{subsubsection.7.3.4}
+\contentsline {subsubsection}{\numberline {7.3.5}Priority scheduling in local execution}{22}{subsubsection.7.3.5}
+\contentsline {paragraph}{\numberline {7.3.5.1}Analysing sub-problem creation}{23}{paragraph.7.3.5.1}
+\contentsline {paragraph}{\numberline {7.3.5.2}Sort sub-problem on the reducer}{24}{paragraph.7.3.5.2}
+\contentsline {paragraph}{\numberline {7.3.5.3}Sort sub-problem on the mapper}{25}{paragraph.7.3.5.3}
+\contentsline {subsection}{\numberline {7.4}Improving PPIC}{27}{subsection.7.4}
+\contentsline {subsubsection}{\numberline {7.4.1}Pushing PPIC's Ideas farther}{27}{subsubsection.7.4.1}
+\contentsline {subsubsection}{\numberline {7.4.2}An Implementation Closer to Spark}{27}{subsubsection.7.4.2}
+\contentsline {section}{\numberline {8}Final Version}{27}{section.8}
+\contentsline {section}{\numberline {9}Scalability Tests}{28}{section.9}
+\contentsline {section}{\numberline {10}Performances Under Optimal Parameters}{28}{section.10}
+\contentsline {section}{\numberline {11}Conclusion}{28}{section.11}
+\contentsline {section}{\numberline {12}Annexes}{28}{section.12}
+\contentsline {subsection}{\numberline {12.1}Additional Performance Comparisons :}{29}{subsection.12.1}
+\contentsline {section}{References}{29}{figure.17}

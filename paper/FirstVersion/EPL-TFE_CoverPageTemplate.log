@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.11.28)  24 APR 2017 00:01
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.11.28)  2 MAY 2017 13:06
 entering extended mode
 **EPL-TFE_CoverPageTemplate.tex
 
@@ -876,28 +876,28 @@ LaTeX Warning: Unused global option(s):
 
 (F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
 geTemplate.aux)
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 55.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 56.
+LaTeX Font Info:    ... okay on input line 56.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 56.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 ("C:\Program Files\MiKTeX 2.9\tex\latex\ucs\ucsencs.def"
 File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 )
-LaTeX Info: Redefining \microtypecontext on input line 55.
+LaTeX Info: Redefining \microtypecontext on input line 56.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -961,7 +961,7 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \AtBeginShipoutBox=\box91
-Package hyperref Info: Link coloring OFF on input line 55.
+Package hyperref Info: Link coloring OFF on input line 56.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\hyperref\nameref.sty"
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -970,9 +970,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count166
 )
-LaTeX Info: Redefining \ref on input line 55.
-LaTeX Info: Redefining \pageref on input line 55.
-LaTeX Info: Redefining \nameref on input line 55.
+LaTeX Info: Redefining \ref on input line 56.
+LaTeX Info: Redefining \pageref on input line 56.
+LaTeX Info: Redefining \nameref on input line 56.
 
 (F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
 geTemplate.out)
@@ -1013,16 +1013,16 @@ geTemplate.out)
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-<EPL_TFEbanner.jpg, id=142, 526.3665pt x 256.0767pt>
+<EPL_TFEbanner.jpg, id=146, 526.3665pt x 256.0767pt>
 File: EPL_TFEbanner.jpg Graphic file (type jpg)
  <use EPL_TFEbanner.jpg>
-Package pdftex.def Info: EPL_TFEbanner.jpg used on input line 60.
+Package pdftex.def Info: EPL_TFEbanner.jpg used on input line 61.
 (pdftex.def)             Requested size: 526.36522pt x 256.07608pt.
 
 
-Package xcolor Warning: Incompatible color definition on input line 60.
+Package xcolor Warning: Incompatible color definition on input line 61.
 
-LaTeX Font Info:    Try loading font information for T1+phv on input line 60.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 61.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1phv.fd"
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
@@ -1030,43 +1030,43 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `phv' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 60.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 61.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 60.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 61.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omllmm.fd"
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 60.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 61.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmsy.fd"
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 60.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 61.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omxlmex.fd"
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 60.
+(Font)              <10.95> on input line 61.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 60.
+(Font)              <8> on input line 61.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 60.
+(Font)              <6> on input line 61.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 60.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 61.
 LaTeX Font Info:    Font shape `T1/phv/bx/sc' in size <12> not available
-(Font)              Font shape `T1/phv/b/sc' tried instead on input line 60.
+(Font)              Font shape `T1/phv/b/sc' tried instead on input line 61.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 60.
+(Font)              <12> on input line 61.
 
 
-Package xcolor Warning: Incompatible color definition on input line 60.
+Package xcolor Warning: Incompatible color definition on input line 61.
 
 [1
 
@@ -1113,7 +1113,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.64 \newpage
+l.65 \newpage
               [1
 
 ]
@@ -1125,27 +1125,27 @@ geTemplate.lof)
 geTemplate.lot)
 \tf@lot=\write7
  [2] [3]
-LaTeX Font Info:    Try loading font information for OMS+lmr on input line 81.
+LaTeX Font Info:    Try loading font information for OMS+lmr on input line 82.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
 File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 81.
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 82.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 82.
+(Font)              <9> on input line 83.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 82.
+(Font)              <5> on input line 83.
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--86
+Underfull \hbox (badness 10000) in paragraph at lines 86--87
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--88
+Underfull \hbox (badness 10000) in paragraph at lines 88--89
 
  []
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 89.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 90.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -1154,43 +1154,43 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
-Underfull \hbox (badness 10000) in paragraph at lines 89--90
+Underfull \hbox (badness 10000) in paragraph at lines 90--91
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 91--92
+Underfull \hbox (badness 10000) in paragraph at lines 92--93
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 97--98
+Underfull \hbox (badness 10000) in paragraph at lines 98--99
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 108--109
+Underfull \hbox (badness 10000) in paragraph at lines 109--110
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/hadoopVS
-spark.png, id=255, 414.54875pt x 356.33125pt>
+spark.png, id=267, 414.54875pt x 356.33125pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/had
 oopVSspark.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/hado
 opVSspark.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/hadoopVSspark.png used on input line 114.
+tVersion/Graphs/hadoopVSspark.png used on input line 115.
 (pdftex.def)             Requested size: 273.14923pt x 234.7933pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 119--120
+Underfull \hbox (badness 10000) in paragraph at lines 120--121
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 121--122
+Underfull \hbox (badness 10000) in paragraph at lines 122--123
 
  []
 
@@ -1199,15 +1199,20 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.122 
-       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/h
-adoopVSspark.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 135--136
+l.126 ...ion Correctness - Verification Procedure}
+                                                   <F:/Memoire/CodeSavedOnline/
+New/MasterThesis/paper/FirstVersion/Graphs/hadoopVSspark.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 136--137
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 183--184
+Underfull \hbox (badness 10000) in paragraph at lines 186--187
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--189
 
  []
 
@@ -1216,45 +1221,46 @@ as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.184 
-      ]
-Underfull \hbox (badness 10000) in paragraph at lines 185--186
+l.190 A
+       dditionally to that, unless specified otherwise, our algorithm will b...
+]
+Underfull \hbox (badness 10000) in paragraph at lines 190--191
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 187--188
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 189--190
+Underfull \hbox (badness 10000) in paragraph at lines 192--193
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/test_arc
-hitecture.png, id=273, 362.35374pt x 330.23375pt>
+hitecture.png, id=285, 362.35374pt x 330.23375pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/tes
 t_architecture.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/test
 _architecture.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/test_architecture.png used on input line 195.
+tVersion/Graphs/test_architecture.png used on input line 198.
 (pdftex.def)             Requested size: 204.85846pt x 186.70334pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 202--203
+Underfull \hbox (badness 10000) in paragraph at lines 205--206
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 204--205
+Underfull \hbox (badness 10000) in paragraph at lines 207--208
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 210--211
+Underfull \hbox (badness 10000) in paragraph at lines 209--210
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 215--216
 
  []
 
@@ -1263,10 +1269,15 @@ has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.211 
+l.216 
        <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/t
 est_architecture.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 212--213
+Underfull \hbox (badness 10000) in paragraph at lines 217--218
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 252--253
 
  []
 
@@ -1275,25 +1286,25 @@ as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.265 	\item T
+l.272 	\item T
               hen, from the set of supporting sequences, we discover symbols...
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 272--275
+Underfull \hbox (badness 10000) in paragraph at lines 280--283
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 276--277
+Underfull \hbox (badness 10000) in paragraph at lines 284--285
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 278--279
+Underfull \hbox (badness 10000) in paragraph at lines 286--287
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--281
+Underfull \hbox (badness 10000) in paragraph at lines 288--289
 
  []
 
@@ -1319,7 +1330,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 280--281
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 331--332
+Underfull \hbox (badness 10000) in paragraph at lines 339--340
 
  []
 
@@ -1328,70 +1339,70 @@ Underfull \hbox (badness 10000) in paragraph at lines 331--332
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.352 	\end{enumerate}
+l.360 	\end{enumerate}
                       ]
-Underfull \hbox (badness 10000) in paragraph at lines 353--354
+Underfull \hbox (badness 10000) in paragraph at lines 361--362
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 356--357
+Underfull \hbox (badness 10000) in paragraph at lines 365--366
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 358--359
+Underfull \hbox (badness 10000) in paragraph at lines 367--368
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 368--369
+Underfull \hbox (badness 10000) in paragraph at lines 379--380
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 370--371
+Underfull \hbox (badness 10000) in paragraph at lines 381--382
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 372--373
+Underfull \hbox (badness 10000) in paragraph at lines 383--384
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/original
-Algorithm.png, id=306, 650.43pt x 650.43pt>
+Algorithm.png, id=317, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/ori
 ginalAlgorithm.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/orig
 inalAlgorithm.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/originalAlgorithm.png used on input line 376.
+tVersion/Graphs/originalAlgorithm.png used on input line 387.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 377.
+(Font)              <14.4> on input line 388.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 377.
+(Font)              <10> on input line 388.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 377.
+(Font)              <7> on input line 388.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 391--392
+Underfull \hbox (badness 10000) in paragraph at lines 402--403
 
  []
 
 [11]
-Underfull \hbox (badness 10000) in paragraph at lines 393--394
+Underfull \hbox (badness 10000) in paragraph at lines 404--405
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 395--396
+Underfull \hbox (badness 10000) in paragraph at lines 406--407
 
  []
 
@@ -1400,26 +1411,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 395--396
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.396 
+l.407 
        <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/o
 riginalAlgorithm.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 397--398
+Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/first_im
-plementation.png, id=320, 650.43pt x 650.43pt>
+plementation.png, id=332, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/fir
 st_implementation.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/firs
 t_implementation.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/first_implementation.png used on input line 401.
+tVersion/Graphs/first_implementation.png used on input line 412.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 408--409
+Underfull \hbox (badness 10000) in paragraph at lines 419--420
 
  []
 
@@ -1428,158 +1439,143 @@ Underfull \hbox (badness 10000) in paragraph at lines 408--409
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.410 B
-       ut, in truth, those performance can be perfectly explained. They resu...
+l.421 A
+       nother disconcerting thing to notice may be the relative flatness of ...
  <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/first_i
 mplementation.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 414--415
+Underfull \hbox (badness 10000) in paragraph at lines 421--422
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 418--419
+Underfull \hbox (badness 10000) in paragraph at lines 427--428
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 420--421
+Underfull \hbox (badness 10000) in paragraph at lines 431--432
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 422--423
+Underfull \hbox (badness 10000) in paragraph at lines 433--434
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 428--429
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 430--431
+Underfull \hbox (badness 10000) in paragraph at lines 435--436
 
  []
 
 [14]
-Underfull \hbox (badness 10000) in paragraph at lines 447--448
+Underfull \hbox (badness 10000) in paragraph at lines 441--442
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 443--444
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 460--461
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 459--460
+Underfull \hbox (badness 10000) in paragraph at lines 472--473
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 461--462
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 463--465
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 466--467
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 468--469
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 470--471
+Underfull \hbox (badness 10000) in paragraph at lines 474--475
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/new_func
-tionalities.png, id=347, 650.43pt x 650.43pt>
+tionalities.png, id=357, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/new
 _functionalities.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/new_
 functionalities.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/new_functionalities.png used on input line 474.
+tVersion/Graphs/new_functionalities.png used on input line 478.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 480--481
+Underfull \hbox (badness 10000) in paragraph at lines 485--487
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 482--483
+Underfull \hbox (badness 10000) in paragraph at lines 488--489
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 484--485
+Underfull \hbox (badness 10000) in paragraph at lines 490--491
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--493
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 494--495
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 496--497
 
  []
 
 [16]
+Underfull \hbox (badness 10000) in paragraph at lines 498--499
+
+ []
+
+
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/sub_prob
-lem_limit.png, id=352, 650.43pt x 650.43pt>
+lem_limit.png, id=364, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/sub
 _problem_limit.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/sub_
 problem_limit.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/sub_problem_limit.png used on input line 490.
+tVersion/Graphs/sub_problem_limit.png used on input line 504.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 501--502
-
- []
 
 [17pdfTeX warning (ext4): destination with the same identifier (name{figure.6})
  has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.502 
+l.512 
        <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/n
 ew_functionalities.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 505--507
+Underfull \hbox (badness 10000) in paragraph at lines 515--516
 
  []
 
 
-<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/MaxItemP
-erItemset_recalculated.png, id=359, 650.43pt x 650.43pt>
-File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/Max
-ItemPerItemset_recalculated.png Graphic file (type png)
-
-<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/MaxI
-temPerItemset_recalculated.png>
-Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/MaxItemPerItemset_recalculated.png used on input line 512.
-(pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 523--524
+Underfull \hbox (badness 10000) in paragraph at lines 517--518
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 525--526
+Underfull \hbox (badness 10000) in paragraph at lines 519--521
 
  []
 
@@ -1588,35 +1584,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 525--526
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.526 
-       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/s
-ub_problem_limit.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 527--528
+l.522 W
+       hile, at first, we thought those small loss where worth for this feat...
+ <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/sub_pro
+blem_limit.png>]
+<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/MaxItemP
+erItemset_recalculated.png, id=377, 650.43pt x 650.43pt>
+File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/Max
+ItemPerItemset_recalculated.png Graphic file (type png)
 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 529--530
-
- []
-
-
-<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/clean_be
-fore_localExec.png, id=367, 867.24pt x 433.62pt>
-File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/cle
-an_before_localExec.png Graphic file (type png)
-
-<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/clea
-n_before_localExec.png>
+<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/MaxI
+temPerItemset_recalculated.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/clean_before_localExec.png used on input line 533.
-(pdftex.def)             Requested size: 455.24411pt x 227.62082pt.
+tVersion/Graphs/MaxItemPerItemset_recalculated.png used on input line 526.
+(pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 537--538
+
+ []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Underfull \hbox (badness 10000) in paragraph at lines 539--540
+
+ []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 538--539
+Underfull \hbox (badness 10000) in paragraph at lines 541--542
 
  []
 
@@ -1625,50 +1618,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 538--539
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.541 
+l.542 
        <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/M
 axItemPerItemset_recalculated.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 544--545
+Underfull \hbox (badness 10000) in paragraph at lines 543--544
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 546--547
+<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/clean_be
+fore_localExec.png, id=384, 650.43pt x 650.43pt>
+File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/cle
+an_before_localExec.png Graphic file (type png)
 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 548--549
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 550--551
-
- []
-
-
-<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/position
-Lists.png, id=374, 650.43pt x 650.43pt>
-File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/pos
-itionLists.png Graphic file (type png)
-
-<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/posi
-tionLists.png>
+<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/clea
+n_before_localExec.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/positionLists.png used on input line 554.
+tVersion/Graphs/clean_before_localExec.png used on input line 547.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 559--560
+Underfull \hbox (badness 10000) in paragraph at lines 552--553
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 561--562
+Underfull \hbox (badness 10000) in paragraph at lines 558--559
 
  []
 
@@ -1677,181 +1651,202 @@ Underfull \hbox (badness 10000) in paragraph at lines 561--562
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.562 
+l.559 
        <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/c
 lean_before_localExec.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 565--566
+Underfull \hbox (badness 10000) in paragraph at lines 560--561
 
  []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 562--563
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 564--565
+
+ []
+
+
+<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/position
+Lists.png, id=391, 650.43pt x 650.43pt>
+File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/pos
+itionLists.png Graphic file (type png)
+
+<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/posi
+tionLists.png>
+Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
+tVersion/Graphs/positionLists.png used on input line 568.
+(pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 573--574
 
  []
 
-[21pdfTeX warning (ext4): destination with the same identifier (name{figure.10}
-) has been already used, duplicate ignored
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.574 
-       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/p
-ositionLists.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 575--576
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 577--579
+Underfull \hbox (badness 10000) in paragraph at lines 577--578
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 584--585
+Underfull \hbox (badness 10000) in paragraph at lines 579--580
 
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 586--587
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 588--589
+
+ []
+
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 590--591
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 592--593
+
+ []
+
+
+<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/scalable
+_single_item.png, id=397, 650.43pt x 650.43pt>
+File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/sca
+lable_single_item.png Graphic file (type png)
+
+<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/scal
+able_single_item.png>
+Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
+tVersion/Graphs/scalable_single_item.png used on input line 596.
+(pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 605--606
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 607--608
+
+ []
+
+[22pdfTeX warning (ext4): destination with the same identifier (name{figure.10}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.608 
+       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/p
+ositionLists.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 609--611
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 616--617
+
+ []
+
+[23pdfTeX warning (ext4): destination with the same identifier (name{figure.11}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.617 
+       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/s
+calable_single_item.png>]
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/sparkMap
-Reduce.png, id=386, 459.6372pt x 264.5082pt>
+Reduce.png, id=410, 459.6372pt x 264.5082pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/spa
 rkMapReduce.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/spar
 kMapReduce.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/sparkMapReduce.png used on input line 588.
+tVersion/Graphs/sparkMapReduce.png used on input line 620.
 (pdftex.def)             Requested size: 364.19667pt x 209.58879pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 595--596
-
- []
-
-
-<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/priority
-.png, id=388, 650.43pt x 650.43pt>
-File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/pri
-ority.png Graphic file (type png)
-
-<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/prio
-rity.png>
-Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/priority.png used on input line 599.
-(pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
-
- []
-
-[22pdfTeX warning (ext4): destination with the same identifier (name{figure.11}
-) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.610 
-       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/s
-parkMapReduce.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 611--612
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 613--614
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 615--616
-
- []
-
-[23pdfTeX warning (ext4): destination with the same identifier (name{figure.12}
-) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.617 W
-       e thus had to come with another solution to sort our sub-problems. On...
- <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/priorit
-y.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 621--622
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 623--624
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 625--626
-
- []
-
 
 Underfull \hbox (badness 10000) in paragraph at lines 627--628
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 629--630
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 631--632
-
- []
-
-
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/priority
-_final.png, id=401, 650.43pt x 650.43pt>
+.png, id=412, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/pri
-ority_final.png Graphic file (type png)
+ority.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/prio
-rity_final.png>
+rity.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/priority_final.png used on input line 635.
+tVersion/Graphs/priority.png used on input line 631.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 640--641
+Underfull \hbox (badness 10000) in paragraph at lines 641--642
 
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 643--644
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 645--646
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 647--648
+
+ []
+
+[24pdfTeX warning (ext4): destination with the same identifier (name{figure.12}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.654 
+       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/s
+parkMapReduce.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 655--656
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 657--659
-
- []
-
-[24]
-Underfull \hbox (badness 10000) in paragraph at lines 660--661
+Underfull \hbox (badness 10000) in paragraph at lines 657--658
 
  []
 
 
-LaTeX Warning: Reference `multi_map' on page 25 undefined on input line 662.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 662--663
+Underfull \hbox (badness 10000) in paragraph at lines 659--660
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 664--665
+Underfull \hbox (badness 10000) in paragraph at lines 661--662
 
  []
 
@@ -1860,71 +1855,137 @@ Underfull \hbox (badness 10000) in paragraph at lines 664--665
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.665 
+l.662 
+       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/p
+riority.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 663--664
+
+ []
+
+
+<F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/priority
+_final.png, id=426, 650.43pt x 650.43pt>
+File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/pri
+ority_final.png Graphic file (type png)
+
+<use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/prio
+rity_final.png>
+Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
+tVersion/Graphs/priority_final.png used on input line 667.
+(pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 672--673
+
+ []
+
+[26pdfTeX warning (ext4): destination with the same identifier (name{figure.14}
+) has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.679 
        <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/p
 riority_final.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 684--685
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 686--688
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 689--690
+
+ []
+
+
+LaTeX Warning: Reference `multi_map' on page 27 undefined on input line 691.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 691--692
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 693--694
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 695--696
+
+ []
+
+
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/multi_it
-em_cp.png, id=413, 650.43pt x 650.43pt>
+em_cp.png, id=432, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/mul
 ti_item_cp.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/mult
 i_item_cp.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/multi_item_cp.png used on input line 670.
+tVersion/Graphs/multi_item_cp.png used on input line 701.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
- [26pdfTeX warning (ext4): destination with the same identifier (name{figure.14
-}) has been already used, duplicate ignored
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[27] ("C:\Program Files\MiKTeX 2.9\tex\latex\ucs\uni-0.def"
+File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
+) [28pdfTeX warning (ext4): destination with the same identifier (name{figure.1
+5}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.692 ...on{Performances Under Optimal Parameters}
+l.739 ...ion{Additional Performance Comparisons :}
                                                    <F:/Memoire/CodeSavedOnline/
 New/MasterThesis/paper/FirstVersion/Graphs/multi_item_cp.png>]
-("C:\Program Files\MiKTeX 2.9\tex\latex\ucs\uni-0.def"
-File: uni-0.def 2013/05/13 UCS: Unicode data U+0000..U+00FF
-)
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/PPICvsSp
-ecialised.png, id=419, 1263.72125pt x 758.835pt>
+ecialised.png, id=442, 1263.72125pt x 758.835pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/PPI
 CvsSpecialised.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/PPIC
 vsSpecialised.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/PPICvsSpecialised.png used on input line 712.
+tVersion/Graphs/PPICvsSpecialised.png used on input line 743.
 (pdftex.def)             Requested size: 455.24411pt x 273.36566pt.
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/spark_or
-iginal_fixed_preprocessing.png, id=420, 650.43pt x 650.43pt>
+iginal_fixed_preprocessing.png, id=443, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/spa
 rk_original_fixed_preprocessing.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/spar
 k_original_fixed_preprocessing.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Firs
-tVersion/Graphs/spark_original_fixed_preprocessing.png used on input line 719.
-(pdftex.def)             Requested size: 455.24411pt x 455.2582pt.
+tVersion/Graphs/spark_original_fixed_preprocessing.png used on input line 750.
+(pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[27pdfTeX warning (ext4): destination with the same identifier (name{figure.15}
-) has been already used, duplicate ignored
+("C:\Program Files\MiKTeX 2.9\tex\latex\ucs\uni-32.def"
+File: uni-32.def 2013/05/13 UCS: Unicode data U+2000..U+20FF
+) [29pdfTeX warning (ext4): destination with the same identifier (name{figure.1
+6}) has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.729 \end{thebibliography}
+l.788 \bibitem{Prefix-span}
                             <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/
-FirstVersion/Graphs/PPICvsSpecialised.png (PNG copy)>] [28] [29pdfTeX warning (
-ext4): destination with the same identifier (name{figure.16}) has been already 
-used, duplicate ignored
+FirstVersion/Graphs/PPICvsSpecialised.png (PNG copy)>] [30pdfTeX warning (ext4)
+: destination with the same identifier (name{figure.17}) has been already used,
+ duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.734 \backcoverpage
-                     <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVe
-rsion/Graphs/spark_original_fixed_preprocessing.png>]
+l.815 
+       <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/FirstVersion/Graphs/s
+park_original_fixed_preprocessing.png>] [31]
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1959,55 +2020,49 @@ rsion/Graphs/spark_original_fixed_preprocessing.png>]
 
 
 
-Package xcolor Warning: Incompatible color definition on input line 734.
+Package xcolor Warning: Incompatible color definition on input line 837.
 
 
-Package xcolor Warning: Incompatible color definition on input line 734.
+Package xcolor Warning: Incompatible color definition on input line 837.
 
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 734.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 837.
 
-Package xcolor Warning: Incompatible color definition on input line 734.
+Package xcolor Warning: Incompatible color definition on input line 837.
 
 
-Overfull \hbox (1.90796pt too wide) in paragraph at lines 734--735
+Overfull \hbox (1.90796pt too wide) in paragraph at lines 837--838
  [][][] 
  []
 
-[30
+[32
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 735.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 735.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 838.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 838.
 
 (F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
 geTemplate.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 735.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 735.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 838.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 838.
 Package rerunfilecheck Info: File `EPL-TFE_CoverPageTemplate.out' has not chang
 ed.
-(rerunfilecheck)             Checksum: B2829CF8083E66C14375F44688DFA610;2668.
+(rerunfilecheck)             Checksum: CA4FBC23294B3463EA2C74B90C205D72;2715.
 
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 27694 strings out of 493921
- 589325 string characters out of 3147281
- 677847 words of memory out of 3000000
- 30262 multiletter control sequences out of 15000+200000
- 100847 words of font info for 128 fonts, out of 3000000 for 9000
+ 27993 strings out of 493921
+ 593139 string characters out of 3147281
+ 678536 words of memory out of 3000000
+ 30529 multiletter control sequences out of 15000+200000
+ 101757 words of font info for 135 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  124i,13n,136p,836b,3036s stack positions out of 5000i,500n,10000p,200000b,50000s
-pdfTeX warning (dest): name{Hfootnote.4} has been referenced but does not exi
+pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exi
 st, replaced by a fixed one
-
-pdfTeX warning (dest): name{Hfootnote.3} has been referenced but does not exist
-, replaced by a fixed one
-
-pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist
-, replaced by a fixed one
 
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exist
 , replaced by a fixed one
@@ -2027,9 +2082,9 @@ MiKTeX 2.9/fonts/type1/public/lm/lmri10.pfb><C:/Program Files/MiKTeX 2.9/fonts/
 type1/public/lm/lmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/l
 mtt9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/P
 rogram Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on EPL-TFE_CoverPageTemplate.pdf (31 pages, 1142716 bytes).
+Output written on EPL-TFE_CoverPageTemplate.pdf (33 pages, 1198054 bytes).
 PDF statistics:
- 515 PDF objects out of 1000 (max. 8388607)
- 115 named destinations out of 1000 (max. 500000)
- 29037 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 548 PDF objects out of 1000 (max. 8388607)
+ 129 named destinations out of 1000 (max. 500000)
+ 29050 words of extra memory for PDF output out of 29859 (max. 10000000)
 

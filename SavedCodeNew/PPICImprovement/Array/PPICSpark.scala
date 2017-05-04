@@ -90,8 +90,8 @@ private[fpm] class PPICSpark( val prefix: Array[Int],
    * @return the inputed postfixes, desencapsulated and with the first elem removed
    */
   def preProcessPostfixes(postfixes: Array[Postfix]):
-    (Array[Array[Int]], Array[ReversibleArrayStack[Set[Int]]],
-      Array[Array[Int]], Array[Array[Int]]) = {
+  (Array[Array[Int]], Array[ReversibleArrayStack[Set[Int]]],
+    Array[Array[Int]], Array[Array[Int]]) = {
 
     val preprocessedSequence = scala.collection.mutable.ArrayBuilder
       .make[Array[Int]]
@@ -183,7 +183,7 @@ private[fpm] class PPICSpark( val prefix: Array[Int],
   def initCPVariables(maxPatternLength: Int,
                       itemSet : scala.collection.Set[Int],
                       isMultiItemPattern: Boolean):
-    Array[CPIntVar] = {
+  Array[CPIntVar] = {
 
     val nonZeroSet = itemSet -- Set(separator)
     val nonZeroEpsilonSet = nonZeroSet ++ Set(epsilon)
@@ -199,8 +199,8 @@ private[fpm] class PPICSpark( val prefix: Array[Int],
 
     // TODO : actual min pattern length calculation
     val minLength =
-      if (!isMultiItemPattern) 3
-      else 2
+    if (!isMultiItemPattern) 1
+    else 2
 
     val CPVariables = new Array[CPIntVar](maxLength)
     for (i <- CPVariables.indices) {
@@ -250,6 +250,8 @@ private[fpm] class PPICSpark( val prefix: Array[Int],
     if(sdb.length < minSup) return Iterator()
 
     val itemSet = translationMapReverse.keySet
+    val itemSupport = Array.tabulate(itemSet.size)(i => i).map(i =>
+      new ReversibleInt(solver, itemSupportCounter.getOrElse(translationMapReverse.get(i).get, 0)))
 
     // Init CPvariables
     val CPVariables = initCPVariables(maxPatternLength, itemSet, isMultiItemPattern)
@@ -277,6 +279,8 @@ private[fpm] class PPICSpark( val prefix: Array[Int],
     sdb.foreach(x => {x.foreach(x=> {print(x); print(" ")}); println()})
     println("new partial")
     newPartialProjection.foreach(x => {x.top.foreach(x=> {print(x); print(" ")}); println()})
+    println("support")
+    println(itemSet.mkString(",") + "  |  " + itemSupport.mkString(","))
     println("firstItemPosInSid")
     firstPosList.foreach(x=> {x.foreach(x=> {print(x); print(" ")}); println()})
     println("lastItemPosInSid")
@@ -296,8 +300,8 @@ private[fpm] class PPICSpark( val prefix: Array[Int],
     // RUN
 
     val solutions = scala.collection.mutable.ArrayBuffer.empty[(Array[Int], Long)]
-    val c = new sparkCP(CPVariables, sdb, newPartialProjection, lastPrefixItemElems, minSup,
-      isMultiItemPattern, firstPosList, lastPosList)
+    val c = new sparkCP(CPVariables, sdb, firstPosList, lastPosList, newPartialProjection,
+      itemSupport, lastPrefixItemElems, isMultiItemPattern, minSup)
     try {
       add(c)
     } catch {
@@ -324,12 +328,13 @@ private[fpm] class PPICSpark( val prefix: Array[Int],
 
 class sparkCP(val P: Array[CPIntVar],
               val SDB: Array[Array[Int]],
-              val partialProjection: Array[ReversibleArrayStack[Set[Int]]],
-              val prefixOfLastItem: Array[Int],
-              val minsup : Long,
-              val lookingForMultiItemPatterns : Boolean,
               val firstPosList : Array[Array[Int]],
-              val lastPosList : Array[Array[Int]])
+              val lastPosList : Array[Array[Int]],
+              val partialProjection: Array[ReversibleArrayStack[Set[Int]]],
+              val itemSupportCounter: Array[ReversibleInt],
+              val prefixOfLastItem: Array[Int],
+              val lookingForMultiItemPatterns : Boolean,
+              val minsup : Long)
   extends Constraint(P(0).store, "PPIC-SPARK") {
 
   // Define separator
@@ -341,13 +346,28 @@ class sparkCP(val P: Array[CPIntVar],
 
   // current position in P $P_i = P[curPosInP.value]$
   private[this] val curPosInP = new ReversibleInt(s, 0)
-
   // Array with start position in each sequence
   private[this] val posList = Array.fill[ReversibleInt](SDB.length)(new ReversibleInt(s, 0))
-
   // Map containing unsupported elements
   private[this] val itemSupportedByThisSequence = collection.mutable.Map[Int, Int]()
-  private[this] val supportMap = scala.collection.mutable.Map.empty[Int, Int]
+
+  // DB size
+  private[this] val lenSDB = SDB.size
+  // Init psdb
+  // representation of pseudo-projected-database
+  private[this] var innerTrailSize = lenSDB * 5
+  private[this] var psdb = Array.tabulate(innerTrailSize)(i => if (i < lenSDB) i else -1)
+  // Init position in psdb and psdb total size
+  private[this] val psdbStart = new ReversibleInt(s, 0)
+  private[this] val psdbSize = new ReversibleInt(s, lenSDB) // current position in trail
+
+  // when psdb is full, this method allows to double it's size.
+  @inline private def growInnerTrail(): Unit = {
+    val newPsdb = Array.fill[Int](innerTrailSize*2)(-1)
+    System.arraycopy(psdb, 0, newPsdb, 0, innerTrailSize)
+    psdb = newPsdb
+    innerTrailSize *= 2
+  }
 
   /**
    * Entry in constraint, function for all init
@@ -401,26 +421,16 @@ class sparkCP(val P: Array[CPIntVar],
 
       // Project prefix
       if (!project(v)) {
-        // println("FAIL : " + P.mkString(","))
-        // println()
         return Failure
       }
-      // println("SUCCESS : " + P.mkString(","))
-      // println()
 
       // Clean next V
       if(v < P.length - 1) {
         // Remove unsupported item in next V
-        if (!supportMap.isEmpty) {
-          for (value <- P(v + 1)) {
-            if (value != separator &&
-              value != epsilon &&
-              supportMap.getOrElse(value, 0) < minsup) {
-
-              if (P(v + 1).removeValue(value) == Failure) return Failure
-            }
+        for (value <- P(v + 1)) {
+          if (value != separator && value != epsilon && itemSupportCounter(value).value < minsup) {
+            if (P(v + 1).removeValue(value) == Failure) return Failure
           }
-          supportMap.clear()
         }
         // IF v != separator, v+1 != epsilon
         if (P(v).value != separator) {
@@ -478,13 +488,21 @@ class sparkCP(val P: Array[CPIntVar],
     // Init var
     curPrefixSupport = 0
     val soughtItem = P(v).value
+    val nbSupportForSoughtItem = itemSupportCounter(soughtItem).value
 
-    // Check strictly increasing value in building item
-    if (soughtItem != separator && soughtItem < getElemOfP(v-1)) return false
+    // Find index to write new sequences + keep track of number of sequence added
+    var writeIndex = psdbSize.value
+    var nbAdded = 0
+    // Clean itemSupportCounter, they need to be recalculated
+    for (i <- itemSupportCounter.indices) itemSupportCounter(i).setValue(0)
+    // Init stat index for searhc in psdb
+    var sequenceIndexInPSDB = psdbStart.value
 
     // Start search
-    for (sequenceIndex <- SDB.indices) {
-      // Init
+    while (sequenceIndexInPSDB < psdbSize.value && nbAdded < nbSupportForSoughtItem) {
+      // Init sequence index
+      val sequenceIndex = psdb(sequenceIndexInPSDB)
+      // println(sequenceIndexInPSDB + "  |  " + sequenceIndex)
       // Get partialprojections of that sequence
       val partialProj = partialProjection(sequenceIndex).top
       // Get current index for that sequence
@@ -498,25 +516,22 @@ class sparkCP(val P: Array[CPIntVar],
 
       // Project prefix
       if (i >= lastPos(soughtItem)) {
-        // No need to look for that item, not present
+        // No need to look for that item in this sequence, it's not present
         i = curSeq.length
       }
       else if (soughtItem == separator) {
-        // If we look for a separator, simply find next one
+        // If we look for a separator, simply find the next one
         while (i < curSeq.length && curSeq(i) != separator) i += 1
-        // Update partial Proj
+        // Update partial Proj to empty set
         partialProjection(sequenceIndex).push(Set.empty[Int])
-        // Update item support
-        var checker = i + 1
-        while (checker < curSeq.length) {
-          itemSupportedByThisSequence.update(curSeq(checker), 1)
-          checker += 1
+        // Update support map if necessary
+        if (v + 1 < P.length) {
+          for (item <- P(v + 1)) {
+            if (item > 0 && lastPos(item) > i) {
+              itemSupportCounter(item) += 1
+            }
+          }
         }
-        // Update support map
-        for (item <- itemSupportedByThisSequence.keys) {
-          supportMap.update(item, supportMap.getOrElse(item, 0) + 1)
-        }
-        itemSupportedByThisSequence.clear()
       }
       else if (checkElemOfP(v - 1, separator)) {
         // If last elem was a separator, find projection anywhere
@@ -543,9 +558,14 @@ class sparkCP(val P: Array[CPIntVar],
             }
             checker += 1
           }
+          // Add to itemSupported by sequence until end of cur item
+          while (curSeq(checker) != separator) {
+            itemSupportedByThisSequence.update(curSeq(checker), 1)
+            checker += 1
+          }
           // Update support map
           for (item <- itemSupportedByThisSequence.keys) {
-            supportMap.update(item, supportMap.getOrElse(item, 0) + 1)
+            itemSupportCounter(item) += 1
           }
           itemSupportedByThisSequence.clear()
         }
@@ -580,7 +600,7 @@ class sparkCP(val P: Array[CPIntVar],
         }
         // Update support map
         for (item <- itemSupportedByThisSequence.keys) {
-          supportMap.update(item, supportMap.getOrElse(item, 0) + 1)
+          itemSupportCounter(item) += 1
         }
         itemSupportedByThisSequence.clear()
         // Update partial proj
@@ -599,8 +619,23 @@ class sparkCP(val P: Array[CPIntVar],
         i += 1
         index.setValue(i)
         curPrefixSupport += 1
+        // Write link to this seq in psdb if necessary
+        if (i < curSeq.length) {
+          if (writeIndex >= innerTrailSize) growInnerTrail()
+          psdb(writeIndex) = sequenceIndex
+          writeIndex += 1
+          nbAdded += 1
+        }
       }
+      // Next iter
+      sequenceIndexInPSDB += 1
     }
+    // Change psdb indexes for next iter
+    psdbStart.setValue(psdbSize.value)
+    psdbSize.setValue(writeIndex)
+    // Item support for 0 == number of item added
+    itemSupportCounter(0).setValue(nbAdded)
+    // Debug prints
     // Return result
     if (curPrefixSupport >= minsup) return true
     else false

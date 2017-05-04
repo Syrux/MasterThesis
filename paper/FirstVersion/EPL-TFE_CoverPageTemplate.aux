@@ -20,9 +20,14 @@
 \@writefile{toc}{\select@language{english}}
 \@writefile{lof}{\select@language{english}}
 \@writefile{lot}{\select@language{english}}
+\citation{CPforDataMining}
+\citation{CPforItemSetMining}
+\citation{Kemmar_global}
+\citation{Kemmar_gap}
+\citation{PPIC}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{4}{section.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Option for Scalability :}{4}{section.2}}
 \citation{RDD}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Option for Scalability :}{5}{section.2}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Performance comparison of Hadoop and Spark}}{5}{figure.1}}
 \newlabel{fig:hadoopVSspark}{{1}{5}{Performance comparison of Hadoop and Spark}{figure.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Solution Correctness - Verification Procedure}{6}{section.3}}
@@ -30,12 +35,12 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Performance Testing Datasets}{6}{subsection.4.1}}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset features}}{6}{table.1}}
 \newlabel{tab:datasets}{{1}{6}{Dataset features}{table.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Performance Testing Procedure}{7}{subsection.4.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Distribution Choice \& Cluster Architecture}{7}{subsubsection.4.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Performance Testing Procedure}{6}{subsection.4.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Distribution Choice \& Cluster Architecture}{6}{subsubsection.4.2.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The simple architecture used during the majority of our tests}}{7}{figure.2}}
 \newlabel{fig:test_architecture}{{2}{7}{The simple architecture used during the majority of our tests}{figure.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Program Parameters}{7}{subsubsection.4.2.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Number of Partitions}{8}{subsubsection.4.2.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Number of Partitions}{7}{subsubsection.4.2.3}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Number of partitions used during performance tests}}{8}{table.2}}
 \newlabel{tab:numPartitions}{{2}{8}{Number of partitions used during performance tests}{table.2}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Measurement Span}{8}{subsubsection.4.2.4}}
@@ -56,42 +61,58 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.1}Adding Functionalities \& Improving Middle-put Translation}{15}{subsubsection.7.2.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The performance impact of adding new functionalities}}{17}{figure.6}}
 \newlabel{fig:new_functionalities_perf}{{6}{17}{The performance impact of adding new functionalities}{figure.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Improving Spark}{17}{subsection.7.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1}Automation of the choice between PPIC and Spark's local execution}{17}{subsubsection.7.3.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Performance improvement - soft limit on the number of created sub-problem.}}{18}{figure.7}}
 \newlabel{fig:sub_problem_limit}{{7}{18}{Performance improvement - soft limit on the number of created sub-problem}{figure.7}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.2}Additional Pre-processing Before the Local Execution}{18}{subsubsection.7.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Improving Spark}{18}{subsection.7.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1}Automation of the Choice Between PPIC and Spark's Local Execution}{18}{subsubsection.7.3.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Automatic detection of item-sets type in dataset}}{19}{figure.8}}
 \newlabel{fig:maxItemPerItemset_recalculated}{{8}{19}{Automatic detection of item-sets type in dataset}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.2}Additional Pre-processing Before the Local Execution}{19}{subsubsection.7.3.2}}
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Efficiency gain of cleaning the sequence database before any local execution}}{20}{figure.9}}
 \newlabel{fig:cleaning_before_local_exec}{{9}{20}{Efficiency gain of cleaning the sequence database before any local execution}{figure.9}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.3}First/Last Position List}{20}{subsubsection.7.3.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Performance with first/last position lists}}{21}{figure.10}}
-\newlabel{fig:positionListPerf}{{10}{21}{Performance with first/last position lists}{figure.10}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.4}Priority scheduling in local execution}{22}{subsubsection.7.3.4}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.4.1}Analysing sub-problem creation}{22}{paragraph.7.3.4.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Spark's mapReduce}}{22}{figure.11}}
-\newlabel{fig:sparkMapReduce}{{11}{22}{Spark's mapReduce}{figure.11}{}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.4.2}Sort sub-problem on the reducer}{22}{paragraph.7.3.4.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Naive priority scheduling}}{23}{figure.12}}
-\newlabel{fig:priority_scheduling_performance_comparison}{{12}{23}{Naive priority scheduling}{figure.12}{}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.4.3}Sort sub-problem on the mapper}{24}{paragraph.7.3.4.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.5}Specialize Spark's scalable stage for single-item problems}{24}{subsubsection.7.3.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Improving PPIC}{24}{subsection.7.4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.1}Pushing PPIC's Ideas farther}{24}{subsubsection.7.4.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Performance improvement of sorting sub-problems during map stage.}}{25}{figure.13}}
-\newlabel{fig:priority_scheduling_improved}{{13}{25}{Performance improvement of sorting sub-problems during map stage}{figure.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces PPIC with a map structure}}{26}{figure.14}}
-\newlabel{fig:multi_map}{{14}{26}{PPIC with a map structure}{figure.14}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.2}An Implementation Closer to Spark}{26}{subsubsection.7.4.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Final Version}{26}{section.8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.3}First/Last Position List}{21}{subsubsection.7.3.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.4}Specialize Spark's scalable stage for single-item problems}{21}{subsubsection.7.3.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Performance gain of first/last position lists}}{22}{figure.10}}
+\newlabel{fig:positionListPerf}{{10}{22}{Performance gain of first/last position lists}{figure.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.5}Priority scheduling in local execution}{22}{subsubsection.7.3.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Performance improvement of specialising spark's scalable stage.}}{23}{figure.11}}
+\newlabel{fig:scalable_single_item}{{11}{23}{Performance improvement of specialising spark's scalable stage}{figure.11}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.5.1}Analysing sub-problem creation}{23}{paragraph.7.3.5.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Spark's mapReduce}}{24}{figure.12}}
+\newlabel{fig:sparkMapReduce}{{12}{24}{Spark's mapReduce}{figure.12}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.5.2}Sort sub-problem on the reducer}{24}{paragraph.7.3.5.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Naive priority scheduling}}{25}{figure.13}}
+\newlabel{fig:priority_scheduling_performance_comparison}{{13}{25}{Naive priority scheduling}{figure.13}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.3.5.3}Sort sub-problem on the mapper}{25}{paragraph.7.3.5.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Performance improvement of sorting sub-problems during map stage.}}{26}{figure.14}}
+\newlabel{fig:priority_scheduling_improved}{{14}{26}{Performance improvement of sorting sub-problems during map stage}{figure.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Improving PPIC}{27}{subsection.7.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.1}Pushing PPIC's Ideas farther}{27}{subsubsection.7.4.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.2}An Implementation Closer to Spark}{27}{subsubsection.7.4.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Final Version}{27}{section.8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces PPIC with a map structure}}{28}{figure.15}}
+\newlabel{fig:multi_map}{{15}{28}{PPIC with a map structure}{figure.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Scalability Tests}{28}{section.9}}
+\@writefile{toc}{\contentsline {section}{\numberline {10}Performances Under Optimal Parameters}{28}{section.10}}
+\@writefile{toc}{\contentsline {section}{\numberline {11}Conclusion}{28}{section.11}}
+\@writefile{toc}{\contentsline {section}{\numberline {12}Annexes}{28}{section.12}}
 \bibcite{RDD}{1}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Scalability Tests}{27}{section.9}}
-\@writefile{toc}{\contentsline {section}{\numberline {10}Performances Under Optimal Parameters}{27}{section.10}}
-\@writefile{toc}{\contentsline {section}{\numberline {11}Conclusion}{27}{section.11}}
-\@writefile{toc}{\contentsline {section}{\numberline {12}Annexes}{27}{section.12}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {12.1}Additional Performance Comparisons :}{27}{subsection.12.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces PPIC's performances VS other specialized algorithm}}{27}{figure.15}}
-\newlabel{PPIC's perfomance against other specialized implementations}{{15}{27}{PPIC's performances VS other specialized algorithm}{figure.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Performance improvement of fixing Spark's pre-processing}}{29}{figure.16}}
-\newlabel{spark_preprocessing_fix}{{16}{29}{Performance improvement of fixing Spark's pre-processing}{figure.16}{}}
+\bibcite{Taxonomy}{2}
+\bibcite{Kemmar_global}{3}
+\bibcite{Kemmar_gap}{4}
+\bibcite{itemset_mining}{5}
+\bibcite{PPIC}{6}
+\@writefile{toc}{\contentsline {subsection}{\numberline {12.1}Additional Performance Comparisons :}{29}{subsection.12.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces PPIC's performances VS other specialized algorithm}}{29}{figure.16}}
+\newlabel{PPIC's perfomance against other specialized implementations}{{16}{29}{PPIC's performances VS other specialized algorithm}{figure.16}{}}
+\@writefile{toc}{\contentsline {section}{References}{29}{figure.17}}
+\bibcite{Prefix-span}{7}
+\bibcite{LAPIN}{8}
+\bibcite{LAPIN-SPAM}{9}
+\bibcite{Bonchi}{10}
+\bibcite{CPforItemSetMining}{11}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Performance improvement of fixing Spark's pre-processing}}{30}{figure.17}}
+\newlabel{spark_preprocessing_fix}{{17}{30}{Performance improvement of fixing Spark's pre-processing}{figure.17}{}}
+\bibcite{CPforDataMining}{12}
+\bibcite{CPpatternSetMining}{13}
+\bibcite{cSPADE}{14}

@@ -333,9 +333,10 @@ object PrefixSpan extends Logging {
 
         // TODO: We collect projected postfixes into memory. We should also compare the performance
         // TODO: of keeping them on shuffle files.
+        /*
         if (canUsePPIC) {
-          val localPrefixSpan = new PPICRunner(minCount, 0,
-            maxPatternLength - prefix.length)
+          val localPrefixSpan = new PPICSpark(prefix.items, minCount, 0,
+            maxPatternLength - prefix.length, false)
           localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
             (prefix.items ++ pattern, count)
           }
@@ -346,6 +347,12 @@ object PrefixSpan extends Logging {
           localPrefixSpan.run(projPostfixes.toArray).map { case (pattern, count) =>
             (prefix.items ++ pattern, count)
           }
+        }
+        */
+        val localPrefixSpan2 = new SparkCPRunner(prefix.items, minCount, 0,
+          maxPatternLength - prefix.length, !canUsePPIC)
+        localPrefixSpan2.run(projPostfixes.toArray).map { case (pattern, count) =>
+          (prefix.items ++ pattern, count)
         }
       }
       // Union local frequent patterns and distributed ones.

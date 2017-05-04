@@ -18,11 +18,11 @@
 \BOOKMARK [2][-]{subsection.7.2}{Improving the Link}{section.7}% 18
 \BOOKMARK [3][-]{subsubsection.7.2.1}{Adding Functionalities \046 Improving Middle-put Translation}{subsection.7.2}% 19
 \BOOKMARK [2][-]{subsection.7.3}{Improving Spark}{section.7}% 20
-\BOOKMARK [3][-]{subsubsection.7.3.1}{Automation of the choice between PPIC and Spark's local execution}{subsection.7.3}% 21
+\BOOKMARK [3][-]{subsubsection.7.3.1}{Automation of the Choice Between PPIC and Spark's Local Execution}{subsection.7.3}% 21
 \BOOKMARK [3][-]{subsubsection.7.3.2}{Additional Pre-processing Before the Local Execution}{subsection.7.3}% 22
 \BOOKMARK [3][-]{subsubsection.7.3.3}{First/Last Position List}{subsection.7.3}% 23
-\BOOKMARK [3][-]{subsubsection.7.3.4}{Priority scheduling in local execution}{subsection.7.3}% 24
-\BOOKMARK [3][-]{subsubsection.7.3.5}{Specialize Spark's scalable stage for single-item problems}{subsection.7.3}% 25
+\BOOKMARK [3][-]{subsubsection.7.3.4}{Specialize Spark's scalable stage for single-item problems}{subsection.7.3}% 24
+\BOOKMARK [3][-]{subsubsection.7.3.5}{Priority scheduling in local execution}{subsection.7.3}% 25
 \BOOKMARK [2][-]{subsection.7.4}{Improving PPIC}{section.7}% 26
 \BOOKMARK [3][-]{subsubsection.7.4.1}{Pushing PPIC's Ideas farther}{subsection.7.4}% 27
 \BOOKMARK [3][-]{subsubsection.7.4.2}{An Implementation Closer to Spark}{subsection.7.4}% 28
@@ -32,3 +32,4 @@
 \BOOKMARK [1][-]{section.11}{Conclusion}{}% 32
 \BOOKMARK [1][-]{section.12}{Annexes}{}% 33
 \BOOKMARK [2][-]{subsection.12.1}{Additional Performance Comparisons :}{section.12}% 34
+\BOOKMARK [1][-]{figure.17}{References}{}% 35
