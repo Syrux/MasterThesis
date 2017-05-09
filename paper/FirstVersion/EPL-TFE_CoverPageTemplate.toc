@@ -14,26 +14,26 @@
 \contentsline {subsection}{\numberline {6.1}Spark's original Implementation}{8}{subsection.6.1}
 \contentsline {subsection}{\numberline {6.2}PPIC's Original Implementation}{10}{subsection.6.2}
 \contentsline {subsection}{\numberline {6.3}Performance Comparison}{11}{subsection.6.3}
-\contentsline {section}{\numberline {7}Improving the Performances}{12}{section.7}
-\contentsline {subsection}{\numberline {7.1}A First Implementation}{12}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Improving the Link}{15}{subsection.7.2}
-\contentsline {subsubsection}{\numberline {7.2.1}Adding Functionalities \& Improving Middle-put Translation}{15}{subsubsection.7.2.1}
-\contentsline {subsection}{\numberline {7.3}Improving Spark}{18}{subsection.7.3}
-\contentsline {subsubsection}{\numberline {7.3.1}Automation of the Choice Between PPIC and Spark's Local Execution}{18}{subsubsection.7.3.1}
+\contentsline {section}{\numberline {7}Improving the Performances}{13}{section.7}
+\contentsline {subsection}{\numberline {7.1}A First Implementation}{13}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Improving the Link}{16}{subsection.7.2}
+\contentsline {subsubsection}{\numberline {7.2.1}Adding Functionalities \& Improving Middle-put Translation}{16}{subsubsection.7.2.1}
+\contentsline {subsection}{\numberline {7.3}Improving Spark}{19}{subsection.7.3}
+\contentsline {subsubsection}{\numberline {7.3.1}Automation of the Choice Between PPIC and Spark's Local Execution}{19}{subsubsection.7.3.1}
 \contentsline {subsubsection}{\numberline {7.3.2}Additional Pre-processing Before the Local Execution}{19}{subsubsection.7.3.2}
 \contentsline {subsubsection}{\numberline {7.3.3}First/Last Position List}{21}{subsubsection.7.3.3}
-\contentsline {subsubsection}{\numberline {7.3.4}Specialize Spark's scalable stage for single-item problems}{21}{subsubsection.7.3.4}
-\contentsline {subsubsection}{\numberline {7.3.5}Priority scheduling in local execution}{22}{subsubsection.7.3.5}
-\contentsline {paragraph}{\numberline {7.3.5.1}Analysing sub-problem creation}{23}{paragraph.7.3.5.1}
-\contentsline {paragraph}{\numberline {7.3.5.2}Sort sub-problem on the reducer}{24}{paragraph.7.3.5.2}
-\contentsline {paragraph}{\numberline {7.3.5.3}Sort sub-problem on the mapper}{25}{paragraph.7.3.5.3}
+\contentsline {subsubsection}{\numberline {7.3.4}Specialize Spark's scalable stage for single-item problems}{23}{subsubsection.7.3.4}
+\contentsline {subsubsection}{\numberline {7.3.5}Priority scheduling in local execution}{25}{subsubsection.7.3.5}
+\contentsline {paragraph}{\numberline {7.3.5.1}Analysing sub-problem creation}{25}{paragraph.7.3.5.1}
+\contentsline {paragraph}{\numberline {7.3.5.2}Sort sub-problem on the reducer}{25}{paragraph.7.3.5.2}
+\contentsline {paragraph}{\numberline {7.3.5.3}Sort sub-problem on the mapper}{27}{paragraph.7.3.5.3}
 \contentsline {subsection}{\numberline {7.4}Improving PPIC}{27}{subsection.7.4}
 \contentsline {subsubsection}{\numberline {7.4.1}Pushing PPIC's Ideas farther}{27}{subsubsection.7.4.1}
-\contentsline {subsubsection}{\numberline {7.4.2}An Implementation Closer to Spark}{27}{subsubsection.7.4.2}
-\contentsline {section}{\numberline {8}Final Version}{27}{section.8}
-\contentsline {section}{\numberline {9}Scalability Tests}{28}{section.9}
-\contentsline {section}{\numberline {10}Performances Under Optimal Parameters}{28}{section.10}
-\contentsline {section}{\numberline {11}Conclusion}{28}{section.11}
-\contentsline {section}{\numberline {12}Annexes}{28}{section.12}
-\contentsline {subsection}{\numberline {12.1}Additional Performance Comparisons :}{29}{subsection.12.1}
-\contentsline {section}{References}{29}{figure.17}
+\contentsline {subsubsection}{\numberline {7.4.2}An Implementation Closer to Spark}{30}{subsubsection.7.4.2}
+\contentsline {section}{\numberline {8}Final Version}{30}{section.8}
+\contentsline {section}{\numberline {9}Scalability Tests}{30}{section.9}
+\contentsline {section}{\numberline {10}Performances Under Optimal Parameters}{30}{section.10}
+\contentsline {section}{\numberline {11}Conclusion}{30}{section.11}
+\contentsline {section}{\numberline {12}Annexes}{31}{section.12}
+\contentsline {subsection}{\numberline {12.1}Additional Performance Comparisons :}{32}{subsection.12.1}
+\contentsline {section}{References}{34}{figure.20}

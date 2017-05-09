@@ -2,17 +2,20 @@
 \contentsline {figure}{\numberline {1}{\ignorespaces Performance comparison of Hadoop and Spark}}{5}{figure.1}
 \contentsline {figure}{\numberline {2}{\ignorespaces The simple architecture used during the majority of our tests}}{7}{figure.2}
 \contentsline {figure}{\numberline {3}{\ignorespaces An example of Spark's execution}}{10}{figure.3}
-\contentsline {figure}{\numberline {4}{\ignorespaces Original performances of PPIC and Spark}}{12}{figure.4}
-\contentsline {figure}{\numberline {5}{\ignorespaces A first implementation that makes PPIC scalable}}{13}{figure.5}
-\contentsline {figure}{\numberline {6}{\ignorespaces The performance impact of adding new functionalities}}{17}{figure.6}
-\contentsline {figure}{\numberline {7}{\ignorespaces Performance improvement - soft limit on the number of created sub-problem.}}{18}{figure.7}
-\contentsline {figure}{\numberline {8}{\ignorespaces Automatic detection of item-sets type in dataset}}{19}{figure.8}
-\contentsline {figure}{\numberline {9}{\ignorespaces Efficiency gain of cleaning the sequence database before any local execution}}{20}{figure.9}
-\contentsline {figure}{\numberline {10}{\ignorespaces Performance gain of first/last position lists}}{22}{figure.10}
-\contentsline {figure}{\numberline {11}{\ignorespaces Performance improvement of specialising spark's scalable stage.}}{23}{figure.11}
-\contentsline {figure}{\numberline {12}{\ignorespaces Spark's mapReduce}}{24}{figure.12}
-\contentsline {figure}{\numberline {13}{\ignorespaces Naive priority scheduling}}{25}{figure.13}
-\contentsline {figure}{\numberline {14}{\ignorespaces Performance improvement of sorting sub-problems during map stage.}}{26}{figure.14}
-\contentsline {figure}{\numberline {15}{\ignorespaces PPIC with a map structure}}{28}{figure.15}
-\contentsline {figure}{\numberline {16}{\ignorespaces PPIC's performances VS other specialized algorithm}}{29}{figure.16}
-\contentsline {figure}{\numberline {17}{\ignorespaces Performance improvement of fixing Spark's pre-processing}}{30}{figure.17}
+\contentsline {figure}{\numberline {4}{\ignorespaces An example of PPIC's execution}}{12}{figure.4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Original performances of PPIC and Spark}}{13}{figure.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces A first implementation that makes PPIC scalable}}{14}{figure.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces The performance impact of adding new functionalities}}{18}{figure.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Performance improvement - soft limit on the number of created sub-problem.}}{20}{figure.8}
+\contentsline {figure}{\numberline {9}{\ignorespaces Automatic detection of item-sets type in dataset}}{21}{figure.9}
+\contentsline {figure}{\numberline {10}{\ignorespaces Efficiency gain of cleaning the sequence database before any local execution}}{22}{figure.10}
+\contentsline {figure}{\numberline {11}{\ignorespaces Performance gain of first/last position lists}}{23}{figure.11}
+\contentsline {figure}{\numberline {12}{\ignorespaces Performance improvement of specialising spark's scalable stage.}}{24}{figure.12}
+\contentsline {figure}{\numberline {13}{\ignorespaces Spark's mapReduce}}{25}{figure.13}
+\contentsline {figure}{\numberline {14}{\ignorespaces Naive priority scheduling}}{26}{figure.14}
+\contentsline {figure}{\numberline {15}{\ignorespaces Performance improvement of sorting sub-problems during map stage.}}{28}{figure.15}
+\contentsline {figure}{\numberline {16}{\ignorespaces Map based - multi\_item algorithm}}{29}{figure.16}
+\contentsline {figure}{\numberline {17}{\ignorespaces PPIC with partial starts}}{31}{figure.17}
+\contentsline {figure}{\numberline {18}{\ignorespaces PPIC's performances VS other specialized algorithm}}{32}{figure.18}
+\contentsline {figure}{\numberline {19}{\ignorespaces Performance improvement of fixing Spark's pre-processing}}{33}{figure.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces PPIC with a map structure}}{34}{figure.20}

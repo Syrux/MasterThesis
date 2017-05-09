@@ -298,7 +298,7 @@ for tree={
   align=center,
   child anchor=north
 },
-[{Input sequences : \\ <(ADB)(ABC)(A)> \\ <(ABC)A>}, align=center, name=SS
+[{Input sequences : \\ <(ADB)(ABC)(A)> \\ <(ABC)A> \\ Number of supporting sequences necessary : 2}, align=center, name=SS
   [{Pre-processed sequences : \\ <0120123010> \\ <0123010>}, name=PDC
   	[{Empty prefix projection : \\ <|0120123010> \\ <|0123010> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions found : \\ \textrm{[01, 02, 03]}},
   		[{Projecting 01 : \\ <01|20123010> \\ <01|23010> \\ Partial starts : \\  \textrm{[4]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[2, 3, 01]}},
@@ -362,23 +362,88 @@ PPIC's execution can be separated in two stages :
 	
 	The pre-processing stage will also take care of adding multiple constraint, depending on the wishes of the user. Thus restraining the solution space as desired and improving performances at reaching specific solutions.
 	
-\item \textbf{Execution :} Once the pre-processing is finished, the algorithm will truly start to run. Using the three matrices, prefixes will then be extended efficiently using a DFS approach possible thanks to trailing. Which is more efficient than a BFS approach were multiple copies of the database would need to be kept. Memory consumption during the execution will thus be minimal. \newline
+\item \textbf{Execution :} Once the pre-processing is finished, the algorithm will truly start to run. Using the three matrices, prefixes will then be extended efficiently using a DFS approach. An approach possible thanks to trailing, which is more efficient than a BFS approach were multiple copies of the database would need to be kept, or where the prefixes would need to be re-projected. Memory consumption during the execution will thus be kept minimal. \newline
 
-Each time a valid solution is found. That is, a solution that satisfy all constraints. The execution will be momentarily interrupted. The solution will then be translated back to the items name corresponding the recorded ID's. \newline
+Through each step of the DFS execution, the last item of the current prefix will be projected efficiently as the algorithm keeps track of the minimal index after which the previous  were considered supported. Thus, only the remains of the sequence will need to be searched for confirming the projection. Once projected, the algorithm will then prune possible solutions for the next pattern efficiently, thanks to the lastPosition list, and continue the execution. 
+
+Additionally, to increase performances, the algorithm keep note of which sequence support the current prefixes while searching for extension. After extending the prefix, only those sequence will thus have to be searched in sub-sequent branches of the DFS execution. Since the algorithm also keep track of the number of support for each extensions, an improvement was also made to stop projections once all such sequence had been projected. \newline
+
+Each time a valid solution is found. That is, a solution that satisfy all constraints. The execution will be momentarily interrupted. The solution will then be translated back to the items name corresponding the recorded ID's and saved in a result list. \newline
 
 Once the solver determines that no further solution can be found under the specified constraints. The execution will terminate, and all resulting pattern will be returned.
 \end{enumerate}
 
-TODO - Speek more about how the execution is happening \newline
-TODO - Add image  + explanation of sequence selection
-TODO - Add exampless
+An example of a complete execution of PPIC can be found in figure \ref{fig:ppic_exec_example} \newline
+
+TODO - Add image  + explanation of sequence selection ?
 TODO - Should I add some pseudo code ?
+
+\begin{figure}[!h]
+%\hspace*{-1cm}
+\centering
+\scalebox{0.5}{
+\begin{forest}
+for tree={
+  draw,
+  minimum height=2cm,
+  anchor=north,
+  align=center,
+  child anchor=north
+},
+[{Input sequences : \\ <ADBABCA> \\ <ABCA> \\ <AD> \\ Number of supporting sequences necessary : 2}, align=center, name=SS
+  [{Pre-processed sequences : \\ <1421231> \\ <1231> \\ <14> \\ indexInSequence : \\ $[0, 0, 0]$ \\ supportCounter : \\ $[3, 2, 2, 2]$ \\ firstPosList: \\ $[1, 3, 6, 2]$ \\ $[1, 2, 3, 0]$ \\ $[1, 0, 0, 2]$ \\ lastPosList: \\ $[7, 5, 6, 2]$ \\ $[4, 2, 3, 0]$ \\ $[1, 0, 0, 2]$ \\ interestingPosList: \\ $[2, 5, 5, 5, 6, 7, 0]$ \\ $[2, 3, 4, 0]$ \\ $[2, 0]$}, name=PDC
+  		[{Projecting 4 : \\ indexInSequence : \\ $[2, 4, 2]$ \\ sequenceSupported : \\ $[1, 3]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  		]
+  		[{Projecting 1 : \\ indexInSequence : \\ $[1, 1, 1]$ \\ sequenceSupported : \\ $[1, 2, 3]$ \\ itemSupportCounter : \\ $[2, 2, 2, 2]$ \\ Extensions supported : \\ \textrm{[1, 2, 3, 4]}}
+  			[{Projecting 14 : \\ indexInSequence : \\ $[2, 4, 2]$ \\ sequenceSupported : \\ $[1, 3]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			]
+  			[{Projecting 11 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			]
+  			[{Projecting 13 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
+  				[{Projecting 131 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  				]
+  			]
+  			[{Projecting 12 : \\ indexInSequence : \\ $[3, 2, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 1, 2, 0]$ \\ Extensions supported : \\ \textrm{[1, 3]}}
+  				[{Projecting 121 : \\ indexInSequence : \\ $[4, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  				]
+  				[{Projecting 123 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
+  					[{Projecting 1231 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  					]
+  				]
+  			]
+  		]
+  		[{Projecting 2 : \\ indexInSequence : \\ $[3, 2, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 1, 2, 0]$ \\ Extensions supported : \\ \textrm{[1, 3]}}
+  			[{Projecting 21 : \\ indexInSequence : \\ $[4, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			]
+  			[{Projecting 23 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
+  				[{Projecting 231 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  				]
+  			]
+  		]
+  		[{Projecting 3 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
+  			[{Projecting 31 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			]
+  		]
+  	  ]
+  	]
+  ]
+]
+%\node[anchor=west,align=left]  at ([xshift=-2cm]MS.west) {Level 3\\Criteria};
+\end{forest}}
+\caption[An example of PPIC's execution]{
+	\tabular[t]{@{}l@{}}
+		A simple execution of PPIC's algorithm.\\
+		The solutions patterns are the projected prefixes
+	\endtabular
+}
+\label{fig:ppic_exec_example}
+\end{figure}
 
 \subsection{Performance Comparison}
 
 Now that we understand both algorithms better, the time has come to compare their performance under similar resources. Since PPIC's is neither scalable nor concurrent, we will exceptionally use and even simpler architecture for our test on Spark by restraining our worker to a single executor. \newline
 
-As you can see in Figure \ref{fig:originalAlgorithmPerformances}, given the same resources, PPIC greatly overcomes Spark on most datasets. But, although it completely outperforms Spark's implementation on sparser dataset like protein, it fails to do so on denser datasets like Kosarak-70. Especially when the minimal number of supporting sequence is large, and much of the dataset can be cleaned during the pre-processing stage. \newline
+As you can see in Figure \ref{fig:originalAlgorithmPerformances}, given the same resources, PPIC greatly overcomes Spark on most datasets. But, although it completely outperforms Spark's implementation on sparser dataset like protein, it fails to do so on denser datasets like Kosarak-70 or PubMed. Especially when the minimal number of supporting sequence is large, and much of the dataset can be cleaned during the pre-processing stage. \newline
 
 We can also notice that PPIC's performance are far more stable, and that running additional tests for a smaller amount of minimal support may even show on inversion on denser datasets like PubMed.\newline
 
@@ -438,7 +503,7 @@ In fact, Spark's implementation already contains a way to control the number of 
 
 \end{enumerate}
 
-On the other hand, we can notice that multi-item performance haven't changed much, if at all. Which is normal since the modification made only concerned single-item problems. \newline
+On the other hand, we can notice that multi-item performance weren't impacted at all. Which is normal since the modification made only concerned single-item problems. \newline
 
 TODO : Should I put an emphasis on the important part below by putting it in its own section ? \newline
 
@@ -465,8 +530,8 @@ First, we implemented four new functionalities :
 	\item Min pattern length : We added a functionality to specify the minimal length a pattern should have before being considered solution.
 	\item Limit on the maximal number of item per item-set : This functionality was added so that user could better control the outputted results. Supposing an hypothetical business would like to find all sequences of item bought in pair in a dataset, it would have no need for solutions where item-sets are larger than two. We can thus stop searching for further item-set extensions once the limit has already been reached, and de-facto, improve our algorithm performances for returning those specific solution.
 	\item Soft limit on the number of sub-problems created : By default inactivated, this parameters is enabling far better performance on protein like datasets where projected databases tend to be rather similar in sub-problems. Its implementation is a simple check at the beginning of each iteration of the scalable algorithm. If the number of sub-problem created is larger than the user inputted value, the implementation will forcefully put an end to the scalable stage, and switch to a local execution on each worker.\newline
-	 As you can see in Figure \ref{fig:sub_problem_limit}, performance improvement are only observed on the protein, Kosarak and slen2 datasets, but the increase in performance is significant. The problem being that the loss of performance on other datasets is generally even more significant. This loss in performance comes from large differences in sub-problems sizes appearing due to the forced local execution. Since the largest problems tend to be created and processed last, only a few executor have problems to work on toward the end of the execution. The remaining executor staying idle for the reminder of the local execution stage. Moreover, those remaining problems take a very long time to compute, greatly slowing down the measured performance. \\
-	 As is, this parameter should be used with extreme care. However, we will consecrate a section to studying possible improvement of its performances later in this paper. TODO link to that section.
+	 As you can see in Figure \ref{fig:sub_problem_limit}, performance improvement are only observed on the protein, Kosarak, slen2 and slen3 datasets, but the increase in performance is significant. The problem being that the loss of performance on other datasets is generally even more significant. This loss in performance comes from large differences in sub-problems sizes appearing due to the forced local execution. Since the largest problems tend to be created and processed last, only a few executor have problems to work on toward the end of the execution. The remaining executor staying idle for the reminder of the local execution stage. Moreover, those remaining problems take a very long time to compute, greatly slowing down the measured performance. \\
+	 As is, this parameter should be used with extreme care. However, we will consecrate a section to studying possible improvement of its performances later in this paper. TODO : add link to that section.
 \end{enumerate}
 
 While these additions did not have any measurable impact on performances at their default value, they still allowed better control of the search space. Proving a certain level of modularity was easily kept from the original CP based implementation. In all the following graph, unless specified otherwise, those parameters will be kept to their default value, as to make sure they do not interfere with the observed efficiency gain/loss. \newline
@@ -476,8 +541,8 @@ We then looked into improving our performances, leading to the implementation of
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.9\textwidth]{new_functionalities.png}
-  TODO - Should I put another version of the graph without log-scale. The improvements seem downgraded due to that scale here.
   \caption{The performance impact of adding new functionalities}
+  TODO - Should I put another version of the graph without log-scale. The improvements seem downgraded due to that scale here.
   \label{fig:new_functionalities_perf}
 \end{figure}
 
@@ -485,9 +550,15 @@ We then looked into improving our performances, leading to the implementation of
 First, during its pre-processing, Spark cleans unfrequent items from the database, finding frequent items in the process. In the original implementation, those frequent items are then discarded, and pattern searches are launched starting from an empty prefix. We thus decided to try keeping those frequent items, and passing them as starting prefixes to the various worker. Hereby removing the first and longest iteration of the algorithm. The performance obtained by implementing this change and the preceding 4 functionalities are reflected on the red line of Figure \ref{fig:new_functionalities_perf}.
 \newline
 
-As you can see, very small gain in time are generally made. At the exception of the Kosarak-70 and slen-2 datasets, which posses a lot of item but become quite small once cleaned. We believe those small loss of performance are due to the delay needed to transfer the already calculated frequent items to the various executor being larger than the time needed to actually recalculate those items from the small cleaned database in a scalable environment. \newline
+As you can see, very small gain in time are generally made. At the exception of the Kosarak-70, slen2 and slen3 datasets, which are our datasets possessing the most item after cleaning the database. At first, we believed those small loss of performance were due to the delay needed to transfer the already calculated frequent items to the various executor being larger than the time needed to actually recalculate those items from the small cleaned database in a scalable environment. It was only much later, when we added the slen3 dataset, that we realised this interpretation was incomplete.\newline
 
-Despite the inefficiency on those two datasets, we decided to keep this change, as the efficiency gain can be relatively significant on larger datasets like Fifa or Bible. \newline
+In the original implementation, since the items need to be recalculated, they will be recalculated only on the sequences contained in the local partition. In this new version,we force every executor to receive those items and to store prefixes object for them. Those object then created will then be kept on the executor for the entirety of the execution as, should a RDD need to be recalculated, they would be a necessary input for their recreation. \newline
+
+Meaning that, when the number of items are large, this additional feature will require more memory usage, and more computation time to received the items and their frequencies and create the prefixes. Especially when, as in slen3 which is a combination of multiple generated datasets, every partition generally concern a whole different set of items.\newline
+
+Sadly, we realised this mistake much too late, as only the slen3 dataset proved it's quite disastrous implicationa and, at the time, we had decided to keep this improvement despite the small inefficiency on Kosarak and slen2. Since all other dataset displayed efficiency gain at the time. \newline
+
+We will however correct this mistake in our final version of the algorithm, and remove the early-start functionality, since the change is harmful to the scalability of the program. \newline
 
 We then implemented a second change, an additional pre-processing stage before the local execution of PPIC, so that unfrequent items would once again be detected and cleaned. The performance obtained, which can also be seen on figure \ref{fig:new_functionalities_perf}, displayed great performance improvement on harder execution. This additional feature allowing a 3x performance speed-up on the Bible dataset and a 2x speed-up on Fifa. Lesser performance gain were also observed on protein and the latter stages of PubMed. \newline
 
@@ -519,7 +590,7 @@ In that endeavour, our first go to was calculating the maxItemPetItemSet argumen
 As you can see on figure \ref{fig:maxItemPerItemset_recalculated}.
 While this improvement achieved its goal, slight performance degradation were also observed, due to the need for calculating this value. \newline
 
-While, at first, we thought those small loss where worth for this feature, we ultimately decided to discard this change as a more efficient way of doing that exist. As you will see in the next section, it can be implemented in a non performance damaging way.
+While, at first, we thought those small loss where worth this additional feature, we ultimately decided to discard this change as a more efficient way of doing that exist. As you will see in the next section, the local-execution choice automation can be implemented in a non performance damaging way.
 
 \begin{figure}[h]
   \centering
@@ -540,7 +611,7 @@ We thus designed a new cleaning process suited both for Spark and PPIC's local e
 
 While creating the new cleaning algorithm, we also discovered more than a few inefficiencies on the old one. Such as the use of ArrayBuffer structure instead of the much more efficient ArrayBuilder, or un-needed extra iteration during the matrices creation. \newline
 
-The new version of the algorithm was thus far more performant on both type of pattern mining problems, as you can see in figure \ref{fig:cleaning_before_local_exec}. \newline
+The new version of the algorithm was thus more performant on every dataset of both type of pattern mining problems, as you can see in figure \ref{fig:cleaning_before_local_exec}. \newline
 
 \begin{figure}[h]
   \centering
@@ -576,10 +647,10 @@ Those worsening performance appear because the benefit of those additional compu
 
 Another reason for those worsening performance would be the transfer time of the calculated positions list, which can be very large depending on the number of frequent items. The delay imposed by their calculation and their transfer through the executor are thus far from negligible. \newline
 
-However, while suffering from the same afflictions, an improvement in performance can be observed on multi-item pattern datasets, where those techniques weren't already in use during the local execution stage, especially on slen1. \newline
+However, while suffering from the same afflictions, an improvement in performance can be observed on multi-item pattern datasets, where those techniques weren't already in use during the local execution stage, especially on the slen1 dataset. \newline
 
-For this improvement to show it's full effect, we would thus need to redesign spark's local execution, separating it completely from the scalable stage, so that positions list could only be used locally.
-Which also make more sense in a memory consumption point of view, since, on top of the effects being greater, the databases would be smaller and so would be the position lists.
+For this improvement to show it's full effect, we would thus need to redesign spark's local execution, separating it completely from the scalable stage, so that positions lists could only be used locally and display fully their efficiency gain without damaging scalability. \newline
+Using this improvement during the scalable execution making less sense from a memory consumption point of view, since this requires to shuffle the positions lists along the related sequences.
 
 \subsubsection{Specialize Spark's scalable stage for single-item problems}
 
@@ -589,7 +660,7 @@ We thus implemented a new scalable stage specialised for single-item pattern pro
 
 A trade-off become however necessary as we now needed to detect in which type of pattern mining problem we were before starting the execution, since we needed to create a different database and simply removing it's delimiters wouldn't have been efficient. \newline
 
-The most efficient way we found to do that was during the frequent detection part of the pre-processing. It however comes at a small variable cost which depends on the database size, as you can see on both slen datasets of Figure \ref{fig:scalable_single_item}. \newline
+The most efficient way we found to do that was during the frequent detection part of the pre-processing. It however comes at a small performance cost which depends on the database size, as you can see on the slen datasets of Figure \ref{fig:scalable_single_item}. \newline
 
 \begin{figure}[h]
   \centering
@@ -638,7 +709,7 @@ We thus concluded a simple solution could be implemented. According to the speci
   \label{fig:priority_scheduling_performance_comparison}
 \end{figure}
 
-As you can see, net performance improvements can be observed, especially for Kosarak, protein and slen2, and while BIBLE, FIFA and slen1 suffer from slight performance loss in their later stages, the damage is rather limited in comparison to the otherwise gain. Applying the sort function to the algorithm also isn't too damaging  even when sub-problems aren't limited, as we can see with the red line, it should however be avoid should the algorithm remain as is.\newline
+As you can see, net performance improvements can be observed, especially for Kosarak, protein, slen2 and slen3. While BIBLE, FIFA and slen1 suffer from slight performance loss in their later stages, the damage is rather limited in comparison to the otherwise gain. Applying the sort function to the algorithm also isn't too damaging  even when sub-problems aren't limited, as we can see with the red line, it should however be avoided in the final version. The sort function should only be called when relevant.\newline
 
 At first glance, this thus looks like a nice little improvement. However, a huge problem remain, as you can see on protein's measurements, the black line lack its fourth point. The reason being a constant crash of the algorithm due to a lack of memory ! \newline
 
@@ -679,38 +750,65 @@ Our final implementation attempts, were to create a CP-based implementation to s
 
 \subsubsection{Pushing PPIC's Ideas farther}
 
-TODO - TO REDO ENTIRELY WITH NEW ALGO !9
-
 Our first attempt at creating such an implementation, was to try pushing PPIC's ideas further. \newline
 
 We decided to forgo all three pre-computed matrices, and to change the structure of our sequence database to fill those matrices purposes more efficiently. Instead of an array, we changed each sequence into a map containing unique symbols as key and the various positions of each key symbol as value. 
 Additionally, we represented the sequence's symbols positions (including zero delimiter position) by a ReversibleArrayStack structure, thus allowing efficient backtracking through trailing. \newline
 
-This new structure's purpose was to allow us to make distant jumps and checks more efficiently, at the cost of an higher memory consumption. Theorically, finding the next position of a given symbol would be O(1), be this the last or first position of the symbol. Should the symbol's position list be empty, or should the last recorder be smaller than our current position in the sequence, we would also know that no more such symbol were contained in the remains of the sequence. \newline
+This new structure's purpose was to allow us to make distant jumps and checks more efficiently, at the cost of an higher memory consumption. Theoretically, finding the next position of a given symbol would be O(1), be this the last or first position of the symbol. Should the symbol's position list be empty, or should the last recorder be smaller than our current position in the sequence, we would also immediately know that no more such symbol were contained in the remains of the sequence. \newline
 
-We thus had good faith our performance could be improved, until we saw the results of our performance tests. As you can see in Figure \ref{multi_map}, the performance were terrible. \newline
-
-While we couldn't see exactly why at first, profiling our algorithm revealed it came from two majors factor. First, to attain the same purpose as the three matrices with our map structure, we needed many more trailing points which had to be backtracked at each step of the search. Regularly generating significant period of time were our algorithm did nothing but backtrack the various sequence of its database. \newline
-
-The second factor was solution pruning. In PPIC, pruning solution from the CPIntVar representing our search space could be done by checking the last positions of each item, quickly asserting that if the start of a sequence was after the last position of an item in a sequence, the sequence was no longer supporting the item. \newline
-
-Here, however, the situation was different. To efficiently prune a multi-item pattern problem, checking last positions was no longer sufficient. To prune efficiently, each itemSet now needs to be checked so that its possible extensions could be deemed supported.
+We thus had good faith that our performance could be improved, until we saw the results of our performance tests. As you can see in Figure \ref{fig:multi_map}, the performance were terrible. \newline
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{multi_item_cp.png}
-  \caption[PPIC with a map structure]{
+  \includegraphics[width=0.9\textwidth]{multi_item_map.png}
+  \caption[Map based - multi\_item algorithm]{
   	\tabular[t]{@{}l@{}}
   		Performance of a CP based algorithm replacing \\
   		all three pre-processed matrices from PPIC by a Map structure
   	\endtabular
   }
+  (Please take notice that we are here comparing to the original Spark implementation instead of the reference algorithm. Since the featured implementation doesn't posses the early-start improvement and the comparison is, in this case, much more relevant.)
   \label{fig:multi_map}
 \end{figure}
 
+While we couldn't see exactly why at first, profiling our algorithm revealed it came from two majors factor. First, to attain the same purpose as the three matrices with our map structure, we needed many more trailing points which had to be backtracked at each step of the search. Regularly generating significant period of time were our algorithm did nothing but backtrack the various sequences of its database. \newline
+
+The second factor was solution pruning. In PPIC, pruning our search space could be done by checking the last positions of each item, quickly asserting that if the start of a sequence was after the last position of an item in a sequence, the sequence was no longer supporting the item. \newline
+
+Here, however, the situation is different. To efficiently prune a multi-item pattern problem, checking last positions was no longer sufficient. To prune efficiently, each itemSet now needs to be checked so that its possible extensions could be deemed supported. \newline
+
+Which amount to this algorithm doing twice the work for the same results. As we found out through our tests, pruning using PPIC's original method (last position list) instead of fully, as spark did, produces better performance. A comparison of the two being available in the annexes, figure \ref{fig:multi_map_comp}
+
 \subsubsection{An Implementation Closer to Spark}
 
-TODO - Solve multi-item bug + add partial-start support
+Since the obtained performance weren't conclusive, we decided to try another approach at developing an efficient CP based implementation for multi-item problems. This second attempt focusing on bringing the partialStart structure of Spark to be used in a PPIC like algorithm. \newline
+
+First we realised that keeping all three matrices wouldn't be efficient. In a multi\_item context, to keep the same function, the interesting position matrix needs to be modified to indicate the next last appearance of an item in an itemset, instead of the next last appearance of an item in the sequence, as it did before. This in turn, makes this matrix useless as the next such position will nearly always be the next item of the database. \newline
+
+We thus decided to remove this matrix, but to keep the first and last positions lists.
+We also modified our implementation to keep zero delimiters during cleaning and to change the partial position so that they still referred to the same item-set after cleaning (lest the item-set completely disappear in which case the particular partial start will be scraped). \newline
+
+The disadvantage of partial start however, is that they need to be maintained and advanced at each step of our DFS execution. When starting a new item-set, this means all remaining sequence of the database will need to be explored fully. \newline
+
+For item-set extensions however, only the current partial start will need to be checked, thus we expect greater performance improvement the longer the item-set should extended. \newline
+
+The performance tests realised at the end of our implementation, shown in figure \ref{fig:multi_array}, revealed improved efficiency in comparison to spark original algorithm and our previously created map algorithm on multi\_item datasets. It however come at the cost of an inefficiency on single-item dataset, where performance fails to reach spark's standard on anything but the FIFA dataset. \newline
+
+This implementation should thus only be used for dealing with multi-item dataset, while single-item dataset should be locally executed through PPIC, whose efficiency was focused on this kind of problem.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{multi_item_cp.png}
+  \caption[PPIC with partial starts]{
+  	\tabular[t]{@{}l@{}}
+  		Performance of a CP based algorithm extending \\
+  		PPIC's implementation by adding maintaining partial starts.
+  	\endtabular
+  }
+  \label{fig:multi_array}
+  (Please take notice that we are here comparing to the original Spark implementation instead of the reference algorithm. Since the featured implementation doesn't posses the early-start improvement and the comparison is, in this case, much more relevant.)
+\end{figure}
 
 \section{Final Version}
 
@@ -738,18 +836,31 @@ TODO : Remerciement/Acknoledgement + pas oublier de remercier les serveurs CECI
 
 \subsection{Additional Performance Comparisons :}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=1\textwidth]{PPICvsSpecialised.png}
   \caption{PPIC's performances VS other specialized algorithm}
   \label{PPIC's perfomance against other specialized implementations}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.9\textwidth]{spark_original_fixed_preprocessing.png}
   \caption{Performance improvement of fixing Spark's pre-processing}
   \label{spark_preprocessing_fix}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{multi_item_map_improved.png}
+  \caption[PPIC with a map structure]{
+  	\tabular[t]{@{}l@{}}
+  		Performance comparison of a full pruning VS a partial pruning \\ 
+  		on the \textrm{multi\_map} implementation.
+  	\endtabular
+  }
+  (Please take notice that we are here comparing to the original Spark implementation instead of the reference algorithm. Since the featured implementation doesn't posses the early-start improvement and the comparison is, in this case, much more relevant.)
+  \label{fig:multi_map_comp}
 \end{figure}
 
 TODO - ADD REFERENCES, CA MANQUE ENCORE
