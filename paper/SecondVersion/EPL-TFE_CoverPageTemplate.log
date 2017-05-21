@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.11.28)  21 MAY 2017 11:28
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.11.28)  21 MAY 2017 12:05
 entering extended mode
 **EPL-TFE_CoverPageTemplate.tex
 
@@ -1560,153 +1560,154 @@ Underfull \hbox (badness 10000) in paragraph at lines 243--244
 [9 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Pref
 ixSpanOrigDB.png (PNG copy)> <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper
 /SecondVersion/Graphs/PrefixSpanProjDB.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 248--250
+Underfull \hbox (badness 10000) in paragraph at lines 248--249
 
  []
 
 
-LaTeX Warning: Reference `cspadeDatabaseRepr' on page 10 undefined on input lin
-e 251.
-
-
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cspadeV
-erticalRepr.png, id=501, 351.3125pt x 348.30125pt>
+erticalRepr.png, id=502, 351.3125pt x 348.30125pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cs
 padeVerticalRepr.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/csp
 adeVerticalRepr.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/cspadeVerticalRepr.png used on input line 257.
+ndVersion/Graphs/cspadeVerticalRepr.png used on input line 256.
 (pdftex.def)             Requested size: 172.98956pt x 171.50882pt.
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cspadeH
-orizontalRepr.png, id=502, 522.95375pt x 208.78pt>
+orizontalRepr.png, id=503, 522.95375pt x 208.78pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cs
 padeHorizontalRepr.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/csp
 adeHorizontalRepr.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/cspadeHorizontalRepr.png used on input line 262.
+ndVersion/Graphs/cspadeHorizontalRepr.png used on input line 261.
 (pdftex.def)             Requested size: 255.1619pt x 101.86981pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 269--270
+Underfull \hbox (badness 10000) in paragraph at lines 268--269
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 271--272
+Underfull \hbox (badness 10000) in paragraph at lines 270--271
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cspadeV
-erticalIDList1.png, id=504, 518.93875pt x 211.79124pt>
+erticalIDList1.png, id=505, 518.93875pt x 211.79124pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cs
 padeVerticalIDList1.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/csp
 adeVerticalIDList1.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/cspadeVerticalIDList1.png used on input line 279.
+ndVersion/Graphs/cspadeVerticalIDList1.png used on input line 278.
 (pdftex.def)             Requested size: 245.82875pt x 100.33041pt.
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cspadeV
-erticalIDList2.png, id=505, 390.45876pt x 159.59625pt>
+erticalIDList2.png, id=506, 390.45876pt x 159.59625pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cs
 padeVerticalIDList2.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/csp
 adeVerticalIDList2.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/cspadeVerticalIDList2.png used on input line 284.
+ndVersion/Graphs/cspadeVerticalIDList2.png used on input line 283.
 (pdftex.def)             Requested size: 204.85846pt x 83.73326pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 294--295
+Underfull \hbox (badness 10000) in paragraph at lines 293--294
 
  []
 
 [10 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/csp
 adeVerticalRepr.png (PNG copy)> <F:/Memoire/CodeSavedOnline/New/MasterThesis/pa
 per/SecondVersion/Graphs/cspadeHorizontalRepr.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 296--297
+Underfull \hbox (badness 10000) in paragraph at lines 295--296
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 298--299
+Underfull \hbox (badness 10000) in paragraph at lines 297--298
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 300--301
+Underfull \hbox (badness 10000) in paragraph at lines 299--300
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--303
+Underfull \hbox (badness 10000) in paragraph at lines 301--302
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 310--311
+Underfull \hbox (badness 10000) in paragraph at lines 307--308
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 309--310
 
  []
 
 [11 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/csp
 adeVerticalIDList1.png (PNG copy)> <F:/Memoire/CodeSavedOnline/New/MasterThesis
 /paper/SecondVersion/Graphs/cspadeVerticalIDList2.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 312--313
+Underfull \hbox (badness 10000) in paragraph at lines 311--312
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 314--315
+Underfull \hbox (badness 10000) in paragraph at lines 313--314
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 320--321
+Underfull \hbox (badness 10000) in paragraph at lines 319--320
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 322--323
+Underfull \hbox (badness 10000) in paragraph at lines 321--322
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 324--325
+Underfull \hbox (badness 10000) in paragraph at lines 323--324
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 330--331
+Underfull \hbox (badness 10000) in paragraph at lines 329--330
 
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 346--347
+Underfull \hbox (badness 10000) in paragraph at lines 345--346
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 350--351
+Underfull \hbox (badness 10000) in paragraph at lines 349--350
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 352--353
+Underfull \hbox (badness 10000) in paragraph at lines 351--352
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 357--358
+Underfull \hbox (badness 10000) in paragraph at lines 356--357
 
  []
 
@@ -1732,7 +1733,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 357--358
 Missing character: There is no ] in font nullfont!
 Missing character: There is no ] in font nullfont!
 
-Overfull \hbox (25.81564pt too wide) in paragraph at lines 410--416
+Overfull \hbox (25.81564pt too wide) in paragraph at lines 409--415
  [][] 
  []
 
@@ -1740,86 +1741,86 @@ Overfull \hbox (25.81564pt too wide) in paragraph at lines 410--416
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [13]
-Underfull \hbox (badness 10000) in paragraph at lines 433--434
+Underfull \hbox (badness 10000) in paragraph at lines 432--433
 
  []
 
 [14]
-Underfull \hbox (badness 10000) in paragraph at lines 435--436
+Underfull \hbox (badness 10000) in paragraph at lines 434--435
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 441--442
+Underfull \hbox (badness 10000) in paragraph at lines 440--441
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 443--444
+Underfull \hbox (badness 10000) in paragraph at lines 442--443
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 445--446
+Underfull \hbox (badness 10000) in paragraph at lines 444--445
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 451--452
+Underfull \hbox (badness 10000) in paragraph at lines 450--451
 
  []
 
 
-LaTeX Warning: Citation `RDD' on page 15 undefined on input line 453.
+LaTeX Warning: Citation `RDD' on page 15 undefined on input line 452.
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/hadoopV
-Sspark.png, id=545, 414.54875pt x 356.33125pt>
+Sspark.png, id=546, 414.54875pt x 356.33125pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/ha
 doopVSspark.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/had
 oopVSspark.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/hadoopVSspark.png used on input line 457.
+ndVersion/Graphs/hadoopVSspark.png used on input line 456.
 (pdftex.def)             Requested size: 273.14923pt x 234.7933pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 462--463
+Underfull \hbox (badness 10000) in paragraph at lines 461--462
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+Underfull \hbox (badness 10000) in paragraph at lines 463--464
 
  []
 
 [15]
-Underfull \hbox (badness 10000) in paragraph at lines 468--469
+Underfull \hbox (badness 10000) in paragraph at lines 467--468
 
  []
 
 [16 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/had
 oopVSspark.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 491--494
+Underfull \hbox (badness 10000) in paragraph at lines 490--493
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 495--496
+Underfull \hbox (badness 10000) in paragraph at lines 494--495
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 497--498
+Underfull \hbox (badness 10000) in paragraph at lines 496--497
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 499--500
+Underfull \hbox (badness 10000) in paragraph at lines 498--499
 
  []
 
@@ -1846,445 +1847,445 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 LaTeX Warning: Reference `spark_preprocessing_fix' on page 17 undefined on inpu
-t line 554.
+t line 553.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 561--562
+Underfull \hbox (badness 10000) in paragraph at lines 560--561
 
  []
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 563--564
+Underfull \hbox (badness 10000) in paragraph at lines 562--563
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 565--566
+Underfull \hbox (badness 10000) in paragraph at lines 564--565
 
  []
 
 [18]
-Underfull \hbox (badness 10000) in paragraph at lines 590--592
+Underfull \hbox (badness 10000) in paragraph at lines 589--591
 
  []
 
 [19]
-Underfull \hbox (badness 10000) in paragraph at lines 597--598
+Underfull \hbox (badness 10000) in paragraph at lines 596--597
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 605--606
+Underfull \hbox (badness 10000) in paragraph at lines 604--605
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 607--608
+Underfull \hbox (badness 10000) in paragraph at lines 606--607
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 613--615
+Underfull \hbox (badness 10000) in paragraph at lines 612--614
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 616--617
+Underfull \hbox (badness 10000) in paragraph at lines 615--616
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 618--619
+Underfull \hbox (badness 10000) in paragraph at lines 617--618
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 620--621
+Underfull \hbox (badness 10000) in paragraph at lines 619--620
 
  []
 
 [20]
-Underfull \hbox (badness 10000) in paragraph at lines 630--631
+Underfull \hbox (badness 10000) in paragraph at lines 629--630
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 634--635
+Underfull \hbox (badness 10000) in paragraph at lines 633--634
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 636--637
+Underfull \hbox (badness 10000) in paragraph at lines 635--636
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 638--639
+Underfull \hbox (badness 10000) in paragraph at lines 637--638
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 646--647
+Underfull \hbox (badness 10000) in paragraph at lines 645--646
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 650--651
+Underfull \hbox (badness 10000) in paragraph at lines 649--650
 
  []
 
 [21]
-Underfull \hbox (badness 10000) in paragraph at lines 662--663
+Underfull \hbox (badness 10000) in paragraph at lines 661--662
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 664--665
+Underfull \hbox (badness 10000) in paragraph at lines 663--664
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 666--667
+Underfull \hbox (badness 10000) in paragraph at lines 665--666
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 668--669
+Underfull \hbox (badness 10000) in paragraph at lines 667--668
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 670--671
+Underfull \hbox (badness 10000) in paragraph at lines 669--670
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 678--679
+Underfull \hbox (badness 10000) in paragraph at lines 677--678
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--681
+Underfull \hbox (badness 10000) in paragraph at lines 679--680
 
  []
 
 [22]
-Underfull \hbox (badness 10000) in paragraph at lines 682--683
+Underfull \hbox (badness 10000) in paragraph at lines 681--682
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 684--685
+Underfull \hbox (badness 10000) in paragraph at lines 683--684
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 686--687
+Underfull \hbox (badness 10000) in paragraph at lines 685--686
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 692--693
+Underfull \hbox (badness 10000) in paragraph at lines 691--692
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 694--695
+Underfull \hbox (badness 10000) in paragraph at lines 693--694
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 696--698
+Underfull \hbox (badness 10000) in paragraph at lines 695--697
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 703--705
+Underfull \hbox (badness 10000) in paragraph at lines 702--704
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sparkMa
-pReduce.png, id=624, 459.6372pt x 264.5082pt>
+pReduce.png, id=625, 459.6372pt x 264.5082pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sp
 arkMapReduce.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/spa
 rkMapReduce.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/sparkMapReduce.png used on input line 708.
+ndVersion/Graphs/sparkMapReduce.png used on input line 707.
 (pdftex.def)             Requested size: 364.19667pt x 209.58879pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 717--718
+Underfull \hbox (badness 10000) in paragraph at lines 716--717
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 719--721
+Underfull \hbox (badness 10000) in paragraph at lines 718--720
 
  []
 
 [23]
-Underfull \hbox (badness 10000) in paragraph at lines 726--727
+Underfull \hbox (badness 10000) in paragraph at lines 725--726
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 728--729
+Underfull \hbox (badness 10000) in paragraph at lines 727--728
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 730--731
+Underfull \hbox (badness 10000) in paragraph at lines 729--730
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 732--733
+Underfull \hbox (badness 10000) in paragraph at lines 731--732
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 734--735
+Underfull \hbox (badness 10000) in paragraph at lines 733--734
 
  []
 
 [24 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/spa
 rkMapReduce.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 744--745
+Underfull \hbox (badness 10000) in paragraph at lines 743--744
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 746--747
+Underfull \hbox (badness 10000) in paragraph at lines 745--746
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 748--749
+Underfull \hbox (badness 10000) in paragraph at lines 747--748
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 750--751
+Underfull \hbox (badness 10000) in paragraph at lines 749--750
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 758--759
+Underfull \hbox (badness 10000) in paragraph at lines 757--758
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 760--761
+Underfull \hbox (badness 10000) in paragraph at lines 759--760
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 762--764
+Underfull \hbox (badness 10000) in paragraph at lines 761--763
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 765--766
+Underfull \hbox (badness 10000) in paragraph at lines 764--765
 
  []
 
 [25]
-Underfull \hbox (badness 10000) in paragraph at lines 767--768
+Underfull \hbox (badness 10000) in paragraph at lines 766--767
 
  []
 
 Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
-ine 769.
+ine 768.
 
-Underfull \hbox (badness 10000) in paragraph at lines 778--779
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 822--823
+Underfull \hbox (badness 10000) in paragraph at lines 777--778
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 826--827
+Underfull \hbox (badness 10000) in paragraph at lines 821--822
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 828--829
+Underfull \hbox (badness 10000) in paragraph at lines 825--826
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 827--828
 
  []
 
 [26]
-Underfull \hbox (badness 10000) in paragraph at lines 830--831
+Underfull \hbox (badness 10000) in paragraph at lines 829--830
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 866--867
+Underfull \hbox (badness 10000) in paragraph at lines 865--866
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 868--869
+Underfull \hbox (badness 10000) in paragraph at lines 867--868
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 870--871
+Underfull \hbox (badness 10000) in paragraph at lines 869--870
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 872--873
+Underfull \hbox (badness 10000) in paragraph at lines 871--872
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/test_ar
-chitecture.png, id=661, 362.35374pt x 330.23375pt>
+chitecture.png, id=662, 362.35374pt x 330.23375pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/te
 st_architecture.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/tes
 t_architecture.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/test_architecture.png used on input line 878.
+ndVersion/Graphs/test_architecture.png used on input line 877.
 (pdftex.def)             Requested size: 204.85846pt x 186.70334pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 885--886
+Underfull \hbox (badness 10000) in paragraph at lines 884--885
 
  []
 
 [27]
-Underfull \hbox (badness 10000) in paragraph at lines 887--888
+Underfull \hbox (badness 10000) in paragraph at lines 886--887
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 903--904
+Underfull \hbox (badness 10000) in paragraph at lines 902--903
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 905--906
+Underfull \hbox (badness 10000) in paragraph at lines 904--905
 
  []
 
 [28 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/tes
 t_architecture.png (PNG copy)>]
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/origina
-lAlgorithm.png, id=672, 650.43pt x 650.43pt>
+lAlgorithm.png, id=673, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/or
 iginalAlgorithm.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/ori
 ginalAlgorithm.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/originalAlgorithm.png used on input line 911.
+ndVersion/Graphs/originalAlgorithm.png used on input line 910.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 912.
+(Font)              <14.4> on input line 911.
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/first_i
-mplementation.png, id=674, 650.43pt x 650.43pt>
+mplementation.png, id=675, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/fi
 rst_implementation.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/fir
 st_implementation.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/first_implementation.png used on input line 926.
+ndVersion/Graphs/first_implementation.png used on input line 925.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 933--934
+Underfull \hbox (badness 10000) in paragraph at lines 932--933
 
  []
 
 [29 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/ori
 ginalAlgorithm.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 935--936
+Underfull \hbox (badness 10000) in paragraph at lines 934--935
 
  []
 
 [30 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/fir
 st_implementation.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 942--943
+Underfull \hbox (badness 10000) in paragraph at lines 941--942
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 946--947
+Underfull \hbox (badness 10000) in paragraph at lines 945--946
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 948--949
+Underfull \hbox (badness 10000) in paragraph at lines 947--948
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 950--951
+Underfull \hbox (badness 10000) in paragraph at lines 949--950
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 956--957
+Underfull \hbox (badness 10000) in paragraph at lines 955--956
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/new_fun
-ctionalities.png, id=690, 650.43pt x 650.43pt>
+ctionalities.png, id=691, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/ne
 w_functionalities.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/new
 _functionalities.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/new_functionalities.png used on input line 962.
+ndVersion/Graphs/new_functionalities.png used on input line 961.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 968--969
+Underfull \hbox (badness 10000) in paragraph at lines 967--968
 
  []
 
 [31]
-Underfull \hbox (badness 10000) in paragraph at lines 970--971
+Underfull \hbox (badness 10000) in paragraph at lines 969--970
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 972--973
+Underfull \hbox (badness 10000) in paragraph at lines 971--972
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 974--975
+Underfull \hbox (badness 10000) in paragraph at lines 973--974
 
  []
 
 [32 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/new
 _functionalities.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 976--977
+Underfull \hbox (badness 10000) in paragraph at lines 975--976
 
  []
 
@@ -2294,144 +2295,144 @@ w_functionalities.png Graphic file (type png)
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/new
 _functionalities.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/new_functionalities.png used on input line 982.
+ndVersion/Graphs/new_functionalities.png used on input line 981.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 987--988
+Underfull \hbox (badness 10000) in paragraph at lines 986--987
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 989--990
+Underfull \hbox (badness 10000) in paragraph at lines 988--989
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 991--992
+Underfull \hbox (badness 10000) in paragraph at lines 990--991
 
  []
 
 [33]
-Underfull \hbox (badness 10000) in paragraph at lines 993--994
+Underfull \hbox (badness 10000) in paragraph at lines 992--993
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/MaxItem
-PerItemset_recalculated.png, id=708, 650.43pt x 650.43pt>
+PerItemset_recalculated.png, id=709, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Ma
 xItemPerItemset_recalculated.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Max
 ItemPerItemset_recalculated.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/MaxItemPerItemset_recalculated.png used on input line 1001.
+ndVersion/Graphs/MaxItemPerItemset_recalculated.png used on input line 1000.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1010--1011
+Underfull \hbox (badness 10000) in paragraph at lines 1009--1010
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/clean_b
-efore_localExec.png, id=710, 650.43pt x 650.43pt>
+efore_localExec.png, id=711, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cl
 ean_before_localExec.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cle
 an_before_localExec.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/clean_before_localExec.png used on input line 1018.
+ndVersion/Graphs/clean_before_localExec.png used on input line 1017.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1023--1024
+Underfull \hbox (badness 10000) in paragraph at lines 1022--1023
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1027--1028
+Underfull \hbox (badness 10000) in paragraph at lines 1026--1027
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/positio
-nLists.png, id=712, 650.43pt x 650.43pt>
+nLists.png, id=713, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/po
 sitionLists.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/pos
 itionLists.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/positionLists.png used on input line 1035.
+ndVersion/Graphs/positionLists.png used on input line 1034.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1040--1041
+Underfull \hbox (badness 10000) in paragraph at lines 1039--1040
 
  []
 
 [34]
-Underfull \hbox (badness 10000) in paragraph at lines 1042--1043
+Underfull \hbox (badness 10000) in paragraph at lines 1041--1042
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1044--1045
+Underfull \hbox (badness 10000) in paragraph at lines 1043--1044
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1046--1047
+Underfull \hbox (badness 10000) in paragraph at lines 1045--1046
 
  []
 
 [35 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Max
 ItemPerItemset_recalculated.png>]
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/scalabl
-e_single_item.png, id=723, 650.43pt x 650.43pt>
+e_single_item.png, id=724, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sc
 alable_single_item.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sca
 lable_single_item.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/scalable_single_item.png used on input line 1054.
+ndVersion/Graphs/scalable_single_item.png used on input line 1053.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1059--1060
+Underfull \hbox (badness 10000) in paragraph at lines 1058--1059
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1061--1062
+Underfull \hbox (badness 10000) in paragraph at lines 1060--1061
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/priorit
-y.png, id=725, 650.43pt x 650.43pt>
+y.png, id=726, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/pr
 iority.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/pri
 ority.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/priority.png used on input line 1071.
+ndVersion/Graphs/priority.png used on input line 1070.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
  [36 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/cl
 ean_before_localExec.png>]
@@ -2439,25 +2440,25 @@ ean_before_localExec.png>]
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1081--1082
+Underfull \hbox (badness 10000) in paragraph at lines 1080--1081
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1083--1084
+Underfull \hbox (badness 10000) in paragraph at lines 1082--1083
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/priorit
-y_final.png, id=733, 650.43pt x 650.43pt>
+y_final.png, id=734, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/pr
 iority_final.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/pri
 ority_final.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/priority_final.png used on input line 1091.
+ndVersion/Graphs/priority_final.png used on input line 1090.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
  [37 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/po
 sitionLists.png>]
@@ -2465,61 +2466,61 @@ sitionLists.png>]
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1096--1097
+Underfull \hbox (badness 10000) in paragraph at lines 1095--1096
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/multi_i
-tem_map.png, id=742, 650.43pt x 650.43pt>
+tem_map.png, id=743, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/mu
 lti_item_map.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/mul
 ti_item_map.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/multi_item_map.png used on input line 1104.
+ndVersion/Graphs/multi_item_map.png used on input line 1103.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1115--1116
+Underfull \hbox (badness 10000) in paragraph at lines 1114--1115
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1117--1118
+Underfull \hbox (badness 10000) in paragraph at lines 1116--1117
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1119--1120
+Underfull \hbox (badness 10000) in paragraph at lines 1118--1119
 
  []
 
 [38 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sca
 lable_single_item.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 1121--1122
+Underfull \hbox (badness 10000) in paragraph at lines 1120--1121
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1123--1124
+Underfull \hbox (badness 10000) in paragraph at lines 1122--1123
 
  []
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/multi_i
-tem_cp.png, id=750, 650.43pt x 650.43pt>
+tem_cp.png, id=751, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/mu
 lti_item_cp.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/mul
 ti_item_cp.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/multi_item_cp.png used on input line 1131.
+ndVersion/Graphs/multi_item_cp.png used on input line 1130.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
  [39 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/pr
 iority.png>]
@@ -2527,12 +2528,12 @@ iority.png>]
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1142--1143
+Underfull \hbox (badness 10000) in paragraph at lines 1141--1142
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1144--1145
+Underfull \hbox (badness 10000) in paragraph at lines 1143--1144
 
  []
 
@@ -2565,47 +2566,47 @@ e from
 (F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\SecondVersion\EPL-TFE_CoverP
 ageTemplate.acr)
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Smatrix
-.png, id=810, 325.215pt x 108.405pt>
+.png, id=811, 325.215pt x 108.405pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Sm
 atrix.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Sma
 trix.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/Smatrix.png used on input line 1172.
+ndVersion/Graphs/Smatrix.png used on input line 1171.
 (pdftex.def)             Requested size: 227.62206pt x 75.87636pt.
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/SabMatr
-ix.png, id=811, 188.705pt x 64.24pt>
+ix.png, id=812, 188.705pt x 64.24pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Sa
 bMatrix.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/Sab
 Matrix.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/SabMatrix.png used on input line 1177.
+ndVersion/Graphs/SabMatrix.png used on input line 1176.
 (pdftex.def)             Requested size: 133.84462pt x 45.56366pt.
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/PPICvsS
-pecialised.png, id=812, 1263.72125pt x 758.835pt>
+pecialised.png, id=813, 1263.72125pt x 758.835pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/PP
 ICvsSpecialised.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/PPI
 CvsSpecialised.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/PPICvsSpecialised.png used on input line 1190.
+ndVersion/Graphs/PPICvsSpecialised.png used on input line 1189.
 (pdftex.def)             Requested size: 455.24411pt x 273.36566pt.
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/spark_o
-riginal_fixed_preprocessing.png, id=813, 650.43pt x 650.43pt>
+riginal_fixed_preprocessing.png, id=814, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sp
 ark_original_fixed_preprocessing.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/spa
 rk_original_fixed_preprocessing.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/spark_original_fixed_preprocessing.png used on input line 1197
+ndVersion/Graphs/spark_original_fixed_preprocessing.png used on input line 1196
 .
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
@@ -2614,14 +2615,14 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sub_pro
-blem_limit.png, id=814, 650.43pt x 650.43pt>
+blem_limit.png, id=815, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/su
 b_problem_limit.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/sub
 _problem_limit.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/sub_problem_limit.png used on input line 1204.
+ndVersion/Graphs/sub_problem_limit.png used on input line 1203.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
@@ -2629,14 +2630,14 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/multi_i
-tem_map_improved.png, id=815, 650.43pt x 650.43pt>
+tem_map_improved.png, id=816, 650.43pt x 650.43pt>
 File: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/mu
 lti_item_map_improved.png Graphic file (type png)
 
 <use F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/mul
 ti_item_map_improved.png>
 Package pdftex.def Info: F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/Seco
-ndVersion/Graphs/multi_item_map_improved.png used on input line 1217.
+ndVersion/Graphs/multi_item_map_improved.png used on input line 1216.
 (pdftex.def)             Requested size: 409.71692pt x 409.72343pt.
 
 
@@ -2652,20 +2653,12 @@ e/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/spark_original_fi
 xed_preprocessing.png>] [47 <F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/
 SecondVersion/Graphs/sub_problem_limit.png>] [48 <F:/Memoire/CodeSavedOnline/Ne
 w/MasterThesis/paper/SecondVersion/Graphs/multi_item_map_improved.png>]
-Overfull \hbox (0.79999pt too wide) detected at line 1272
+Overfull \hbox (0.79999pt too wide) detected at line 1271
 |[]|
  []
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1319
-|[]|
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Overfull \hbox (0.79999pt too wide) detected at line 1342
+Overfull \hbox (0.79999pt too wide) detected at line 1318
 |[]|
  []
 
@@ -2673,7 +2666,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1342
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1414
+Overfull \hbox (0.79999pt too wide) detected at line 1341
 |[]|
  []
 
@@ -2681,7 +2674,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1414
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1445
+Overfull \hbox (0.79999pt too wide) detected at line 1413
 |[]|
  []
 
@@ -2689,7 +2682,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1445
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1506
+Overfull \hbox (0.79999pt too wide) detected at line 1444
 |[]|
  []
 
@@ -2697,7 +2690,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1506
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1549
+Overfull \hbox (0.79999pt too wide) detected at line 1505
 |[]|
  []
 
@@ -2705,7 +2698,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1549
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1604
+Overfull \hbox (0.79999pt too wide) detected at line 1548
 |[]|
  []
 
@@ -2713,7 +2706,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1604
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1633
+Overfull \hbox (0.79999pt too wide) detected at line 1603
 |[]|
  []
 
@@ -2721,7 +2714,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1633
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1678
+Overfull \hbox (0.79999pt too wide) detected at line 1632
 |[]|
  []
 
@@ -2729,7 +2722,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1678
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1728
+Overfull \hbox (0.79999pt too wide) detected at line 1677
 |[]|
  []
 
@@ -2737,7 +2730,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1728
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1777
+Overfull \hbox (0.79999pt too wide) detected at line 1727
 |[]|
  []
 
@@ -2745,18 +2738,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1777
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1841
-|[]|
- []
-
-
-LaTeX Warning: Float too large for page by 0.60048pt on input line 1841.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Overfull \hbox (0.79999pt too wide) detected at line 1868
+Overfull \hbox (0.79999pt too wide) detected at line 1776
 |[]|
  []
 
@@ -2764,7 +2746,18 @@ Overfull \hbox (0.79999pt too wide) detected at line 1868
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1913
+Overfull \hbox (0.79999pt too wide) detected at line 1840
+|[]|
+ []
+
+
+LaTeX Warning: Float too large for page by 0.60048pt on input line 1840.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (0.79999pt too wide) detected at line 1867
 |[]|
  []
 
@@ -2772,7 +2765,7 @@ Overfull \hbox (0.79999pt too wide) detected at line 1913
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 1960
+Overfull \hbox (0.79999pt too wide) detected at line 1912
 |[]|
  []
 
@@ -2780,18 +2773,26 @@ Overfull \hbox (0.79999pt too wide) detected at line 1960
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 2020
+Overfull \hbox (0.79999pt too wide) detected at line 1959
 |[]|
  []
-
-
-LaTeX Warning: Float too large for page by 14.36687pt on input line 2020.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (0.79999pt too wide) detected at line 2074
+Overfull \hbox (0.79999pt too wide) detected at line 2019
+|[]|
+ []
+
+
+LaTeX Warning: Float too large for page by 14.36687pt on input line 2019.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (0.79999pt too wide) detected at line 2073
 |[]|
  []
 
@@ -2836,31 +2837,31 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 
-Package xcolor Warning: Incompatible color definition on input line 2079.
+Package xcolor Warning: Incompatible color definition on input line 2078.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2079.
+Package xcolor Warning: Incompatible color definition on input line 2078.
 
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <9> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 2079.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 2078.
 
-Package xcolor Warning: Incompatible color definition on input line 2079.
+Package xcolor Warning: Incompatible color definition on input line 2078.
 
 
-Overfull \hbox (1.90796pt too wide) in paragraph at lines 2079--2080
+Overfull \hbox (1.90796pt too wide) in paragraph at lines 2078--2079
  [][][] 
  []
 
 [67
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2080.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2080.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2079.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2079.
 
 (F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\SecondVersion\EPL-TFE_CoverP
 ageTemplate.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2080.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2080.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2079.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2079.
 
 Package rerunfilecheck Info: File `EPL-TFE_CoverPageTemplate.out' has not chang
 ed.
@@ -2875,13 +2876,13 @@ LaTeX Warning: There were undefined references.
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 37509 strings out of 493921
- 793271 string characters out of 3147281
- 994758 words of memory out of 3000000
- 39243 multiletter control sequences out of 15000+200000
+ 37508 strings out of 493921
+ 793251 string characters out of 3147281
+ 993758 words of memory out of 3000000
+ 39242 multiletter control sequences out of 15000+200000
  99478 words of font info for 132 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 124i,27n,136p,1939b,11507s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 124i,27n,136p,1939b,11506s stack positions out of 5000i,500n,10000p,200000b,50000s
 pdfTeX warning (dest): name{glo:maths} has been referenced but 
 does not exist, replaced by a fixed one
 
@@ -2902,9 +2903,9 @@ m/lmri10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/
 Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmtt10.pfb><C:/Program Files/MiK
 TeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/
 type1/urw/helvetic/uhvr8a.pfb>
-Output written on EPL-TFE_CoverPageTemplate.pdf (68 pages, 2055181 bytes).
+Output written on EPL-TFE_CoverPageTemplate.pdf (68 pages, 2055480 bytes).
 PDF statistics:
- 1648 PDF objects out of 1728 (max. 8388607)
+ 1649 PDF objects out of 1728 (max. 8388607)
  764 named destinations out of 1000 (max. 500000)
  27268 words of extra memory for PDF output out of 29859 (max. 10000000)
 

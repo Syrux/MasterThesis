@@ -187,7 +187,7 @@ First, at the start of each iteration, all length-N candidate will be generated 
 
 While historically relevant, this algorithm was inefficiently generating all possible N-length candidate using the length N-1 candidates as basis. Among those a large amount of candidate wouldn't be frequent, and would thus waste huge amount of memory and CPU time being stocked and uselessly verified across the database. \newline
 
-One of it's good point however, lied in it's ability to be used to detect association rules (Example : When A is present, B has 75\% chance of also being present), which would give indications about the general trends in the database and allowed human operators to get a general understanding of the in-putted dataset.
+One of it's good point however, lies in it's ability to be used to detect association rules (Example : When A is present, B has 75\% chance of also being present), which can give indications about the general trends in the database and allow human operators to get a general understanding of the in-putted dataset.
 
 \subsubsection{GSP}
 
@@ -199,11 +199,11 @@ More specifically, given two items A and B, the generated candidate would be AB,
 
 The algorithm should then generate further candidates, but unlike apriori, the method has been complexified to become far more efficient. Instead of growing sequential patterns by adding all length-1 patterns to each of their end and creating a tremendous amount of unsupported patterns, we create those candidates more efficiently. \newline
 
-First, for each sequential patterns of length-N found in the previous iterations, we detect it's first and last N-1 item, this creating two sub-sequential pattern by omitting an element either at the end or start. We will then create new candidates by composing sequential patterns with similar end and start sub-sequential pattern. \newline
+First, for each sequential patterns of length-N found in the previous iterations, we detect it's first and last N-1 item, thus creating two sub-sequential pattern by omitting an element either at the end or start. We will then create length-N+1 candidates by composing sequential patterns with similar end and start sub-sequential pattern. \newline
 
 For example, given the sequential patterns AA, (AB), AB and BA, we would be able the generate the following candidates : A(AB), (AB)A, B(AB), (AB)B, ABA, BAB, AAB, BAA. \\
 Those candidates should then be pruned to remove impossible combinations found in previous iterations. In the case of our example, since BB was not retained as a length-2 sequential pattern due to being un-frequent, we can delete all candidate sequential pattern containing BB, as they similarly cannot be present. \\
-Are thus left with : A(AB), (AB)A, ABA, AAB, BAA \newline
+We are thus left with : A(AB), (AB)A, ABA, AAB, BAA \newline
 
 Finally, we will count the number of support for each candidate having passed the pruning phase, and remove unsupported sequential patterns. Another iteration of generating candidate, pruning and count support will then start, until no supported sequential patterns is found at the end of an iteration, or no candidates can be generated. \newline
 
@@ -240,15 +240,14 @@ The main selling point of the algorithm lies in it's ability to quickly generate
 
 However, this method also has disadvantages, mainly in the fact that projecting databases is a time expensive process. Making building those projected databases the efficiency bottle-neck of Prefix-Span. \newline
 
-However, techniques exists to break past this bottle-neck and mitigate it's effects. Techniques among which we should mention the 'Bi-level projection' technique, which consist in creating a triangular matrix (S-matrix [\ref{fig:smatrix}]) registering the number of supports for all length-2 sequences that can be assembled from length-1 prefixes. A quick scan of the S-matrix then allows the detection of supported length-2 prefixes. They can then be extended again through the same technique after their projection on the database, thus allowing a reduction of the number of necessary prefix projection during the algorithm. \newline
+However, techniques exists to break past this bottle-neck and mitigate it's effects. Techniques among which we should mention the 'Bi-level projection' technique, which consist in creating a triangular matrix (S-matrix [\ref{fig:smatrix}]) registering the number of supports for all length-2 sequences that can be assembled from length-1 prefixes. A quick scan of the S-matrix then allows the detection of all supported length-2 prefixes, prefixes which can then be extended again through applying the same technique on their projected database. Thus allowing a reduction of the number of necessary prefix projection during the algorithm, since only half of them are projected. \newline
 
 A second technique we should mention is the 'Pseudo-Projection' technique which is based on keeping and maintaining a start index for each sequence. This start-index registering the lowest position at which the last projected prefix was supported, thus allowing quicker projection of extending prefixes by avoiding to re-project previous prefix elements.
 \subsubsection{cSPADE}
 
-The cSPADE algorithm \cite{zaki2001spade} uses combinatorial properties to divide the original sequence pattern mining problem in smaller sub-problems that can be solved independently using efficient lattice search techniques, and simple id-list join
-operations. This algorithm is thus parallelizable, furthermore the parallelization has a linear scalability with respect to the size of the inputted database. \newline
+The cSPADE algorithm \cite{zaki2001spade} uses combinatorial properties to divide the original sequence pattern mining problem in smaller sub-problems that can be solved independently using simple id-list join operations. This algorithm is thus parallelizable, furthermore the parallelization has a linear scalability with respect to the size of the inputted database. \newline
 
-cSPADE's first step is to compute all length-1 sequential pattern using a simple database scan. Then, we generate all length-2 sequential pattern and count the number of supporting sequences for each pair of item in a bidimensional matrix. Counting the number of supporting sequence being realised through a single database scan by first transforming the original vertical representation of the database into an horizontal representation (see Figure \ref{cspadeDatabaseRepr}).
+cSPADE's first step is to compute all length-1 sequential pattern using a simple database scan. Then, we generate all length-2 sequential pattern and count the number of supporting sequences for each pair of item in a bidimensional matrix. Counting the number of supporting sequence being realised through another database scan by first transforming the original vertical representation of the database into an horizontal representation (see Figure \ref{ex:cspadeDatabaseRepr}).
 
 \begin{figure}[h]
   \centering
@@ -268,9 +267,9 @@ cSPADE's first step is to compute all length-1 sequential pattern using a simple
 
 Subsequent length-n sequence patterns can then be formed by joining length-(n-1) patterns using their id-lists (list of positions in sequences for each item, see Figure \ref{fig:cspadeIDList}). The support of each item can also be easily calculated from ID-list, as we just need to count the number of different sequences in which it appears.  \newline
 
-It is also important to note that this method of joining ID-lists is only efficient from length-3 patterns onward, as ID-lists for length 1 and 2 patterns can be extremely large and potentially won't fit in memory. \newline
+It is also important to note that this method of joining ID-lists is only efficient from length-3 patterns onward, as ID-lists for length 1 and 2 patterns can be extremely large and potentially wouldn't fit in memory. \newline
 
-Of course, at the end of each round, un-frequent sequential pattern should be cleaned as to guarantee only frequent pattern will be extended. This algorithm can be executed using either breadth first or depth first search, and ends it's execution once no patterns can be extended.
+Of course, at the end of each round, un-frequent sequential pattern should be cleaned as to guarantee only frequent pattern will be extended. This algorithm can be executed using either breadth first or depth first search, and ends it's execution once no patterns can be further extended.
 
 \begin{figure}[h]
   \centering
@@ -305,13 +304,13 @@ Although impressive for it's modularity, the efficiency of this algorithm didn't
 
 \subsubsection{PP}
 
-This second approach based on CPSM proposed a slightly different global constraint by taking idea from prefix-projection \cite{kemmar2015prefix}. Similarly to it's predecessor, this algorithm was designed to solve sequential pattern mining problems involving sequence of symbols (no sets of symbols).
+This second approach based on CPSM proposed a slightly different global constraint by taking idea from prefix-projection \cite{kemmar2015prefix}. Similarly to it's predecessor, this algorithm was designed to solve sequential pattern mining problems involving sequence of symbols (no sets of symbols).\newline
 
 The main idea behind this improved constraint being that we have no need to check sequences for extensions support when they did not support sub-sequences of the current prefix. \newline
 
-This new algorithm thus takes notes of the ID of sequences which support the current pattern so that it's extensions may be projected only on those sequences. The key element of this new feature being that we keep ID of sequence and not copy of sequence, making it extremely memory and time efficient. \newline
+This new algorithm thus takes notes of the ID of sequences which support the current pattern so that it's extensions may be projected only on those sequences. The key element of this new feature being that we keep ID of sequence and not copy of sequences, making it extremely memory and time efficient. \newline
 
-During the extensions pruning phase, only supportive sequences will also be checked, as they are the only relevant sequence to find extensions with. \newline
+During the extensions pruning phase, only supportive sequences will need be checked in a similar fashion, as they are the only relevant sequences to find extensions with. \newline
 
 While the rest of this global constraint implementation was very similar to CPSM, the prefix projection improvement allowed this new implementation to largely overtake it's predecessor in efficiency. Making this new algorithm competitive with state-of-the-art non-CP method while keeping the improved modularity inherent to CP algorithm.
 
@@ -319,37 +318,37 @@ While the rest of this global constraint implementation was very similar to CPSM
 
 This new algorithm introduced a global constraint adding support for time gap constraint. This allow, for example, to analyses purchase behaviors and find products usually bought by customers at regular time intervals. \newline
 
-Similarly to it's predecessor, the algorithm was designed to solve sequential patterns mining problems involving sequences of sets of symbols, doing so by incrementally extending and verifying prefixes over multiple pass of a prefix projected database. \newline
+Similarly to it's predecessor, the algorithm was designed to solve sequential patterns mining problems involving sequences of symbols, doing so by incrementally extending and verifying prefixes over multiple pass of a prefix projected database. \newline
 
 The new global constraint however allow tighter search spaces where one can specify the minimal/maximal distance allowed between two symbols for them to remain solution. \newline
 
-For this constraint to work efficiently, additional pruning was added when pruning for extending items, so that extensions which would violate the constraint cannot be taken into account.
+For this constraint to work efficiently, additional pruning was added when pruning for extending items, so that extensions which would violate the time gap constraints couldn't be taken into account.
 
 \subsubsection{PPIC}
 
-Largely based on it's predecessor, CPSM and GAP, PPIC is an algorithm designed for solving sequence pattern mining problems involving sequences of sets of symbols. Unlike Gap-seq, constraint over time gaps are not supported. \newline
+Largely based on it's predecessor, CPSM and PP, PPIC is an algorithm designed for solving sequence pattern mining problems involving sequences of symbols. Unlike Gap-seq, constraint over time gaps are not supported. \newline
 
 This new algorithm speciality laying in it's record breaking efficiency, surpassing even state-of-the-art non-CP solver, generally by a wide margin (see Figure \ref{fig:PPICvsOther}).
 
-PPIC's execution can be separated in two stages :
+PPIC's implementation is based on the Prefix-Span approach, it's execution can be separated in two stages :
 
 \begin{enumerate}
-\item \textbf{Pre-processing :} In this first stage, we first clean the received sequences from unfrequent items, renaming them into unique ID's. Three matrices are then build from the sequence database :
+\item \textbf{Pre-processing :} In this first stage, we first clean the received sequences from unfrequent symbols, renaming them into unique items. Three matrices are then build from the sequence database :
 	\begin{enumerate}
 		\item The 'first-position' matrix : A \#SDB*N sized matrix allowing O(1) jumps to the first occurrence of a given item. 
 		\item The 'last-position' matrix : A  \#SDB*N sized matrix allowing O(1) check for the presence of a given item in the remains of a sequence.
 		\item The 'interesting-position' matrix : A matrix with the same size as the original sequence database, but whose content are changed from the items forming those sequences, to the positions of the next 'interesting' item. That is the next position where an item last appears in a sequence. \\ Although, at first glance, this matrix may seem redundant with the last-position matrix, its purpose appears when one realise that to achieve the same goal a whole columns of the last-position matrix would have to be checked. Similarly, keeping only this matrix would also be less efficient, since there would be no way to efficiently check if an item is present in the remains of a sequence. Both matrices are thus needed to achieve the greatest efficiency gain. 
 	\end{enumerate}
 	
-	The pre-processing stage will also take care of adding multiple constraint, depending on the wishes of the user. Thus restraining the solution space as desired and improving performances at reaching specific solutions.
+	The pre-processing stage will also take care of adding multiple constraint, depending on the wishes of the user. Thus restricting the search space to fit tightly the desired solutions and improving performances at reaching those specific solutions.
 	
 \item \textbf{Execution :} Once the pre-processing is finished, the algorithm will truly start to run. Using the three matrices, prefixes will be extended efficiently using an incremental propagator (DFS approach). An approach possible thanks to trailing, that is more efficient than BFS approach were multiple copies of the database would need to be kept, or where the prefixes would need to be re-projected. Thanks to this incremental propagation, memory consumption will thus be minimal during the execution of the algorithm. \newline
 
 Through each step of the DFS execution, the last item of the current prefix will be projected efficiently as, similarly to CPSM, the algorithm keeps track of the minimal index after which the previous valid pattern was considered supported. Thus, only the remains of the sequence will need to be searched for confirming the validity of the new projection. Once projected, the algorithm will then prune possible solutions for the next pattern efficiently, thanks to the lastPosition list, and continue the execution. 
 
-Additionally, to keep the increased performances of the PP algorithm, the algorithm keep notes of which sequences supports the current prefixe while projecting the current extension. For further extensions of the prefix, only those sequence will thus have to be searched to find projection or to prune un-frequent extensions. Since the algorithm also keep track of the number of support for each extensions, an improvement was also made to stop searching for projections once all such that number of supporting sequences have been found during the prefix's projection. Since the further sequence definitely won't support the item and will remain irrelevant further down this branch of the search tree. \newline
+Additionally, to keep the increased performances of the PP algorithm, the algorithm keep notes of which sequences supports the current prefixe while projecting the current extension. For further extensions of the prefix, only those sequences will thus have to be considered during any projection or pruning. Since the algorithm also keep track of the number of support for each extensions, an improvement was also made to stop searching for projections once that number of supporting sequences have been found during the prefix's projection. Since the remaining sequences definitely won't support the item and will remain irrelevant further down this branch of the search tree. \newline
 
-Each time a valid solution is found. That is, a solution that satisfy all constraints injected in the solver. The execution will be momentarily interrupted. The solution will then be translated back to the items name corresponding to the recorded ID's and saved in a result list. \newline
+Each time a valid solution is found. That is, a solution that satisfy all constraints injected in the solver. The execution will be momentarily interrupted. The solution will then be translated back to the symbols corresponding to the recorded items and saved in a result list. \newline
 
 Once the solver determines that no further solution can be found under the specified constraints. The execution will terminate, and all resulting pattern will be returned.
 \end{enumerate}
