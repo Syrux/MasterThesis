@@ -1,9 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.11.28)  9 MAY 2017 10:12
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2014.11.28)  11 MAY 2017 16:39
 entering extended mode
-**EPL-TFE_CoverPageTemplate.tex
-
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.tex
+**firstVer.tex
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -873,9 +871,7 @@ Package: titlesec 2011/12/15 v2.10.0 Sectioning titles
 LaTeX Warning: Unused global option(s):
     [openright].
 
-
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.aux)
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 56.
 LaTeX Font Info:    ... okay on input line 56.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 56.
@@ -891,7 +887,8 @@ LaTeX Font Info:    ... okay on input line 56.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 56.
 LaTeX Font Info:    ... okay on input line 56.
 LaTeX Font Info:    Try loading font information for T1+lmr on input line 56.
- ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\lm\t1lmr.fd"
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 ("C:\Program Files\MiKTeX 2.9\tex\latex\ucs\ucsencs.def"
@@ -974,12 +971,11 @@ LaTeX Info: Redefining \ref on input line 56.
 LaTeX Info: Redefining \pageref on input line 56.
 LaTeX Info: Redefining \nameref on input line 56.
 
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.out)
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.out)
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.out)
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.out)
 \@outlinefile=\write4
- ABD: EveryShipout initializing macros
+
+ABD: EveryShipout initializing macros
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: <default>
@@ -1106,8 +1102,7 @@ CodeSavedOnline/New/MasterThesis/paper/FirstVersion/EPL_TFEbanner.jpg>]
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.toc)
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.toc)
 \tf@toc=\write5
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
@@ -1117,14 +1112,13 @@ l.65 \newpage
               [1
 
 ]
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.lof)
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.lof)
 \tf@lof=\write6
 
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.lot)
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.lot)
 \tf@lot=\write7
- [2] [3]
+
+[2] [3]
 LaTeX Font Info:    Try loading font information for OMS+lmr on input line 82.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
 File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -2174,22 +2168,20 @@ Overfull \hbox (1.90796pt too wide) in paragraph at lines 948--949
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 949.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 949.
 
-(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\EPL-TFE_CoverPa
-geTemplate.aux)
+(F:\Memoire\CodeSavedOnline\New\MasterThesis\paper\FirstVersion\firstVer.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 949.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 949.
-Package rerunfilecheck Info: File `EPL-TFE_CoverPageTemplate.out' has not chang
-ed.
+Package rerunfilecheck Info: File `firstVer.out' has not changed.
 (rerunfilecheck)             Checksum: 9BCDACDED47FE0C7422134F119EA23F7;2715.
  ) 
 Here is how much of TeX's memory you used:
  28769 strings out of 493921
- 626717 string characters out of 3147281
- 696504 words of memory out of 3000000
+ 626377 string characters out of 3147281
+ 696487 words of memory out of 3000000
  31296 multiletter control sequences out of 15000+200000
  101757 words of font info for 135 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 124i,14n,136p,836b,3248s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 124i,14n,136p,819b,3248s stack positions out of 5000i,500n,10000p,200000b,50000s
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exi
 st, replaced by a fixed one
 
@@ -2212,7 +2204,7 @@ type1/public/lm/lmri10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/l
 msy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/lm/lmtt9.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKT
 eX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on EPL-TFE_CoverPageTemplate.pdf (37 pages, 1344694 bytes).
+Output written on firstVer.pdf (37 pages, 1344694 bytes).
 PDF statistics:
  588 PDF objects out of 1000 (max. 8388607)
  136 named destinations out of 1000 (max. 500000)

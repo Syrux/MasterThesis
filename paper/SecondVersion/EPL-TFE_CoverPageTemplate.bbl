@@ -1,0 +1,118 @@
+\begin{thebibliography}{10}
+
+\bibitem{agrawal1995mining}
+R.~Agrawal and R.~Srikant, ``Mining sequential patterns,'' in {\em Data
+  Engineering, 1995. Proceedings of the Eleventh International Conference on},
+  pp.~3--14, IEEE, 1995.
+
+\bibitem{srikant1996mining}
+R.~Srikant and R.~Agrawal, ``Mining sequential patterns: Generalizations and
+  performance improvements,'' {\em Advances in Database Technology—EDBT'96},
+  pp.~1--17, 1996.
+
+\bibitem{pei2004mining}
+J.~Pei, J.~Han, B.~Mortazavi-Asl, J.~Wang, H.~Pinto, Q.~Chen, U.~Dayal, and
+  M.-C. Hsu, ``Mining sequential patterns by pattern-growth: The prefixspan
+  approach,'' {\em IEEE Transactions on knowledge and data engineering},
+  vol.~16, no.~11, pp.~1424--1440, 2004.
+
+\bibitem{han2001prefixspan}
+J.~Han, J.~Pei, B.~Mortazavi-Asl, H.~Pinto, Q.~Chen, U.~Dayal, and M.~Hsu,
+  ``Prefixspan: Mining sequential patterns efficiently by prefix-projected
+  pattern growth,'' in {\em proceedings of the 17th international conference on
+  data engineering}, pp.~215--224, 2001.
+
+\bibitem{zaki2001spade}
+M.~J. Zaki, ``Spade: An efficient algorithm for mining frequent sequences,''
+  {\em Machine learning}, vol.~42, no.~1, pp.~31--60, 2001.
+
+\bibitem{zaharia2012resilient}
+M.~Zaharia, M.~Chowdhury, T.~Das, A.~Dave, J.~Ma, M.~McCauley, M.~J. Franklin,
+  S.~Shenker, and I.~Stoica, ``Resilient distributed datasets: A fault-tolerant
+  abstraction for in-memory cluster computing,'' in {\em Proceedings of the 9th
+  USENIX conference on Networked Systems Design and Implementation}, pp.~2--2,
+  USENIX Association, 2012.
+
+\bibitem{oscar}
+{OscaR Team}, ``{O}sca{R}: {S}cala in {O}{R},'' 2012.
+\newblock Available from \texttt{https://bitbucket.org/oscarlib/oscar}.
+
+\bibitem{mabroukeh2010taxonomy}
+N.~R. Mabroukeh and C.~I. Ezeife, ``A taxonomy of sequential pattern mining
+  algorithms,'' {\em ACM Computing Surveys (CSUR)}, vol.~43, no.~1, p.~3, 2010.
+
+\bibitem{kemmar2015prefix}
+A.~Kemmar, S.~Loudni, Y.~Lebbah, P.~Boizumault, and T.~Charnois,
+  ``Prefix-projection global constraint for sequential pattern mining,'' in
+  {\em International Conference on Principles and Practice of Constraint
+  Programming}, pp.~226--243, Springer, 2015.
+
+\bibitem{kemmar2016global}
+A.~Kemmar, S.~Loudni, Y.~Lebbah, P.~Boizumault, and T.~Charnois, ``A global
+  constraint for mining sequential patterns with gap constraint,'' in {\em
+  International Conference on AI and OR Techniques in Constriant Programming
+  for Combinatorial Optimization Problems}, pp.~198--215, Springer, 2016.
+
+\bibitem{negrevergne2015constraint}
+B.~Negrevergne and T.~Guns, ``Constraint-based sequence mining using constraint
+  programming,'' {\em arXiv preprint arXiv:1501.01178}, 2015.
+
+\bibitem{guns2011itemset}
+T.~Guns, S.~Nijssen, and L.~De~Raedt, ``Itemset mining: A constraint
+  programming perspective,'' {\em Artificial Intelligence}, vol.~175,
+  no.~12-13, pp.~1951--1983, 2011.
+
+\bibitem{aoga2016efficient}
+J.~O. Aoga, T.~Guns, and P.~Schaus, ``An efficient algorithm for mining
+  frequent sequence with constraint programming,'' in {\em Joint European
+  Conference on Machine Learning and Knowledge Discovery in Databases},
+  pp.~315--330, Springer, 2016.
+
+\bibitem{yang2007lapin}
+Z.~Yang, Y.~Wang, and M.~Kitsuregawa, ``Lapin: effective sequential pattern
+  mining algorithms by last position induction for dense databases,'' {\em
+  Advances in Databases: Concepts, Systems and Applications}, pp.~1020--1023,
+  2007.
+
+\bibitem{yang2005lapin}
+Z.~Yang and M.~Kitsuregawa, ``Lapin-spam: An improved algorithm for mining
+  sequential pattern,'' in {\em Data Engineering Workshops, 2005. 21st
+  International Conference on}, pp.~1222--1222, IEEE, 2005.
+
+\bibitem{bonchi2007extending}
+F.~Bonchi and C.~Lucchese, ``Extending the state-of-the-art of constraint-based
+  pattern discovery,'' {\em Data \& Knowledge Engineering}, vol.~60, no.~2,
+  pp.~377--399, 2007.
+
+\bibitem{de2008constraint}
+L.~De~Raedt, T.~Guns, and S.~Nijssen, ``Constraint programming for itemset
+  mining,'' in {\em Proceedings of the 14th ACM SIGKDD international conference
+  on Knowledge discovery and data mining}, pp.~204--212, ACM, 2008.
+
+\bibitem{de2010constraint}
+L.~De~Raedt, T.~Guns, and S.~Nijssen, ``Constraint programming for data mining
+  and machine learning,'' in {\em Proceedings of the Twenty-Fourth AAAI
+  Conference on Artificial Intelligence (AAAI-10)}, pp.~1671--1675, 2010.
+
+\bibitem{raedt2007constraint}
+L.~D. Raedt and A.~Zimmermann, ``Constraint-based pattern set mining,'' in {\em
+  proceedings of the 2007 SIAM International conference on Data Mining},
+  pp.~237--248, SIAM, 2007.
+
+\bibitem{zaki2000sequence}
+M.~J. Zaki, ``Sequence mining in categorical domains: incorporating
+  constraints,'' in {\em Proceedings of the ninth international conference on
+  Information and knowledge management}, pp.~422--429, ACM, 2000.
+
+\bibitem{han2000freespan}
+J.~Han, J.~Pei, B.~Mortazavi-Asl, Q.~Chen, U.~Dayal, and M.-C. Hsu, ``Freespan:
+  frequent pattern-projected sequential pattern mining,'' in {\em Proceedings
+  of the sixth ACM SIGKDD international conference on Knowledge discovery and
+  data mining}, pp.~355--359, ACM, 2000.
+
+\bibitem{zhao2003sequential}
+Q.~Zhao and S.~S. Bhowmick, ``Sequential pattern mining: A survey,'' {\em
+  ITechnical Report CAIS Nayang Technological University Singapore}, pp.~1--26,
+  2003.
+
+\end{thebibliography}

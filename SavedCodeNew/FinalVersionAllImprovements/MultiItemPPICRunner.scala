@@ -582,18 +582,10 @@ class MultiItemPPIC(val P: Array[CPIntVar],
     return Success
   }
 
-  def getElemOfP(posInPrefix: Int): Int = {
-    if (posInPrefix >= 0) P(posInPrefix).value
-    else if (prefixOfLastItem.length > -posInPrefix) {
-      prefixOfLastItem(-(posInPrefix + prefixOfLastItem.length))
-    }
-    else 0
-  }
-
   def checkElemOfP(posInPrefix: Int, currentItem: Int): Boolean = {
     if (posInPrefix >= 0) currentItem == P(posInPrefix).value
-    else if (prefixOfLastItem.length < -(posInPrefix + prefixOfLastItem.length)) return false
-    else currentItem == prefixOfLastItem(-(posInPrefix + prefixOfLastItem.length))
+    else if (posInPrefix + prefixOfLastItem.length < 0) return false
+    else currentItem == prefixOfLastItem(posInPrefix + prefixOfLastItem.length)
   }
 
   /**
