@@ -18,20 +18,20 @@
 \BOOKMARK [1][-]{section.3}{Implementation of a Scalable CP Based Algorithm}{}% 18
 \BOOKMARK [2][-]{subsection.3.1}{Spark's original implementation}{section.3}% 19
 \BOOKMARK [2][-]{subsection.3.2}{A First Scalable CP based Implementation}{section.3}% 20
-\BOOKMARK [2][-]{subsection.3.3}{Improvements Pathways}{section.3}% 21
-\BOOKMARK [2][-]{subsection.3.4}{Adding new functionalities}{section.3}% 22
-\BOOKMARK [3][-]{subsubsection.3.4.1}{Quicker - Start}{subsection.3.4}% 23
-\BOOKMARK [3][-]{subsubsection.3.4.2}{Cleaning Sequence before the Local Execution}{subsection.3.4}% 24
-\BOOKMARK [2][-]{subsection.3.5}{Improving the Switch to a CP Local Execution}{section.3}% 25
-\BOOKMARK [3][-]{subsubsection.3.5.1}{Automatic Choice of the Local Execution Algorithm}{subsection.3.5}% 26
-\BOOKMARK [3][-]{subsubsection.3.5.2}{Generalised Pre-Processing Before the Local Execution}{subsection.3.5}% 27
-\BOOKMARK [2][-]{subsection.3.6}{Improving the Scalable Execution}{section.3}% 28
-\BOOKMARK [3][-]{subsubsection.3.6.1}{Position lists}{subsection.3.6}% 29
-\BOOKMARK [3][-]{subsubsection.3.6.2}{Specialising the Scalable Execution}{subsection.3.6}% 30
-\BOOKMARK [3][-]{subsubsection.3.6.3}{Priority Scheduling for Sub-Problems}{subsection.3.6}% 31
-\BOOKMARK [2][-]{subsection.3.7}{CP Based Local Execution for Sequence of Sets of Symbols}{section.3}% 32
-\BOOKMARK [3][-]{subsubsection.3.7.1}{Pushing PPIC's Ideas Further}{subsection.3.7}% 33
-\BOOKMARK [3][-]{subsubsection.3.7.2}{Adding Partial Projections to PPIC}{subsection.3.7}% 34
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Improvements Pathways}{subsection.3.2}% 21
+\BOOKMARK [2][-]{subsection.3.3}{Adding new functionalities}{section.3}% 22
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Quicker - Start}{subsection.3.3}% 23
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Cleaning Sequence before the Local Execution}{subsection.3.3}% 24
+\BOOKMARK [2][-]{subsection.3.4}{Improving the Switch to a CP Local Execution}{section.3}% 25
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Automatic Choice of the Local Execution Algorithm}{subsection.3.4}% 26
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Generalised Pre-Processing Before the Local Execution}{subsection.3.4}% 27
+\BOOKMARK [2][-]{subsection.3.5}{Improving the Scalable Execution}{section.3}% 28
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Position lists}{subsection.3.5}% 29
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Specialising the Scalable Execution}{subsection.3.5}% 30
+\BOOKMARK [3][-]{subsubsection.3.5.3}{Priority Scheduling for Sub-Problems}{subsection.3.5}% 31
+\BOOKMARK [2][-]{subsection.3.6}{CP Based Local Execution for Sequence of Sets of Symbols}{section.3}% 32
+\BOOKMARK [3][-]{subsubsection.3.6.1}{Pushing PPIC's Ideas Further}{subsection.3.6}% 33
+\BOOKMARK [3][-]{subsubsection.3.6.2}{Adding Partial Projections to PPIC}{subsection.3.6}% 34
 \BOOKMARK [1][-]{section.4}{Performances}{}% 35
 \BOOKMARK [2][-]{subsection.4.1}{Datasets}{section.4}% 36
 \BOOKMARK [2][-]{subsection.4.2}{Number of Partitions}{section.4}% 37
@@ -56,7 +56,7 @@
 \BOOKMARK [1][-]{section.5}{References}{}% 56
 \BOOKMARK [1][-]{section.6}{Annexes}{}% 57
 \BOOKMARK [2][-]{subsection.6.1}{Glossary :}{section.6}% 58
-\BOOKMARK [1][-]{section*.26}{Acronyms}{}% 59
-\BOOKMARK [2][-]{subsection.6.2}{Additional example images}{section*.26}% 60
-\BOOKMARK [2][-]{subsection.6.3}{Additional Performance Comparisons :}{section*.26}% 61
-\BOOKMARK [2][-]{subsection.6.4}{Algorithms :}{section*.26}% 62
+\BOOKMARK [1][-]{section*.25}{Acronyms}{}% 59
+\BOOKMARK [2][-]{subsection.6.2}{Additional example images}{section*.25}% 60
+\BOOKMARK [2][-]{subsection.6.3}{Additional Performance Comparisons :}{section*.25}% 61
+\BOOKMARK [2][-]{subsection.6.4}{Algorithms :}{section*.25}% 62
