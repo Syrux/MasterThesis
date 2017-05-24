@@ -27,61 +27,75 @@
 \@writefile{toc}{\select@language{english}}
 \@writefile{lof}{\select@language{english}}
 \@writefile{lot}{\select@language{english}}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{6}{section.1}}
+\citation{mabroukeh2010taxonomy}
+\citation{agrawal1995mining}
+\citation{agrawal1995mining}
+\citation{srikant1996mining}
+\citation{han2001prefixspan}
+\citation{zaki2001spade}
+\citation{Kemmar_global}
+\citation{Kemmar_gap}
+\citation{zaki2001spade}
+\citation{aoga2016efficient}
+\citation{oscar}
+\citation{yang2007lapin}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{5}{section.1}}
+\citation{deng2014towards}
+\citation{ho2000large}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Sequential Pattern Mining}{6}{section.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Sequential Pattern Mining Background}{6}{subsection.2.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.1.1}Definitions and Concepts}{6}{subsubsection.2.1.1}}
 \citation{agrawal1995mining}
-\citation{srikant1996mining}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Existing specialised approaches}{7}{subsection.2.2}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}apriori}{7}{subsubsection.2.2.1}}
+\citation{srikant1996mining}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}GSP}{8}{subsubsection.2.2.2}}
 \citation{pei2004mining}
 \citation{han2001prefixspan}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}GSP}{8}{subsubsection.2.2.2}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.3}Prefix-Span}{9}{subsubsection.2.2.3}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Prefix-Span example\relax }}{9}{figure.caption.1}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{ex:PrefixSpanExample}{{1}{9}{Prefix-Span example\relax }{figure.caption.1}{}}
 \citation{zaki2001spade}
-\citation{negrevergne2015constraint}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.4}cSPADE}{10}{subsubsection.2.2.4}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces cSPADE database representation\relax }}{10}{figure.caption.2}}
 \newlabel{ex:cspadeDatabaseRepr}{{2}{10}{cSPADE database representation\relax }{figure.caption.2}{}}
-\citation{kemmar2015prefix}
+\citation{negrevergne2015constraint}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces cSPADE's ID-lists\relax }}{11}{figure.caption.3}}
 \newlabel{fig:cspadeIDList}{{3}{11}{cSPADE's ID-lists\relax }{figure.caption.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Existing CP Based approaches}{11}{subsection.2.3}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}CPSM}{11}{subsubsection.2.3.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}PP}{11}{subsubsection.2.3.2}}
+\citation{kemmar2015prefix}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}PP}{12}{subsubsection.2.3.2}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.3}Gap-Seq}{12}{subsubsection.2.3.3}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.4}PPIC}{12}{subsubsection.2.3.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Parallelisation}{13}{subsection.2.4}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces An example of PPIC's execution}}{14}{figure.caption.4}}
 \newlabel{fig:ppic_exec_example}{{4}{14}{An example of PPIC's execution}{figure.caption.4}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}The Benefits of Parallelisation}{14}{subsubsection.2.4.1}}
-\citation{zaharia2012resilient}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Tool selection}{15}{subsubsection.2.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Parallelisation}{14}{subsection.2.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}The Benefits of Parallelisation}{15}{subsubsection.2.4.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.2}Tool Selection}{15}{subsubsection.2.4.2}}
 \@writefile{toc}{\contentsline {paragraph}{\numberline {2.4.2.1}Hadoop}{15}{paragraph.2.4.2.1}}
 \@writefile{toc}{\contentsline {paragraph}{\numberline {2.4.2.2}Spark}{15}{paragraph.2.4.2.2}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {2.4.2.3}Final choice}{15}{paragraph.2.4.2.3}}
+\citation{zaharia2012resilient}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {2.4.2.3}Final Choice}{16}{paragraph.2.4.2.3}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Performance comparison of Hadoop and Spark\relax }}{16}{figure.caption.5}}
 \newlabel{fig:hadoopVSspark}{{5}{16}{Performance comparison of Hadoop and Spark\relax }{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Implementation of a Scalable CP Based Algorithm}{16}{section.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Spark's original implementation}{16}{subsection.3.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Implementation of a Scalable CP Based Algorithm}{17}{section.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Spark's original implementation}{17}{subsection.3.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces An example of Spark's execution}}{18}{figure.caption.6}}
 \newlabel{fig:spark_exec_example}{{6}{18}{An example of Spark's execution}{figure.caption.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}A First Scalable CP based Implementation}{18}{subsection.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}A First Scalable CP Based Implementation}{19}{subsection.3.2}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Improvements Pathways}{19}{subsubsection.3.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Adding new functionalities}{19}{subsection.3.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Quicker - Start}{20}{subsubsection.3.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Adding new functionalities}{20}{subsection.3.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Quicker - Start}{21}{subsubsection.3.3.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Cleaning Sequence before the Local Execution}{21}{subsubsection.3.3.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Improving the Switch to a CP Local Execution}{21}{subsection.3.4}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}Automatic Choice of the Local Execution Algorithm}{21}{subsubsection.3.4.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Generalised Pre-Processing Before the Local Execution}{22}{subsubsection.3.4.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Improving the Scalable Execution}{22}{subsection.3.5}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}Position lists}{22}{subsubsection.3.5.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}Position Lists}{22}{subsubsection.3.5.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.2}Specialising the Scalable Execution}{23}{subsubsection.3.5.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}Priority Scheduling for Sub-Problems}{23}{subsubsection.3.5.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}Priority Scheduling for Sub-Problems}{24}{subsubsection.3.5.3}}
 \@writefile{toc}{\contentsline {paragraph}{\numberline {3.5.3.1}Analysing sub-problem creation}{24}{paragraph.3.5.3.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Spark's mapReduce\relax }}{24}{figure.caption.7}}
 \newlabel{fig:sparkMapReduce}{{7}{24}{Spark's mapReduce\relax }{figure.caption.7}{}}
@@ -90,139 +104,151 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.6}CP Based Local Execution for Sequence of Sets of Symbols}{25}{subsection.3.6}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.1}Pushing PPIC's Ideas Further}{25}{subsubsection.3.6.1}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.2}Adding Partial Projections to PPIC}{26}{subsubsection.3.6.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}Final implementation}{26}{subsection.3.7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.7.1}Reaching Greater Performances}{27}{subsubsection.3.7.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.7.2}A New Functionality}{27}{subsubsection.3.7.2}}
 \@writefile{toc}{\newpage }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Performances}{26}{section.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Datasets}{26}{subsection.4.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset features}}{27}{table.caption.8}}
-\newlabel{tab:datasets}{{1}{27}{Dataset features}{table.caption.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Number of Partitions}{27}{subsection.4.2}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Number of partitions used during performance tests\relax }}{27}{table.caption.9}}
-\newlabel{tab:numPartitions}{{2}{27}{Number of partitions used during performance tests\relax }{table.caption.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Performance Testing Procedure}{28}{subsection.4.3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Distribution Choice \& Cluster Architecture}{28}{subsubsection.4.3.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The simple architecture used during the majority of our tests\relax }}{28}{figure.caption.10}}
-\newlabel{fig:test_architecture}{{8}{28}{The simple architecture used during the majority of our tests\relax }{figure.caption.10}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Program Parameters}{28}{subsubsection.4.3.2}}
-\@writefile{tdo}{\contentsline {todo}{TODO : Prove it}{29}{section*.11}}
-\pgfsyspdfmark {pgfid40}{20459779}{43814033}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}Measurement Span}{29}{subsubsection.4.3.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Testing the Implementations}{29}{subsection.4.4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Comparing Spark and PPIC's original implementations}{29}{subsubsection.4.4.1}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Performances of our First CP Based Implementation}{29}{subsubsection.4.4.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Original performances of PPIC and Spark\relax }}{30}{figure.caption.12}}
-\newlabel{fig:originalAlgorithmPerformances}{{9}{30}{Original performances of PPIC and Spark\relax }{figure.caption.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces A first implementation that makes PPIC scalable\relax }}{31}{figure.caption.13}}
-\newlabel{fig:first_scalable_CPbased_implementation}{{10}{31}{A first implementation that makes PPIC scalable\relax }{figure.caption.13}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.3}Performances of Quicker-Start}{32}{subsubsection.4.4.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The performance impact of not re-calculating frequent items\relax }}{33}{figure.caption.14}}
-\@writefile{tdo}{\contentsline {todo}{GRAPH ONLY WITH QUICKER-START}{33}{section*.15}}
-\pgfsyspdfmark {pgfid41}{19579138}{21674969}
-\newlabel{fig:new_functionalities_perf}{{11}{33}{The performance impact of not re-calculating frequent items\relax }{section*.15}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.4}Performances of Adding Pre-processing Before PPIC's Local Execution}{33}{subsubsection.4.4.4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces The performance impact of Database Pre-processing Before PPIC's Execution\relax }}{34}{figure.caption.16}}
-\newlabel{fig:clean_before_PPIC}{{12}{34}{The performance impact of Database Pre-processing Before PPIC's Execution\relax }{figure.caption.16}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.5}Performances with Automatic choice of Local Execution}{34}{subsubsection.4.4.5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Automatic detection of item-sets type in dataset}}{35}{figure.caption.17}}
-\newlabel{fig:maxItemPerItemset_recalculated}{{13}{35}{Automatic detection of item-sets type in dataset}{figure.caption.17}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.6}Performances of Adding Pre-processing Before Any Local Execution}{35}{subsubsection.4.4.6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Efficiency gain of cleaning the sequence database before any local execution\relax }}{36}{figure.caption.18}}
-\newlabel{fig:cleaning_before_local_exec}{{14}{36}{Efficiency gain of cleaning the sequence database before any local execution\relax }{figure.caption.18}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.7}Performances with Position lists}{36}{subsubsection.4.4.7}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Performance gain of first/last position lists\relax }}{37}{figure.caption.19}}
-\newlabel{fig:positionListPerf}{{15}{37}{Performance gain of first/last position lists\relax }{figure.caption.19}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Performance improvement of specialising spark's scalable stage.\relax }}{38}{figure.caption.20}}
-\newlabel{fig:scalable_single_item}{{16}{38}{Performance improvement of specialising spark's scalable stage.\relax }{figure.caption.20}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.8}Performances with Specialized scalable execution}{38}{subsubsection.4.4.8}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.9}Performances of Using Priority Scheduling for the Local Execution}{38}{subsubsection.4.4.9}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {4.4.9.1}Performances of Sorting Sub-Problems on the Reducer}{38}{paragraph.4.4.9.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Naive priority scheduling}}{39}{figure.caption.21}}
-\newlabel{fig:priority_scheduling_performance_comparison}{{17}{39}{Naive priority scheduling}{figure.caption.21}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Performance improvement of sorting sub-problems during map stage.\relax }}{40}{figure.caption.22}}
-\newlabel{fig:priority_scheduling_improved}{{18}{40}{Performance improvement of sorting sub-problems during map stage.\relax }{figure.caption.22}{}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {4.4.9.2}Performances of Sorting Sub-Problems on the Mapper}{40}{paragraph.4.4.9.2}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.10}Performances of using a Map Based Sequence Database Structure}{40}{subsubsection.4.4.10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Map based - multi\_item algorithm}}{41}{figure.caption.23}}
-\newlabel{fig:multi_map}{{19}{41}{Map based - multi\_item algorithm}{figure.caption.23}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.11}Performances PPIC with Partial Projection}{42}{subsubsection.4.4.11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces PPIC with partial starts}}{42}{figure.caption.24}}
-\newlabel{fig:multi_array}{{20}{42}{PPIC with partial starts}{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Scalability Tests}{43}{subsection.4.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{43}{section.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Performances}{28}{section.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Datasets}{28}{subsection.4.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset features}}{28}{table.caption.8}}
+\newlabel{tab:datasets}{{1}{28}{Dataset features}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Number of Partitions}{29}{subsection.4.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Number of partitions used during performance tests\relax }}{29}{table.caption.9}}
+\newlabel{tab:numPartitions}{{2}{29}{Number of partitions used during performance tests\relax }{table.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Performance Testing Procedure}{29}{subsection.4.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Distribution Choice \& Cluster Architecture}{29}{subsubsection.4.3.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces The simple architecture used during the majority of our tests\relax }}{30}{figure.caption.10}}
+\newlabel{fig:test_architecture}{{8}{30}{The simple architecture used during the majority of our tests\relax }{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Program Parameters}{30}{subsubsection.4.3.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}Measurement Span}{30}{subsubsection.4.3.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Testing the Implementations}{30}{subsection.4.4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Comparing Spark and PPIC's original implementations}{30}{subsubsection.4.4.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Original performances of PPIC and Spark\relax }}{31}{figure.caption.11}}
+\newlabel{fig:originalAlgorithmPerformances}{{9}{31}{Original performances of PPIC and Spark\relax }{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces A first implementation that makes PPIC scalable\relax }}{32}{figure.caption.12}}
+\newlabel{fig:first_scalable_CPbased_implementation}{{10}{32}{A first implementation that makes PPIC scalable\relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Performances of our First CP Based Implementation}{32}{subsubsection.4.4.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.3}Performances of Quicker-Start}{34}{subsubsection.4.4.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The performance impact of not recalculating frequent items\relax }}{34}{figure.caption.13}}
+\newlabel{fig:new_functionalities_perf}{{11}{34}{The performance impact of not recalculating frequent items\relax }{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.4}Performances of Adding Pre-processing Before PPIC's Local Execution}{35}{subsubsection.4.4.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces The performance impact of Database Pre-processing Before PPIC's Execution\relax }}{35}{figure.caption.14}}
+\newlabel{fig:clean_before_PPIC}{{12}{35}{The performance impact of Database Pre-processing Before PPIC's Execution\relax }{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.5}Performances with Automatic choice of Local Execution}{36}{subsubsection.4.4.5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.6}Performances of Adding Pre-processing Before Any Local Execution}{36}{subsubsection.4.4.6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Automatic detection of item-sets type in dataset}}{37}{figure.caption.15}}
+\newlabel{fig:maxItemPerItemset_recalculated}{{13}{37}{Automatic detection of item-sets type in dataset}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.7}Performances with Position lists}{37}{subsubsection.4.4.7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Efficiency gains of cleaning the sequence database before any local execution\relax }}{38}{figure.caption.16}}
+\newlabel{fig:cleaning_before_local_exec}{{14}{38}{Efficiency gains of cleaning the sequence database before any local execution\relax }{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Performance gain of first/last position lists\relax }}{39}{figure.caption.17}}
+\newlabel{fig:positionListPerf}{{15}{39}{Performance gain of first/last position lists\relax }{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.8}Performances with Specialised scalable execution}{39}{subsubsection.4.4.8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Performance improvement of specialising spark's scalable stage.\relax }}{40}{figure.caption.18}}
+\newlabel{fig:scalable_single_item}{{16}{40}{Performance improvement of specialising spark's scalable stage.\relax }{figure.caption.18}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.9}Performances of Using Priority Scheduling for the Local Execution}{40}{subsubsection.4.4.9}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.4.9.1}Performances of Sorting Sub-Problems on the Reducer}{40}{paragraph.4.4.9.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Naive priority scheduling}}{41}{figure.caption.19}}
+\newlabel{fig:priority_scheduling_performance_comparison}{{17}{41}{Naive priority scheduling}{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.4.9.2}Performances of Sorting Sub-Problems on the Mapper}{41}{paragraph.4.4.9.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.10}Performances of using a Map Based Sequence Database Structure}{41}{subsubsection.4.4.10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Performance improvement of sorting sub-problems during map stage.\relax }}{42}{figure.caption.20}}
+\newlabel{fig:priority_scheduling_improved}{{18}{42}{Performance improvement of sorting sub-problems during map stage.\relax }{figure.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Map based - multi\_item algorithm}}{43}{figure.caption.21}}
+\newlabel{fig:multi_map}{{19}{43}{Map based - multi\_item algorithm}{figure.caption.21}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.11}Performances PPIC with Partial Projection}{43}{subsubsection.4.4.11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces PPIC with partial starts}}{44}{figure.caption.22}}
+\newlabel{fig:multi_array}{{20}{44}{PPIC with partial starts}{figure.caption.22}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.12}Performances of our final implementation}{44}{subsubsection.4.4.12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Performance of our final implementation\relax }}{45}{figure.caption.23}}
+\newlabel{fig:final_ver}{{21}{45}{Performance of our final implementation\relax }{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Scalability Tests}{46}{subsection.4.5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.1}Scalability of the Original Implementation of Spark}{46}{subsubsection.4.5.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.2}Scalability of our final implementation}{46}{subsubsection.4.5.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Scalability performances of the original implementation\relax }}{47}{figure.caption.24}}
+\newlabel{fig:scal_orig}{{22}{47}{Scalability performances of the original implementation\relax }{figure.caption.24}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{47}{section.5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Scalability performances of our final implementation\relax }}{48}{figure.caption.25}}
+\newlabel{fig:scal_final}{{23}{48}{Scalability performances of our final implementation\relax }{figure.caption.25}{}}
 \citation{*}
 \bibstyle{ieeetr}
 \bibdata{ref}
-\bibcite{agrawal1995mining}{1}
-\bibcite{srikant1996mining}{2}
-\bibcite{pei2004mining}{3}
+\bibcite{mabroukeh2010taxonomy}{1}
+\bibcite{agrawal1995mining}{2}
+\bibcite{srikant1996mining}{3}
 \bibcite{han2001prefixspan}{4}
 \bibcite{zaki2001spade}{5}
-\bibcite{zaharia2012resilient}{6}
+\bibcite{aoga2016efficient}{6}
 \bibcite{oscar}{7}
-\bibcite{mabroukeh2010taxonomy}{8}
-\bibcite{kemmar2015prefix}{9}
-\bibcite{kemmar2016global}{10}
-\bibcite{negrevergne2015constraint}{11}
-\bibcite{guns2011itemset}{12}
-\bibcite{aoga2016efficient}{13}
-\bibcite{yang2007lapin}{14}
-\bibcite{yang2005lapin}{15}
-\bibcite{bonchi2007extending}{16}
-\@writefile{toc}{\contentsline {section}{References}{44}{section.5}}
-\bibcite{de2008constraint}{17}
-\bibcite{de2010constraint}{18}
-\bibcite{raedt2007constraint}{19}
-\bibcite{zaki2000sequence}{20}
-\bibcite{han2000freespan}{21}
-\bibcite{zhao2003sequential}{22}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Annexes}{46}{section.6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Glossary :}{46}{subsection.6.1}}
-\@writefile{toc}{\contentsline {section}{Acronyms}{46}{section*.25}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Additional example images}{46}{subsection.6.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Example of an S-matrix for Prefix-Span bi-level projection\relax }}{46}{figure.caption.26}}
-\newlabel{fig:smatrix}{{21}{46}{Example of an S-matrix for Prefix-Span bi-level projection\relax }{figure.caption.26}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Additional Performance Comparisons :}{46}{subsection.6.3}}
-\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces PPIC's performances VS other specialized algorithm\relax }}{46}{figure.caption.27}}
-\newlabel{fig:PPICvsOther}{{22}{46}{PPIC's performances VS other specialized algorithm\relax }{figure.caption.27}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Performance improvement of fixing Spark's pre-processing\relax }}{47}{figure.caption.28}}
-\newlabel{fig:spark_preprocessing_fix}{{23}{47}{Performance improvement of fixing Spark's pre-processing\relax }{figure.caption.28}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces Performance improvement - soft limit on the number of created sub-problem.}}{48}{figure.caption.29}}
-\newlabel{fig:sub_problem_limit}{{24}{48}{Performance improvement - soft limit on the number of created sub-problem}{figure.caption.29}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces PPIC with a map structure}}{49}{figure.caption.30}}
-\newlabel{fig:multi_map_comp}{{25}{49}{PPIC with a map structure}{figure.caption.30}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Algorithms :}{50}{subsection.6.4}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Prefix Projection Incremental Counting propagator (PPIC)\relax }}{50}{algocf.1}}
-\newlabel{alg:PPIC1}{{1}{50}{Algorithms :}{algocf.1}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces PPIC Continued\relax }}{51}{algocf.2}}
-\newlabel{alg:PPIC2}{{2}{51}{Algorithms :}{algocf.2}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Spark's original implementation : Pre-Processing\relax }}{52}{algocf.3}}
-\newlabel{alg:SPARK1}{{3}{52}{Algorithms :}{algocf.3}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces Spark's original implementation : Scalable execution\relax }}{53}{algocf.4}}
-\newlabel{alg:SPARK2}{{4}{53}{Algorithms :}{algocf.4}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {5}{\ignorespaces Spark's original implementation : Local execution\relax }}{54}{algocf.5}}
-\newlabel{alg:SPARK3}{{5}{54}{Algorithms :}{algocf.5}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {6}{\ignorespaces Spark's original implementation : Project and findPrefixExtension\relax }}{55}{algocf.6}}
-\newlabel{alg:SPARK4}{{6}{55}{Algorithms :}{algocf.6}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {7}{\ignorespaces First scalable CP based implementation\relax }}{56}{algocf.7}}
-\newlabel{alg:FirstImplem}{{7}{56}{Algorithms :}{algocf.7}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {8}{\ignorespaces New functionalities : Scalable execution\relax }}{57}{algocf.8}}
-\newlabel{alg:NF}{{8}{57}{Algorithms :}{algocf.8}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {9}{\ignorespaces Quick - Start : Scalable execution\relax }}{58}{algocf.9}}
-\newlabel{alg:QuickStart}{{9}{58}{Algorithms :}{algocf.9}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {10}{\ignorespaces Clean database before local execution of PPIC :\relax }}{59}{algocf.10}}
-\newlabel{alg:CleanBeforeLocalPPIC}{{10}{59}{Algorithms :}{algocf.10}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {11}{\ignorespaces Automatic Local Execution Selection :\relax }}{60}{algocf.11}}
-\newlabel{alg:AutomaticSelection}{{11}{60}{Algorithms :}{algocf.11}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {12}{\ignorespaces Clean database before any local execution :\relax }}{61}{algocf.12}}
-\newlabel{alg:CleanBeforeLocal}{{12}{61}{Algorithms :}{algocf.12}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {13}{\ignorespaces Positions lists : Project and findPrefixExtension\relax }}{62}{algocf.13}}
-\newlabel{alg:posLists}{{13}{62}{Algorithms :}{algocf.13}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {14}{\ignorespaces Specialised Execution : Pre-Processing\relax }}{63}{algocf.14}}
-\newlabel{alg:SpecializedScalableExec}{{14}{63}{Algorithms :}{algocf.14}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {15}{\ignorespaces Sorting sub-problems on the reducer :\relax }}{64}{algocf.15}}
-\newlabel{alg:sortReducer}{{15}{64}{Algorithms :}{algocf.15}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {16}{\ignorespaces Sorting sub-problems on the mapper :\relax }}{65}{algocf.16}}
-\newlabel{alg:sortMapper}{{16}{65}{Algorithms :}{algocf.16}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {17}{\ignorespaces PPIC with a Map based Structure (partial pruning) :\relax }}{66}{algocf.17}}
-\newlabel{alg:PPICMAP}{{17}{66}{Algorithms :}{algocf.17}{}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {18}{\ignorespaces PPIC with partial projections :\relax }}{67}{algocf.18}}
-\newlabel{alg:PPICPARTIAL}{{18}{67}{Algorithms :}{algocf.18}{}}
+\bibcite{yang2007lapin}{8}
+\bibcite{deng2014towards}{9}
+\bibcite{ho2000large}{10}
+\bibcite{pei2004mining}{11}
+\bibcite{negrevergne2015constraint}{12}
+\bibcite{kemmar2015prefix}{13}
+\bibcite{zaharia2012resilient}{14}
+\bibcite{kemmar2016global}{15}
+\bibcite{guns2011itemset}{16}
+\bibcite{yang2005lapin}{17}
+\@writefile{toc}{\contentsline {section}{References}{49}{section.5}}
+\bibcite{bonchi2007extending}{18}
+\bibcite{de2008constraint}{19}
+\bibcite{de2010constraint}{20}
+\bibcite{raedt2007constraint}{21}
+\bibcite{zaki2000sequence}{22}
+\bibcite{han2000freespan}{23}
+\bibcite{zhao2003sequential}{24}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Annexes}{51}{section.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Glossary :}{51}{subsection.6.1}}
+\@writefile{toc}{\contentsline {section}{Acronyms}{51}{section*.26}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Additional example images}{51}{subsection.6.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces Example of an S-matrix for Prefix-Span bi-level projection\relax }}{51}{figure.caption.27}}
+\newlabel{fig:smatrix}{{24}{51}{Example of an S-matrix for Prefix-Span bi-level projection\relax }{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Additional Performance Comparisons :}{51}{subsection.6.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces PPIC's performances VS other specialized algorithm\relax }}{51}{figure.caption.28}}
+\newlabel{fig:PPICvsOther}{{25}{51}{PPIC's performances VS other specialized algorithm\relax }{figure.caption.28}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces Performance improvement of fixing Spark's pre-processing\relax }}{52}{figure.caption.29}}
+\newlabel{fig:spark_preprocessing_fix}{{26}{52}{Performance improvement of fixing Spark's pre-processing\relax }{figure.caption.29}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces Performance improvement - soft limit on the number of created sub-problem.}}{53}{figure.caption.30}}
+\newlabel{fig:sub_problem_limit}{{27}{53}{Performance improvement - soft limit on the number of created sub-problem}{figure.caption.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces PPIC with a map structure}}{54}{figure.caption.31}}
+\newlabel{fig:multi_map_comp}{{28}{54}{PPIC with a map structure}{figure.caption.31}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Algorithms :}{55}{subsection.6.4}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Prefix Projection Incremental Counting propagator (PPIC)\relax }}{55}{algocf.1}}
+\newlabel{alg:PPIC1}{{1}{55}{Algorithms :}{algocf.1}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {2}{\ignorespaces PPIC Continued\relax }}{56}{algocf.2}}
+\newlabel{alg:PPIC2}{{2}{56}{Algorithms :}{algocf.2}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {3}{\ignorespaces Spark's original implementation : Pre-Processing\relax }}{57}{algocf.3}}
+\newlabel{alg:SPARK1}{{3}{57}{Algorithms :}{algocf.3}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {4}{\ignorespaces Spark's original implementation : Scalable execution\relax }}{58}{algocf.4}}
+\newlabel{alg:SPARK2}{{4}{58}{Algorithms :}{algocf.4}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {5}{\ignorespaces Spark's original implementation : Local execution\relax }}{59}{algocf.5}}
+\newlabel{alg:SPARK3}{{5}{59}{Algorithms :}{algocf.5}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {6}{\ignorespaces Spark's original implementation : Project and findPrefixExtension\relax }}{60}{algocf.6}}
+\newlabel{alg:SPARK4}{{6}{60}{Algorithms :}{algocf.6}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {7}{\ignorespaces First scalable CP based implementation\relax }}{61}{algocf.7}}
+\newlabel{alg:FirstImplem}{{7}{61}{Algorithms :}{algocf.7}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {8}{\ignorespaces New functionalities : Scalable execution\relax }}{62}{algocf.8}}
+\newlabel{alg:NF}{{8}{62}{Algorithms :}{algocf.8}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {9}{\ignorespaces Quick - Start : Scalable execution\relax }}{63}{algocf.9}}
+\newlabel{alg:QuickStart}{{9}{63}{Algorithms :}{algocf.9}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {10}{\ignorespaces Clean database before local execution of PPIC :\relax }}{64}{algocf.10}}
+\newlabel{alg:CleanBeforeLocalPPIC}{{10}{64}{Algorithms :}{algocf.10}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {11}{\ignorespaces Automatic Local Execution Selection :\relax }}{65}{algocf.11}}
+\newlabel{alg:AutomaticSelection}{{11}{65}{Algorithms :}{algocf.11}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {12}{\ignorespaces Clean database before any local execution :\relax }}{66}{algocf.12}}
+\newlabel{alg:CleanBeforeLocal}{{12}{66}{Algorithms :}{algocf.12}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {13}{\ignorespaces Positions lists : Project and findPrefixExtension\relax }}{67}{algocf.13}}
+\newlabel{alg:posLists}{{13}{67}{Algorithms :}{algocf.13}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {14}{\ignorespaces Specialised Execution : Pre-Processing\relax }}{68}{algocf.14}}
+\newlabel{alg:SpecializedScalableExec}{{14}{68}{Algorithms :}{algocf.14}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {15}{\ignorespaces Sorting sub-problems on the reducer :\relax }}{69}{algocf.15}}
+\newlabel{alg:sortReducer}{{15}{69}{Algorithms :}{algocf.15}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {16}{\ignorespaces Sorting sub-problems on the mapper :\relax }}{70}{algocf.16}}
+\newlabel{alg:sortMapper}{{16}{70}{Algorithms :}{algocf.16}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {17}{\ignorespaces PPIC with a Map based Structure (partial pruning) :\relax }}{71}{algocf.17}}
+\newlabel{alg:PPICMAP}{{17}{71}{Algorithms :}{algocf.17}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {18}{\ignorespaces PPIC with partial projections :\relax }}{72}{algocf.18}}
+\newlabel{alg:PPICPARTIAL}{{18}{72}{Algorithms :}{algocf.18}{}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {19}{\ignorespaces Final implementation\relax }}{73}{algocf.19}}
+\newlabel{alg:FINAL}{{19}{73}{Algorithms :}{algocf.19}{}}

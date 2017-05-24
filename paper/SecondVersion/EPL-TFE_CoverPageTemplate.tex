@@ -93,18 +93,36 @@
 \newpage
 \listoffigures
 \listoftables
+\newpage
 \listofalgorithms
 \newpage
 
 \begin{abstract}
-TODO - Half a page to a page of content should be enough
+In this paper we propose a novel constraint programming based sequential pattern mining algorithm designed to perform large-scale data mining through parallel computations in a scalable environment. In this endeavour, we will adapt the recently designed algorithm PPIC, which managed to outperform other state-of-the-art implementations by using ideas from both data mining and CP on a generic constraint solver, to support parallel computation using Spark. We will then show through detailed experiment that, by using a generic map-reduce based scalable prefix-span implementation to divide our original sequential pattern mining problem in sufficiently small sub-problems, and by then solving those sub-problems locally using an underlying CP framework, great performance can be obtained in a scalable architecture without losing much flexibility on the supported constraints. 
 \end{abstract}
-\newpage
 
 
 \section{Introduction}
 
-TODO \acrlong{ppic} \gls{maths} \acrlong{SoS} \acrlong{SoSS}
+Sequential pattern mining is a widely studied problem concerned with discovering frequent sub-sequences in a sequence database. This data mining problem has broad applications, including but not limited to : Analysis of customer purchase patterns, web-log mining, medical research, DNA sequencing, text-mining, human mobility mining, and so on\cite{mabroukeh2010taxonomy}. \newline
+
+First introduced by Agrawal and Srikan \cite{agrawal1995mining} in 1995, sequential pattern mining problems have since been widely studied for more efficient way to find their combinatorially explosive number of possible subsequence patterns. Through the years, many techniques have thus been proposed to efficiently solve this problem, among which we must mention apriori, GSP, SPADE, and Prefix-Span \cite{agrawal1995mining, srikant1996mining, han2001prefixspan, zaki2001spade} for being millstones in the advancement of this research. \newline
+
+Additionally, constraint programming (CP) has often been proposed as a framework for sequential pattern mining problems in recent years, producing various efficient algorithm such as CPSM, PP, or Gap-Seq. The main benefit of those algorithm lying in their modularity, since their implementation in CP framework allows the addition of multiple constraints to restrict the search space of our problem, and more efficiently work toward specific solutions. Those constraints encompassing a wide range of possibilities such as imposing restrictions on symbol occurrences and positions, imposing restrictions on the pattern length, ensuring the respect of regular expressions, and so on. \newline
+
+However, it was feared that this increased flexibility came with a performance cost. Many of the developed algorithm staying uncompetitive in comparison to state-of-the-art specialised methods.
+However, many recently made improvements, notably by Kemmar et al \cite{Kemmar_global, Kemmar_gap}, which had further extended this work by introducing one constraint (module) for both the pseudo-projection and the frequency pruning, and allowed CP based sequence mining algorithms to become competitive with state-of-the-art techniques such as Zaki's cPSADE \cite{zaki2001spade}. \newline
+
+A recent paper \cite{aoga2016efficient} went even further by designing a CP based implementation that greatly out-performs state-of-the-art implementations. This PrefixSpan based algorithm called PPIC, designed to find patterns on sequences of individual symbols and implemented on the open source CP-solver OscaR \cite{oscar}, achieved those improved performances by combining ideas from pattern
+mining and constraint programming. \newline
+
+More specifically, this new algorithm improves the efficiency of computing prefix-projected databases (the usual bottle-neck of Prefix-Span based techniques) by using last-position lists such as those used in the LAPIN algorithm \cite{yang2007lapin}. This algorithm also improves the time needed to restore projected database when using a depth-first search approach through the use of trailing which avoid unnecessary copies of the data. \newline
+
+However, the previously mentioned implementations were not ready for the recent advent of Big Data, as they were not adapted for large-scale data processing. Those implementation thus needed to evolve and support parallel computations, so that they could be executed in scalable 'big-data' environments and display further improved performances. \newline
+
+While non-CP algorithms were quickly adapted to those new environments with the introduction of a scalable implementation based on Prefix-Span \cite{deng2014towards} and SPADE \cite{ho2000large}, CP-based approaches have yet to be adapted to support parallel computations. \newline
+
+Our objective in this paper is thus to adapt the recently designed PPIC algorithm to efficiently support parallel computations in a scalable architecture. Additionally, we will take extra to try keeping the inherent flexibility of CP-based implementation without sacrificing performances.
 
 \section{Sequential Pattern Mining}
 
@@ -120,31 +138,31 @@ Sequence pattern mining (SPM) is a widely studied problem focusing on discoverin
 \theoremstyle{example}
 \newtheorem{example}{Example}[]
 
-\begin{definition}{\bfseries Symbol, Item and ItemSets :}
-A symbol (s) is an element of a sequence, symbols can be repeated in sequences but, in a given database, a symbol will keep the same meaning. Symbols can be group into sets of symbol. \\
-An item (i) is the integer representation of a symbol. While symbols could technically be anything from an Object to a primitive type, items are integer representation of those symbols allowing shorter representation of the database. Similarly, items can be grouped in sets, we will refer to sets of items as ItemSets. \\
+\begin{definition}{\bfseries Symbol, Item and Item-sets :}
+A symbol (s) is an element of a sequence, symbols can be repeated in sequences but, in a given database, a symbol will keep the same meaning. Symbols can be grouped into sets of symbols. \\
+An item (i) is the integer representation of a symbol. While symbols could technically be anything from an Object to a primitive type, items are integer representation of those symbols allowing shorter representation of the database. Similarly, items can be grouped in sets, we will refer to sets of items as Item-sets. \\
 In the remainder of this paper, we will generally refer to elements of sequence as symbols, unless a representation as Item is necessary for the algorithm/concept concerned.
 \end{definition}
 
 \begin{definition}{\bfseries Sequence :}
-A sequence seq = $\{s_1, s_2, ..., s_n\}$ of length N, is an ordered list of potentially repeating symbols. Those symbols can either be grouped into sets (in which case each set will be clearly separated from others using delimiters) or each symbol could be part of it's own independent set. In the remained of this paper, we will distinguish between those two type of sequence by calling them either \acrlong{SoSS} (\acrshort{SoSS}) in the first case or \acrlong{SoS} (\acrshort{SoS}) in the second.
+A sequence seq = $\{s_1, s_2, ..., s_n\}$ of length N, is an ordered list of potentially repeating symbols. Those symbols can either be grouped into sets (in which case each set will be clearly separated from others using delimiters) or each symbol could be part of its own independent set. In the remained of this paper, we will distinguish between those two types of sequences by calling them either \acrlong{SoSS} (\acrshort{SoSS}) in the first case or \acrlong{SoS} (\acrshort{SoS}) in the second.
 \end{definition}
 
 \begin{example}{\bfseries Type of Sequences}
 \begin{itemize}
 \item  <A B C A> is a \acrlong{SoS} (\acrshort{SoS}) of length 4 containing three different symbols. Symbol A being repeated multiple times in the sequence.
-\item <(A B)(C A)> is a \acrlong{SoSS} (\acrshort{SoSS}), where parenthesis act as delimiters between symbols sets.
-\item <(A)(C)(A)> is a \acrlong{SoS} (\acrshort{SoS}), since no sets of symbol contain more than one element.
+\item <(A B)(C A)> is a \acrlong{SoSS} (\acrshort{SoSS}), where parenthesis act as delimiters between symbol sets.
+\item <(A)(C)(A)> is a \acrlong{SoS} (\acrshort{SoS}), since no sets of symbols contain more than one element.
 \end{itemize}
 \end{example}
 
 \begin{definition}{\bfseries Sub-Sequence / Super-Sequence:}
-A sequence alpha = $\{\alpha_1, \alpha_2, ..., \alpha_m\}$ is a sub-sequence of seq = $\{s_1, s_2, ..., s_n\}$ and seq is a super-sequence of alpha if and only if : m $\leq$ n and $\forall i \in \{1, ..., m\} \quad \exists j_i \quad such \quad that \quad 1 \leq j_1 \leq ... \leq j_m \leq n \quad and \quad \alpha_i = seq_{j_i}$
+A sequence alpha = $\{\alpha_1, \alpha_2, ..., \alpha_m\}$ is a subsequence of seq = $\{s_1, s_2, ..., s_n\}$ and seq is a super-sequence of alpha if and only if : m $\leq$ n and $\forall i \in \{1, ..., m\} \quad \exists j_i \quad such \quad that \quad 1 \leq j_1 \leq ... \leq j_m \leq n \quad and \quad \alpha_i = seq_{j_i}$
 \end{definition}
 
 \begin{definition}{\bfseries Sequence database :}
 A sequence database is a non-ordered collection of set of tuples (sid, seq). Where 'sid' is a sequence identifier and 'seq' a sequence. If a sequence database contains only sequences of symbols, we shall denote it as SDB in the remained of this paper. In any other case we shall refer to the database with using the acronym SSDB. \\
-Any algorithm mining sequential pattern for an SSDB should find the same solutions for SDB datasets as an SDB only algorithm. SDB specialized algorithm may never be used on SSDB. \\
+Any algorithm mining sequential pattern for an SSDB should find the same solutions for SDB datasets as an SDB only algorithm. SDB specialised algorithms may never be used on SSDB. \\
 NB : SDB are SSDB but the opposite is not true ! 
 \end{definition}
 
@@ -152,23 +170,23 @@ NB : SDB are SSDB but the opposite is not true !
 \begin{itemize}
 \item (<A B C A>, <D E C B>) is an SDB, since it contains only sequences of symbols.
 \item (<(A)(B)>, <(D)(E)(C)(B)>) is also an SDB, since it similarly only contains sequences of symbols, the maximal Symbol Set size being one. 
-\item (<(A)(B)(C A(>, <(D)(E)(C)(B)>) is an SSDB, since it contains at least one sequences of sets of symbols, the first sequence of the database contains an symbols set of multiple symbol (C A).
+\item (<(A)(B)(C A)>, <(D)(E)(C)(B)>) is an SSDB, since it contains at least one sequence of sets of symbols, the first sequence of the database containing (C A), a symbol set with multiple symbols.
 \end{itemize}
 \end{example}
 
 \begin{definition}{\bfseries Cover, Support, Pattern, Frequent Pattern :}
 The \textbf{cover} of a sequence seq in SSDB, denoted by cover(seq), is the subset of sequences in SSDB that are a super-sequence of seq. 
 The \textbf{support} of a sequence seq in SSDB, denoted nbSupportSDB(seq), is the number of sequence in the cover. 
-Any sequence seq can be a \textbf{pattern}, but we call \textbf{frequent pattern}, pattern where nbSupportSSDB(seq) $\geq \theta$, where $\theta$ is a
+Any sequence seq can be a \textbf{pattern} as long as it appears in the database, but we call \textbf{frequent patterns}, patterns where nbSupportSSDB(seq) $\geq \theta$, where $\theta$ is a
 given minimum support threshold.
 \end{definition}
 
 \begin{definition}{\bfseries Sequential Pattern Mining (SPM)}
-Given an minimum sup-port threshold $\theta$ and a sequence database SSDB, the SPM problem is to find all frequent patterns of the SSDB.
+Given a minimum sup-port threshold $\theta$ and a sequence database SSDB, the SPM problem is to find all frequent patterns of the SSDB.
 \end{definition}
 
 \begin{definition}{\bfseries Prefix, Suffix}
-Let $\alpha$ be a pattern. If a sequence  $\beta$ is a super-sequence of $\alpha$ then the prefix of $\alpha$ in $\beta$ is the smallest sequence of symbol in $\beta$ that is still a super-sequence of $\alpha$. The remains of $\beta$ that are not part of the prefix are called suffix, and can be obtained by projecting the prefix away.
+Let $\alpha$ be a pattern. If a sequence  $\beta$ is a super-sequence of $\alpha$ then the prefix of $\alpha$ in $\beta$ is the smallest sequence of symbols in $\beta$ that is still a super-sequence of $\alpha$. The remains of $\beta$ that are not part of the prefix are called suffix, and can be obtained by projecting the prefix away.
 \end{definition}
 
 \begin{definition}{\bfseries Prefix Projected database}
@@ -179,35 +197,35 @@ A prefix-projected database of a prefix $\alpha$, denoted by $SDB_\alpha$, is th
 
 \subsubsection{apriori}
 
-The Apriori algorithm, created in 1995 \cite{agrawal1995mining}, was designed for frequent item-sets mining in a transactional databases.\newline
+The Apriori algorithm, created in 1995 \cite{agrawal1995mining}, was designed for frequent item-sets mining in a transactional database.\newline
 
-This breath first search (BFS) algorithm, whose performance are now surpassed by more modern techniques, finds all frequent item-sets by iteratively growing it's sequential patterns. \newline
+This breath first search (BFS) algorithm, whose performances are now surpassed by more modern techniques, finds all frequent item-sets by iteratively growing its sequential patterns. \newline
 
-First, at the start of each iteration, all length-N candidate will be generated (N being the number of the iteration) using the result of the previous iteration and the length-1 candidates as basis. The support of those candidates will then be checked with the databases and un-frequent pattern will be deleted. Finally frequent length-N patterns will be sent onto the next iteration, until none can be grown. \newline
+First, at the start of each iteration, all length-N candidate will be generated (N being the number of the iteration) using the result of the previous iteration and the length-1 candidates as basis. The support of those candidates will then be checked with the databases and un-frequent pattern will be deleted. Finally, frequent length-N patterns will be sent onto the next iteration, until none can be grown. \newline
 
-While historically relevant, this algorithm was inefficiently generating all possible N-length candidate using the length N-1 candidates as basis. Among those a large amount of candidate wouldn't be frequent, and would thus waste huge amount of memory and CPU time being stocked and uselessly verified across the database. \newline
+While historically relevant, this algorithm was inefficiently generating all possible N-length candidates using the length N-1 candidates as basis. Among those a large amount of candidate wouldn't be frequent, and would thus waste huge amount of memory and CPU time being stocked and uselessly verified across the database. \newline
 
-One of it's good point however, lies in it's ability to be used to detect association rules (Example : When A is present, B has 75\% chance of also being present), which can give indications about the general trends in the database and allow human operators to get a general understanding of the in-putted dataset.
+One of its good points however, lies in its ability to be used to detect association rules (Example : When A is present, B has 75\% chance of being also present), which can give indications about the general trends in the database and allow human operators to get a general understanding of the inputted dataset.
 
 \subsubsection{GSP}
 
-The Generalized Sequential Pattern (GSP) algorithm \cite{srikant1996mining} was based on the apriori algorithm but redesigned for sequential pattern mining instead of frequent item-set mining. One of the good points of this new algorithm lied in the possibility to add time constraints that specified a minimum and/or maximum time period between adjacent elements in a pattern. \newline
+The Generalised Sequential Pattern (GSP) algorithm \cite{srikant1996mining} was based on the apriori algorithm but redesigned for sequential pattern mining instead of frequent item-set mining. One of the good points of this new algorithm lied in the possibility to add time constraints that specified a minimum and/or maximum time period between adjacent elements in a pattern. \newline
 
-As apriori, the algorithm start by detecting frequent length-1 pattern, it then proceed with generating all length-2 patterns from there. However, since order now matters as items that should be grouped together can come from multiple transactions, there is now a lot more candidates to create. \newline
+As apriori, the algorithm start by detecting frequent length-1 pattern, it then proceeds with generating all length-2 patterns from there. However, since order now matters as items that should be grouped together can come from multiple transactions, there is now a lot more candidates to create. \newline
 
-More specifically, given two items A and B, the generated candidate would be AB, BA and (AB). (AB) being the representation of those two item occurring in the same transactional time frame. Those candidates will then be projected on the database, and their support will be counted. All candidates having a lesser amount of support than the threshold $\theta$ will then be cleaned. \newline
+More specifically, given two items A and B, the generated candidate would be AB, BA and (AB). (AB) being the representation of those two items occurring in the same transactional time frame. Those candidates will then be projected on the database, and their support will be counted. All candidates having a lesser amount of support than the threshold $\theta$ will then be cleaned. \newline
 
 The algorithm should then generate further candidates, but unlike apriori, the method has been complexified to become far more efficient. Instead of growing sequential patterns by adding all length-1 patterns to each of their end and creating a tremendous amount of unsupported patterns, we create those candidates more efficiently. \newline
 
-First, for each sequential patterns of length-N found in the previous iterations, we detect it's first and last N-1 item, thus creating two sub-sequential pattern by omitting an element either at the end or start. We will then create length-N+1 candidates by composing sequential patterns with similar end and start sub-sequential pattern. \newline
+First, for each sequential patterns of length-N found in the previous iterations, we detect its first and last N-1 item, thus creating two sub-sequential patterns by omitting an element either at the end or start. We will then create length-N+1 candidates by composing sequential patterns with similar end and start sub-sequential pattern. \newline
 
-For example, given the sequential patterns AA, (AB), AB and BA, we would be able the generate the following candidates : A(AB), (AB)A, B(AB), (AB)B, ABA, BAB, AAB, BAA. \\
-Those candidates should then be pruned to remove impossible combinations found in previous iterations. In the case of our example, since BB was not retained as a length-2 sequential pattern due to being un-frequent, we can delete all candidate sequential pattern containing BB, as they similarly cannot be present. \\
+For example, given the sequential patterns AA, (AB), AB and BA, we would be able to generate the following candidates : A(AB), (AB)A, B(AB), (AB)B, ABA, BAB, AAB, BAA. \\
+Those candidates should then be pruned to remove impossible combinations found in previous iterations. In the case of our example, since BB was not retained as a length-2 sequential pattern due to being un-frequent, we can delete all candidate sequential patterns containing BB, as they similarly cannot be present. \\
 We are thus left with : A(AB), (AB)A, ABA, AAB, BAA \newline
 
-Finally, we will count the number of support for each candidate having passed the pruning phase, and remove unsupported sequential patterns. Another iteration of generating candidate, pruning and count support will then start, until no supported sequential patterns is found at the end of an iteration, or no candidates can be generated. \newline
+Finally, we will count the number of support for each candidates having passed the pruning phase, and remove unsupported sequential patterns. Another iteration of generating candidates, pruning and count support will then start, until no supported sequential patterns is found at the end of an iteration, or no candidates can be generated. \newline
 
-If after counting the support of each candidate we detect that only ABA and BAA are supported, the next iteration would only create the candidate ABAA. Since it would be our only length-4 pattern, no length-5 pattern will be generated and the execution will stop having determined that all solutions where found. \newline
+If after counting the support of each candidate we detect that only ABA and BAA are supported, the next iteration would only create the candidate ABAA. Since it would be our only length-4 pattern, no length-5 pattern will be generated and the execution will stop having determined that all solutions were found. \newline
 
 As you may expect, this new method to generate candidates allowed GSP to surpass apriori's efficiency by a wide margin. Since the algorithm additionally supported a wide range of new constraints allowing reduction of the search space, and was so efficient, it became a reference algorithm in frequent pattern mining.
 
@@ -236,18 +254,19 @@ The Prefix-Span approach \cite{pei2004mining, han2001prefixspan} relies on patte
   \label{ex:PrefixSpanExample}
 \end{figure}
 
-The main selling point of the algorithm lies in it's ability to quickly generate candidate extensions, projecting prefixes on the database significantly reducing the time needed to find prefixes extensions, as only the suffixes need to be searched for those extensions to be found. Another selling point lies in it's scalability, as this method is easily implementable under a Map-Combine-Reduce programming scheme. \newline
+The main selling point of the algorithm lies in its ability to quickly generate candidate extensions, projecting prefixes on the database significantly reducing the time needed to find prefixes extensions, as only the suffixes need to be searched for those extensions to be found. Another selling point lies in its scalability, as this method is easily implementable under a Map-Combine-Reduce programming scheme. \newline
 
 However, this method also has disadvantages, mainly in the fact that projecting databases is a time expensive process. Making building those projected databases the efficiency bottle-neck of Prefix-Span. \newline
 
-However, techniques exists to break past this bottle-neck and mitigate it's effects. Techniques among which we should mention the 'Bi-level projection' technique, which consist in creating a triangular matrix (S-matrix [\ref{fig:smatrix}]) registering the number of supports for all length-2 sequences that can be assembled from length-1 prefixes. A quick scan of the S-matrix then allows the detection of all supported length-2 prefixes, prefixes which can then be extended again through applying the same technique on their projected database. Thus allowing a reduction of the number of necessary prefix projection during the algorithm, since only half of them are projected. \newline
+Fortunately, techniques exists to break past this bottle-neck and mitigate its effects. Techniques among which we should mention the 'Bi-level projection' technique, which consists in creating a triangular matrix (S-matrix [\ref{fig:smatrix}]) registering the number of supports for all length-2 sequences that can be assembled from length-1 prefixes. A quick scan of the S-matrix then allows the detection of all supported length-2 prefixes, prefixes which can then be extended again through applying the same technique on their projected database. Thus allowing a reduction of the number of necessary prefix projections during the execution of the algorithm, since only half of the prefixes will need to be projected. \newline
 
 A second technique we should mention is the 'Pseudo-Projection' technique which is based on keeping and maintaining a start index for each sequence. This start-index registering the lowest position at which the last projected prefix was supported, thus allowing quicker projection of extending prefixes by avoiding to re-project previous prefix elements.
+
 \subsubsection{cSPADE}
 
-The cSPADE algorithm \cite{zaki2001spade} uses combinatorial properties to divide the original sequence pattern mining problem in smaller sub-problems that can be solved independently using simple id-list join operations. This algorithm is thus parallelizable, furthermore the parallelization has a linear scalability with respect to the size of the inputted database. \newline
+The cSPADE algorithm \cite{zaki2001spade} uses combinatorial properties to divide the original sequence pattern mining problem in smaller sub-problems that can be solved independently using simple id-list join operations. This algorithm is thus parallelisable, furthermore, the parallelisation has a linear scalability with respect to the size of the inputted database. \newline
 
-cSPADE's first step is to compute all length-1 sequential pattern using a simple database scan. Then, we generate all length-2 sequential pattern and count the number of supporting sequences for each pair of item in a bidimensional matrix. Counting the number of supporting sequence being realised through another database scan by first transforming the original vertical representation of the database into an horizontal representation (see Figure \ref{ex:cspadeDatabaseRepr}).
+cSPADE's first step is to compute all length-1 sequential patterns using a simple database scan. Then, we generate all length-2 sequential patterns and count the number of supporting sequences for each pair of items in a bi-dimensional matrix. Counting the number of supporting sequence being realised through another database scan by first transforming the original vertical representation of the database into an horizontal representation (see Figure \ref{ex:cspadeDatabaseRepr}).
 
 \begin{figure}[h]
   \centering
@@ -269,7 +288,7 @@ Subsequent length-n sequence patterns can then be formed by joining length-(n-1)
 
 It is also important to note that this method of joining ID-lists is only efficient from length-3 patterns onward, as ID-lists for length 1 and 2 patterns can be extremely large and potentially wouldn't fit in memory. \newline
 
-Of course, at the end of each round, un-frequent sequential pattern should be cleaned as to guarantee only frequent pattern will be extended. This algorithm can be executed using either breadth first or depth first search, and ends it's execution once no patterns can be further extended.
+Of course, at the end of each round, un-frequent sequential pattern should be cleaned as to guarantee only frequent patterns will be extended. This algorithm can be executed using either breadth first or depth first search, and ends its execution once no patterns can be further extended.
 
 \begin{figure}[h]
   \centering
@@ -290,45 +309,45 @@ Of course, at the end of each round, un-frequent sequential pattern should be cl
 \subsection{Existing CP Based approaches}
 \subsubsection{CPSM}
 
-The CPSM approach \cite{negrevergne2015constraint} was implemented to solve sequential pattern mining problems involving only sequences of symbols (no symbols set) using generic Constraint Programming (CP) solvers. It creates a global constraint allowing a search for frequent pattern over the database. Thanks to it's integration in CP solvers, it also easily support additional constraints such as size constraint or regular-expressions constraints. \newline
+The CPSM approach \cite{negrevergne2015constraint} was implemented to solve sequential pattern mining problems involving only sequences of symbols (no symbols set) using generic Constraint Programming (CP) solvers. It creates a global constraint allowing a search for frequent patterns over the database. Thanks to its integration in CP solvers, it also easily support additional constraints such as size constraints or regular-expression constraints. \newline
 
-The global constraint, which form of the basis of this approach, is called the global exists-embedding constraint. Based on an incremental propagator (DFS), the algorithm will incrementally extend a prefix, until no extensions can be successfully projected. \newline
+The global constraint, which forms the basis of this approach, is called the global exists-embedding constraint. Based on an incremental propagator (DFS), the algorithm will incrementally extend a prefix, until no extensions can be successfully projected. \newline
 
-At each step, the solver will take care of assigning the next extensions in our search space. The constraint will then search said extensions to verify it's validity. Of course, the whole sequence won't be searched, but only positions larger than the smallest position supporting the previous valid prefix in each sequence. \newline
+At each step, the solver will take care of assigning the next extensions in our search space. The constraint will then search said extensions to verify its validity. Of course, the whole sequence won't be searched, but only positions larger than the smallest position supporting the previous valid prefix in each sequence. \newline
 
-If the extension is valid and it's support exceeds the threshold $\theta$, the prefix will be considered 'embedded' in the database. The algorithm thus works by creating all prefixes through various incremental extensions and numerous backtracking, then verifying their embedding in the database. \newline
+If the extension is valid and its support exceeds the threshold $\theta$, the prefix will be considered 'embedded' in the database. The algorithm thus works by creating all prefixes through various incremental extensions and numerous backtracking, then verifying their embedding in the database. \newline
 
-Since trying all possible extensions at each incremental step would be inefficient, the algorithm was also designed to prune the next possible extensions that should be considered by the solver, and only keep extensions that are sufficiently supported in the database. Thus, symbol that are considered unfrequent won't be branched over during the execution. This pruning is done by counting the number of support for each extensions during the embedding existence verification. \newline
+Since trying all possible extensions at each incremental step would be inefficient, the algorithm was also designed to prune the next possible extensions that should be considered by the solver, and only keep extensions that are sufficiently supported in the database. Thus, symbols that are considered unfrequent won't be branched over during the execution. This pruning is done by counting the number of support for each extension during the embedding existence verification. \newline
 
-Although impressive for it's modularity, the efficiency of this algorithm didn't quite caught up to specialised non-CP algorithm such as Prefix-Span or cSPADE. It however surpassed their efficiency at searching for specific solution thanks to it's modularity.
+Although impressive for its modularity, the efficiency of this algorithm didn't quite caught up to specialised non-CP algorithms such as Prefix-Span or cSPADE. It, however, surpassed their efficiency at searching for specific solutions thanks to its modularity.
 
 \subsubsection{PP}
 
-This second approach based on CPSM proposed a slightly different global constraint by taking idea from prefix-projection \cite{kemmar2015prefix}. Similarly to it's predecessor, this algorithm was designed to solve sequential pattern mining problems involving sequence of symbols (no sets of symbols).\newline
+This second approach based on CPSM proposed a slightly different global constraint by taking ideas from prefix-projection \cite{kemmar2015prefix}. Similarly to its predecessor, this algorithm was designed to solve sequential pattern mining problems involving sequence of symbols (no sets of symbols).\newline
 
 The main idea behind this improved constraint being that we have no need to check sequences for extensions support when they did not support sub-sequences of the current prefix. \newline
 
-This new algorithm thus takes notes of the ID of sequences which support the current pattern so that it's extensions may be projected only on those sequences. The key element of this new feature being that we keep ID of sequence and not copy of sequences, making it extremely memory and time efficient. \newline
+This new algorithm thus takes notes of the ID of sequences which support the current pattern so that its extensions may be projected only on those sequences. The key element of this new feature being that we keep ID of sequence and not copy of sequences, making it extremely memory and time efficient. \newline
 
-During the extensions pruning phase, only supportive sequences will need be checked in a similar fashion, as they are the only relevant sequences to find extensions with. \newline
+During the extensions pruning phase, only supportive sequences will need to be checked in a similar fashion, as they are the only relevant sequences to find extensions with. \newline
 
-While the rest of this global constraint implementation was very similar to CPSM, the prefix projection improvement allowed this new implementation to largely overtake it's predecessor in efficiency. Making this new algorithm competitive with state-of-the-art non-CP method while keeping the improved modularity inherent to CP algorithm.
+While the rest of this global constraint implementation was very similar to CPSM, the prefix projection improvement allowed this new implementation to largely overtake its predecessors in efficiency. Making this new algorithm competitive with state-of-the-art non-CP method while keeping the improved modularity inherent to CP algorithms.
 
 \subsubsection{Gap-Seq}
 
-This new algorithm introduced a global constraint adding support for time gap constraint. This allow, for example, to analyses purchase behaviors and find products usually bought by customers at regular time intervals. \newline
+This new algorithm introduced a global constraint adding support for time gap constraint. This allows, for example, to analyses purchase behaviours and find products usually bought by customers at regular time intervals. \newline
 
-Similarly to it's predecessor, the algorithm was designed to solve sequential patterns mining problems involving sequences of symbols, doing so by incrementally extending and verifying prefixes over multiple pass of a prefix projected database. \newline
+Similarly to its predecessor, the algorithm was designed to solve sequential patterns mining problems involving sequences of symbols, doing so by incrementally extending and verifying prefixes over multiple pass of a prefix projected database. \newline
 
-The new global constraint however allow tighter search spaces where one can specify the minimal/maximal distance allowed between two symbols for them to remain solution. \newline
+The new global constraint, however, allow tighter search spaces where one can specify the minimal/maximal distance allowed between two symbols for them to remain solution. \newline
 
 For this constraint to work efficiently, additional pruning was added when pruning for extending items, so that extensions which would violate the time gap constraints couldn't be taken into account.
 
 \subsubsection{PPIC}
 
-Largely based on it's predecessor, CPSM and PP, PPIC is an algorithm designed for solving sequence pattern mining problems involving sequences of symbols. Unlike Gap-seq, constraint over time gaps are not supported. \newline
+Largely based on its predecessor, CPSM and PP, PPIC is an algorithm designed for solving sequence pattern mining problems involving sequences of symbols. Unlike Gap-seq, constraint over time gaps are not supported. \newline
 
-This new algorithm speciality laying in it's record breaking efficiency, surpassing even state-of-the-art non-CP solver, generally by a wide margin (see Figure \ref{fig:PPICvsOther}).
+This new algorithm speciality lying in its record-breaking efficiency, surpassing even state-of-the-art non-CP solver, generally by a wide margin (see Figure \ref{fig:PPICvsOther}).
 
 PPIC's implementation is based on the Prefix-Span approach, it's execution can be separated in two stages :
 
@@ -337,23 +356,23 @@ PPIC's implementation is based on the Prefix-Span approach, it's execution can b
 	\begin{enumerate}
 		\item The 'first-position' matrix : A \#SDB*N sized matrix allowing O(1) jumps to the first occurrence of a given item. 
 		\item The 'last-position' matrix : A  \#SDB*N sized matrix allowing O(1) check for the presence of a given item in the remains of a sequence.
-		\item The 'interesting-position' matrix : A matrix with the same size as the original sequence database, but whose content are changed from the items forming those sequences, to the positions of the next 'interesting' item. That is the next position where an item last appears in a sequence. \\ Although, at first glance, this matrix may seem redundant with the last-position matrix, its purpose appears when one realise that to achieve the same goal a whole columns of the last-position matrix would have to be checked. Similarly, keeping only this matrix would also be less efficient, since there would be no way to efficiently check if an item is present in the remains of a sequence. Both matrices are thus needed to achieve the greatest efficiency gain. 
+		\item The 'interesting-position' matrix : A matrix with the same size as the original sequence database, but whose content is changed from the items forming those sequences, to the positions of the next 'interesting' item. That is the next position where an item last appears in a sequence. \\ Although, at first glance, this matrix may seem redundant with the last-position matrix, its purpose appears when one realises that to achieve the same goal a whole column of the last-position matrix would have to be checked. Similarly, keeping only this matrix would also be less efficient, since there would be no way to efficiently check if an item is present in the remains of a sequence. Both matrices are thus needed to achieve the greatest efficiency gain. 
 	\end{enumerate}
 	
-	The pre-processing stage will also take care of adding multiple constraint, depending on the wishes of the user. Thus restricting the search space to fit tightly the desired solutions and improving performances at reaching those specific solutions.
+	The pre-processing stage will also take care of adding multiple constraints, depending on the wishes of the user. Thus restricting the search space to fit more tightly the desired solutions and improve the algorithm's performances at reaching those specific solutions.
 	
 \item \textbf{Execution :} Once the pre-processing is finished, the algorithm will truly start to run. Using the three matrices, prefixes will be extended efficiently using an incremental propagator (DFS approach). An approach possible thanks to trailing, that is more efficient than BFS approach were multiple copies of the database would need to be kept, or where the prefixes would need to be re-projected. Thanks to this incremental propagation, memory consumption will thus be minimal during the execution of the algorithm. \newline
 
 Through each step of the DFS execution, the last item of the current prefix will be projected efficiently as, similarly to CPSM, the algorithm keeps track of the minimal index after which the previous valid pattern was considered supported. Thus, only the remains of the sequence will need to be searched for confirming the validity of the new projection. Once projected, the algorithm will then prune possible solutions for the next pattern efficiently, thanks to the lastPosition list, and continue the execution. 
 
-Additionally, to keep the increased performances of the PP algorithm, the algorithm keep notes of which sequences supports the current prefixe while projecting the current extension. For further extensions of the prefix, only those sequences will thus have to be considered during any projection or pruning. Since the algorithm also keep track of the number of support for each extensions, an improvement was also made to stop searching for projections once that number of supporting sequences have been found during the prefix's projection. Since the remaining sequences definitely won't support the item and will remain irrelevant further down this branch of the search tree. \newline
+Additionally, to keep the increased performances of the PP algorithm, the algorithm keep notes of which sequences supports the current prefix while projecting the current extension. For further extensions of the prefix, only those sequences will thus have to be considered during any projection or pruning. Since the algorithm also keeps track of the number of support for each extension, an improvement was also made to stop searching for projections once that number of supporting sequences have been found during the prefix's projection. Since the remaining sequences definitely won't support the item and will remain irrelevant further down this branch of the search tree. \newline
 
 Each time a valid solution is found. That is, a solution that satisfy all constraints injected in the solver. The execution will be momentarily interrupted. The solution will then be translated back to the symbols corresponding to the recorded items and saved in a result list. \newline
 
 Once the solver determines that no further solution can be found under the specified constraints. The execution will terminate, and all resulting pattern will be returned.
 \end{enumerate}
 
-An example of a complete execution of PPIC can be found in figure \ref{fig:ppic_exec_example}. The pseudo-code can be found in Algorithm [\ref{alg:PPIC1}, \ref{alg:PPIC2}]. \newline
+An example of a complete execution of PPIC can be found in Figure \ref{fig:ppic_exec_example}. The pseudo-code can be found in Algorithm [\ref{alg:PPIC1}, \ref{alg:PPIC2}]. \newline
 
 \begin{figure}[!h]
 %\hspace*{-1cm}
@@ -410,7 +429,7 @@ for tree={
 \caption[An example of PPIC's execution]{
 	\tabular[t]{@{}l@{}}
 		A simple execution of PPIC's algorithm.\\
-		The solutions patterns are the projected prefixes
+		The solution patterns are the projected prefixes
 	\endtabular
 }
 \label{fig:ppic_exec_example}
@@ -422,13 +441,13 @@ As said previously in the introduction, our goal is to achieve a scalable implem
 
 \subsubsection{The Benefits of Parallelisation}
 
-The benefits of achieving such a scalable algorithm are many. First, local algorithm are limited to the power of the computer they run on, achieving parallelism allows to break that limit and increase the overall efficiency by running on multiple computer at once. \newline
+The benefits of achieving such a scalable algorithm are many. First, local algorithms are limited to the power of the computer they run on, achieving parallelism allows to break that limit and increase the overall efficiency by running on multiple computers at once. \newline
 
-Another advantage lies in cost as, with the arrival of cloud technologies, running algorithms on clusters of small machines is gradually becoming cheaper than buying and maintaining super-computers. \newline
+Another advantage lies in costs as, with the arrival of cloud technologies, running algorithms on clusters of small machines is gradually becoming cheaper than buying and maintaining supercomputers. \newline
 
-For both those reasons, and the fact that a large quantity of SPM problems cannot be run on local architectures, designing implementation that are both scalable and efficient has gradually become extremely important for the industry.
+For both those reasons, and the fact that a large quantity of SPM problems cannot be run on local architectures, designing implementations that are both scalable and efficient has gradually become extremely important for the industry.
 
-\subsubsection{Tool selection}
+\subsubsection{Tool Selection}
 
 Since, fortunately, SPM problems are embarrassingly parallel problem, we had the opportunity to choose from a selection of widely used open-source libraries. We, however, restricted ourselves to Scala compatible framework, as the CP library supporting PPIC was implemented in this language. Rapidly, we were left to choose from two major options :
 
@@ -439,25 +458,25 @@ Since, fortunately, SPM problems are embarrassingly parallel problem, we had the
 
 \paragraph{Hadoop}
 
-Hadoop is an open-source framework that allows large-scale data processing across clusters of machine. Based on a Map-reduce programming model, this framework allows larger scale iterative computation on humongous quantities of data. At each iteration, the data is read from the distributed file systm (HDFS), modified through a MapReduce, then stored back on the file system. \newline
+Hadoop is an open-source framework that allows large-scale data processing across clusters of machines. Based on a Map-reduce programming model, this framework allows larger scale iterative computations on humongous quantities of data. At each iteration, the data is read from the distributed file system (HDFS), modified through a MapReduce, then stored back on the file system. \newline
 
-The advantages of Hadoop thus lies in the simplicity of it's usage. Aside from implementing the implementing the Map and Reduce process, Hadoop will takes care of scheduling, data repartition and failure recovery. \newline
+The advantages of Hadoop thus lies in the simplicity of its usage. Aside from implementing the Map and Reduce process, Hadoop will take care of scheduling, data repartition and failure recovery. \newline
 
-Widely used since it's Initial release in December 10, 2011. Hadoop slowly climbed to become one of the big standards in terms of large scale computation. We thus selected it as our potential scalable framework, discovering shortly after, that an efficient implementation of Prefix-Span on Hadoop was already available on the internet.
+Widely used since its initial release on December 10, 2011. Hadoop slowly climbed to become one of the big standards in terms of large scale computation. We thus selected it as our potential scalable framework, discovering shortly after that an efficient implementation of Prefix-Span on Hadoop was already available on the internet.
 
 \paragraph{Spark}
 
-Spark is an open-source engine for large-scale data processing. Mainly reputed for it's speed, ease of use, and ability to efficiently implement sophisticated problems. \newline
+Spark is an open-source engine for large-scale data processing. Mainly reputed for its speed, ease of use, and ability to efficiently implement sophisticated problems. \newline
 
-Originally developed at UC Berkeley in 2009, It's entire implementation revolves around an immutable read-only data structure called the \textbf{resilient distributed dataset (RDD)}. Maintained in a fault-tolerant way, those lazily computed RDD, built through deterministic coarse-grained transformation, have been designed to be efficiently distributed over a cluster of machines, allowing resolution of complex iterative problem in scalable environments. \newline
+Originally developed at UC Berkeley in 2009, Its entire implementation revolves around an immutable read-only data structure called the \textbf{resilient distributed dataset (RDD)}. Maintained in a fault-tolerant way, those lazily computed RDD, built through deterministic coarse-grained transformation, have been designed to be efficiently distributed over a cluster of machines, allowing resolution of complex iterative problems in scalable environments. \newline
 
-Furthermore, Spark's has been designed to make use of it's clusters RAM memory efficiently, allowing the engine to distance itself from slow HDD memory access. Of course, should the RAM memory be insufficient, Spark is perfectly able to run using nothing but the hard-drive. \newline
+Furthermore, Spark has been designed to make use of its clusters RAM memory efficiently, allowing the engine to distance itself from slow HDD memory access. Of course, should the RAM memory be insufficient, Spark is perfectly able to run using nothing but the hard-drive. \newline
 
 Spark's was thus an extremely valid choice from a technical standpoint and, similarly to Hadoop, we were surprised to discover an existing implementation of Prefix-span available in Spark's machine learning library.
 
-\paragraph{Final choice}
+\paragraph{Final Choice}
 
-As said earlier, both of those libraries already disposed of a scalable PrefixSpan implementation, and both were efficient and widely recognized framework to achieve parallelism. It was thus a matter of determining whose performances were better, and whether those implementations could be efficiently extended through CP technologies. \newline
+As said earlier, both of those libraries already disposed of a scalable PrefixSpan implementation, and both were efficient and widely recognised framework to achieve parallelism. It was thus a matter of determining whose performances were better, and whether those implementations could be efficiently extended through CP technologies. \newline
 
 Fortunately for us, performance comparison had already been done in a widely recognised scientific paper on Spark's RDD \cite{zaharia2012resilient}. Those performances are presented in Figure \ref{fig:hadoopVSspark}
 
@@ -468,9 +487,9 @@ Fortunately for us, performance comparison had already been done in a widely rec
   \label{fig:hadoopVSspark}
 \end{figure}
 
-As you can see, performance-wise, Spark vastly outperform Hadoop thanks to its ability to use both memory and disk for it's computations. Allowing up to 100x speed-up under the right circumstances, as you can see in the logistic regression problem. According to the official website, Spark would also boast a 10x speed-up through on disk computation only, but no performance benchmarks were provided to back that claim. \newline
+As you can see, performance-wise, Spark vastly outperform Hadoop thanks to its ability to use both memory and disk for its computations. Allowing up to 100x speed-up under the right circumstances, as you can see in the logistic regression problem. According to the official website, Spark would also boast a 10x speed-up through on disk computation only, but no performance benchmarks were provided to back that claim. \newline
 
-In terms of extensions through CP technologies, we quickly realised that Hadoop would be far less practical. Although MapReduce can be used to execute the standard PrefixSpan algorithm, and could certainly be modified to introduce CP elements, Spark can support any coarse-grained transformation with its RDDs, allowing a more precise implementations where only required transformations would be made, instead of simple sequences of Map-Combine-Reduce. \newline
+In terms of extensions through CP technologies, we quickly realised that Hadoop would be far less practical. Although MapReduce can be used to execute the standard PrefixSpan algorithm, and could certainly be modified to introduce CP elements, Spark can support any coarse-grained transformation with its RDDs, allowing a more precise implementation where only required transformations would be made, instead of simple sequences of Map-Combine-Reduce. \newline
 
 \section{Implementation of a Scalable CP Based Algorithm}
 
@@ -478,32 +497,31 @@ In this section, we shall present the various implementation we created in an at
 
 \subsection{Spark's original implementation}
 
-Before introducing our various implementation, let us present the original algorithm.
-Spark's algorithm is based on the Prefix-Span approach, and can be separated in four stages :
+Before introducing our various implementation, let us present Spark's original algorithm. An algorithm based on the Prefix-Span approach, and can be separated in four stages :
 
 \begin{enumerate}
-\item \textbf{Pre-processing :} The goal of this stage is to replace each symbol of the sequence database by an unique item, to separate itemSets through a zero delimiter, and to clean the database from unfrequent items. \\
-For example, the sequence <(ABD)(ABC)A> will become 0120123010, assuming only symbol A, B and C are frequent in the sequence database.
-\item \textbf{Scalable execution :} The core of the algorithm. Its execution consist in extending prefixes through a three sub-stage process, starting from the empty prefix.
+\item \textbf{Pre-processing :} The goal of this stage is to replace each symbol of the sequence database by a unique item, to separate item-sets through a zero delimiter, and to clean the database from unfrequent items. \\
+For example, the sequence <(ABD)(ABC)A> will become 0120123010, assuming only symbols A, B and C are frequent in the sequence database.
+\item \textbf{Scalable execution :} The core of the algorithm. Its execution consists in extending prefixes through a three sub-stage process, starting from the empty prefix.
 	\begin{enumerate}
 	\item First, a large prefix is projected on the database, meaning that only the suffix of supporting sequence remain in the resulting database. When there is no prefix to project, the scalable execution comes to an end and the algorithm goes on to the next stage.
 	\item Then, from the set of supporting sequences, we discover symbols that can extend the current prefix. If no such extension exists, we try the next large prefix.
 	\item Finally, for each possible symbol extension, we extend the corresponding prefix. We then determine how long further expanding each extended prefix may take by calculating the projected database size. Depending on the calculated projected size and of the value of a user defined parameter, we then either further extend this prefix using another iteration of the scalable execution, or store it for use in the local execution stage. 
 	\end{enumerate}
 \item \textbf{Local execution :} The local execution is completely similar in its implementation to the scalable execution. Its only use is in significantly improving the algorithm's performance by calculating all extensions from a Prefix locally, instead of doing so while shuffling information around the scalable architecture. \\
-This stage is only launched once all large prefixes have been extended sufficiently, making the databases needed for future extensions small enough. Depending on the parameters inputted by the user, this stage may be skipped.
+This stage is only launched once all large prefixes have been extended sufficiently, making the projected databases that need to be processed to find future extensions small enough. Depending on the parameters inputted by the user, this stage may be skipped.
 \item \textbf{Post-processing :} During the post-processing step, we translate back the unique items into the corresponding symbols they each represented. Then we send back the collected results to the user.
 \end{enumerate}
 
 During the prefix projection phase of the scalable and local execution, the algorithm will also detect which item-sets in the sequence comply with what has already been projected and can still be extended in some way. Storing such items positions in a 'partial projection' list. \newline
-That way, if we are projecting an item-set containing multiple symbol from a prefix, until the end of that item-set, the items projection phases will know where to search possible extensions, preventing the algorithm from having to search the whole sequence. \newline
+That way, if we are projecting an item-set containing multiple symbols from a prefix, until the end of that item-set, the items projection phases will know where to search possible extensions, preventing the algorithm from having to search the whole sequence. \newline
 Also, should we be computing on a database of sequence of symbols, no partial start would be created and kept in memory, since the algorithm would automatically detect that those item-sets cannot be extended. \newline
 
-When the current item-set end, the full remains of the sequence, from the earliest partial position recorded, will have to be searched for extensions. When extending the first item of the new itemSet, new potential partial projection will be recorded, and the old ones will be discarded. \newline
+When the current item-set end, the full remains of the sequence, from the earliest partial position recorded, will have to be searched for extensions. When extending the first item of the new item-set, new potential partial projection will be recorded, and the old ones will be discarded. \newline
 
-During the prefix extension phase, the current partial projection will also be used to find extensions of the current itemset quicker. The remainder of the database will also be searched, but only for extension that starts new itemsets. \newline
+During the prefix extension phase, the current partial projection will also be used to find extensions of the current item-set quicker. The remainder of the database will also be searched, but only for extension that starts new item-sets. \newline
 
-An example of a fully scalable execution from this algorithm can be found in figure \ref{fig:spark_exec_example}. A pseudo-code can also be found in Algorithm [\ref{alg:SPARK1}, \ref{alg:SPARK2}, \ref{alg:SPARK3}, \ref{alg:SPARK4}]. \newline
+An example of a fully scalable execution from this algorithm can be found in Figure \ref{fig:spark_exec_example}. A pseudo-code can also be found in Algorithm [\ref{alg:SPARK1}, \ref{alg:SPARK2}, \ref{alg:SPARK3}, \ref{alg:SPARK4}]. \newline
 
 \begin{figure}[h]
 \centering
@@ -555,7 +573,7 @@ for tree={
 \end{figure}
 
 \begin{itemize}
-  \item[NB:] During our first analysis of Spark's pre-processing stage, we noticed a small inefficiency in the cleaning of the database's sequences. When multiple itemsets were fully cleaned of their item, the algorithm had a tendency of creating sequences of zero delimiters, as the algorithm still delimited empty itemsets.
+  \item[NB:] During our first analysis of Spark's pre-processing stage, we noticed a small inefficiency in the cleaning of the database's sequences. When multiple item-sets were fully cleaned of their item, the algorithm had a tendency of creating sequences of zero delimiters, as the algorithm still delimited empty item-sets.
 
 Although the internal representation was still correct and results weren't modified, those trailing zeroes substantially slowed the algorithm down.
 The performance improvement of this small correction is reflected in the annexes, Figure \ref{fig:spark_preprocessing_fix}.
@@ -563,13 +581,13 @@ The performance improvement of this small correction is reflected in the annexes
 Later, this small correction was proposed to Spark's community and quickly accepted into the default implementation. In the remains of this paper, we will thus consider this corrected version which has been approved by the community as the original algorithm for Spark, and compare our performance improvement with this corrected version as the basis.
 \end{itemize}
 
-\subsection{A First Scalable CP based Implementation}
+\subsection{A First Scalable CP Based Implementation}
 
 As mentioned earlier in this paper, Spark's original algorithm is composed of two different execution stages. We thus analysed each stage independently to understand how CP technique could improve their implementation. Although we rapidly discovered that the scalable stage could hardly be modified to efficiently incorporate CP techniques, at least not without completely incorporating Spark into the solver, we realised that the local execution stage could be significantly improved. \newline
 
 In fact, the entire local execution could be easily replaced by a CP based algorithm. For \acrshort{SoS} problems where PPIC is applicable, we could even use a nearly identical implementation where only the pre-processing stage would need to be modified, as to fit Spark's middle-put. \newline
 
-To remain able to solve \acrshort{SoSS} problems through a local execution. A simple boolean was also added, so that user could specify whether PPIC could be used on the input dataset. In case it couldn't be used, the original local execution of Spark would be used. \newline
+To remain able to solve \acrshort{SoSS} problems through a local execution. A simple boolean was also added, so that users could specify whether PPIC could be used on the input dataset. In case it couldn't be used, the original local execution of Spark would be used. \newline
 
 This first implementation's pseudo-code can be found below, in Algorithm \ref{alg:FirstImplem}.
 
@@ -578,8 +596,8 @@ This first implementation's pseudo-code can be found below, in Algorithm \ref{al
 To improve this first scalable CP based implementation, we identified three promising options that needed to be studied:
 
 \begin{enumerate}
-	\item Improve the link between Spark's middle-put and PPIC's input. The easiest option, but also the most promising, since both algorithm have been separately optimised in terms of performances.
-	\item Improve Spark's performances by incorporating more idea's from pattern mining.
+	\item Improve the link between Spark's middle-put and PPIC's input. The easiest option, but also the most promising, since both algorithms have been separately optimised in terms of performances.
+	\item Improve Spark's performances by incorporating more ideas from pattern mining.
 Which would improve both the scalable execution and the original local execution component of Spark. Thus improving performances on both single and multi-item pattern problems.
 	\item Developing a new version of PPIC which can efficiently be applied to multi-item pattern. Making CP usable for every local execution opportunity and, hopefully, improving performances.
 \end{enumerate}
@@ -588,16 +606,16 @@ Additionally to those performance improving options, we also decided to prove th
 
 \subsection{Adding new functionalities}
 
-To first task we undertook was to add four new functionalities to our first CP based Implementation. The implemented functionalities were as follow :
+To first task we undertook was to add four new functionalities to our first CP based Implementation. The implemented functionalities were as follows :
 
 \begin{enumerate}
 	\item Unbounded max pattern length : Although Spark's implementation already disposed of a way to control the maximum length of a pattern, no special value existed to allow unlimited max pattern length. We thus added this minor functionality, specifying 0 as a special value that would allow searching for all solutions pattern of any length. Additionally, we changed the default value of 10 to this new special value, so that all solutions could be found by default.
-	\item Min pattern length : Although Spark's original implementation allowed to control the maximal length of a pattern. No such functionalities existed to control their minimal length. We thus added a functionality to specify the minimal length a pattern should have before being considered solution. As all pattern containing less non-zero item that the specified input wouldn't be in-putted, we decided to set the default value of this parameter at 1, so that the returned solutions wouldn't be restricted.
-	\item Limit on the maximal number of item per item-set : This functionality was added so that users could, once again, better control their outputted results. Supposing an hypothetical business would like to find all sequences of item bought in pair in a dataset, it would have no need for solutions where item-sets are larger than two. We can thus stop searching for further item-set extensions once the limit has been reached and, de-facto, improve our algorithm performances for returning those specific solutions. Additionally, we created a special value (0) so that all item-set of any length could be outputted, and set that special value as our default for this parameter.
-	\item Soft limit on the number of sub-problems created : By default inactivated, this parameters is enabling far better performance on protein like datasets where projected databases tend to have rather similar sub-problems. Its implementation is a simple check at the beginning of each iteration of the scalable algorithm. If the number of sub-problem created is larger than the user inputted value, the implementation will forcefully put an end to the scalable stage, and switch to a local execution on each worker.
+	\item Min pattern length : Although Spark's original implementation allowed to control the maximal length of a pattern. No such functionalities existed to control their minimal length. We thus added a functionality to specify the minimal length a pattern should have before being considered solution. As all patterns containing fewer non-zero items than the specified input wouldn't be outputted, we decided to set the default value of this parameter at 1, so that the returned solutions wouldn't be restricted.
+	\item Limit on the maximal number of items per item-set : This functionality was added so that users could, once again, better control their outputted results. Supposing an hypothetical business would like to find all sequences of items bought in pairs in a dataset, it would have no need for solutions where item-sets are larger than two. We can thus stop searching for further item-set extensions once the limit has been reached and, de facto, improve our algorithm performances for returning those specific solutions. Additionally, we created a special value (0) so that all item-set of any length could be outputted, and set that special value as our default for this parameter.
+	\item Soft limit on the number of sub-problems created : By default inactivated, this parameter is enabling far better performance on protein like datasets where projected databases tend to have rather similar sub-problems. Its implementation is a simple check at the beginning of each iteration of the scalable algorithm. If the number of sub-problems created is larger than the user inputted value, the implementation will forcefully put an end to the scalable stage, and switch to a local execution on each worker.
 	For the default value of this parameter, a special value (0) was created so that the number of created sub-problems wouldn't be limited.\newline
 	
-	 As you can see in Figure \ref{fig:sub_problem_limit}, performance improvement are only observed on the protein, Kosarak, slen2 and slen3 datasets, but the increase in performance is significant. The problem being that the loss of performance on other datasets is generally even more significant. This loss in performance comes from large differences in sub-problems sizes appearing due to the forced local execution. Since the largest problems tend to be created and processed last, only a few executor have problems to work on toward the end of the execution. The remaining executor staying idle for the reminder of the local execution stage. Moreover, those remaining problems take a very long time to compute, greatly slowing down the measured performance. \\
+	 As you can see in Figure \ref{fig:sub_problem_limit}, performance improvement are only observed on the protein, Kosarak, slen2 and slen3 datasets, but the increase in performance is significant. The problem being that the loss of performance on other datasets is generally even more significant. This loss in performance comes from large differences in sub-problem sizes appearing due to the forced local execution. Since the largest problems tend to be created and processed last, only a few executors have problems to work on toward the end of the execution. The remaining executor staying idle for the reminder of the local execution stage. Moreover, those remaining problems take a very long time to compute, greatly slowing down the measured performance. \\
 	 As is, this parameter should be used with extreme care. However, we will consecrate an implementation design to improve this improvement's performances later in this paper.
 \end{enumerate}
 
@@ -605,26 +623,26 @@ While these additions did not have any measurable impact on performances at thei
 
 A pseudo-code demonstrating the changes brought to the code can be found in Algorithm \ref{alg:NF}. \newline
 
-We then looked into improving our performances, leading the the discovery of two potential inefficiencies.
+We then looked into improving our performances, leading to the discovery of two potential inefficiency.
 
 \subsubsection{Quicker - Start}
 
 During the pre-processing of Spark's original implementation, unfrequent items are cleaned from the database. Frequent items are thus found in the process, only to be discarded and searched for once more when projecting an empty prefix at the beginning of the scalable execution. \newline
 
-We thus modified our first CP implementation to remove this 'inefficiency', deciding to pass frequent-item directly to the scalable stage, instead of discarding them before searching for them once more through a complete iteration over the database. \newline
+We thus modified our first CP implementation to remove this 'inefficiency', deciding to pass frequent items directly to the scalable stage, instead of discarding them before searching for them once more through another complete iteration over the database. \newline
 
 The code was modified accordingly, as shown in Algorithm \ref{alg:QuickStart}.
 
 \subsubsection{Cleaning Sequence before the Local Execution}
 
-The next inefficiency we found was that, during PPIC's local execution, three matrices were build whose size depended on the number of  unique symbols in the input databases.
+The next inefficiency we found was that, during PPIC's local execution, three matrices were built whose size depended on the number of  unique symbols in the input databases.
 Yet, in our first implementation, the various projected Databases that reached the local execution stage often had unfrequent symbols that could potentially be cleaned. \newline
 
-Cleaning them would not only reduce the input database's size, it would also reduce the size of those matrices. Making it a potentially worthwhile deal to pre-process PPIC's input for each projected databases of the local execution. \newline
+Cleaning them would not only reduce the input database's size, it would also reduce the size of those matrices. Making it a potentially worthwhile deal to pre-process PPIC's input for each projected database of the local execution. \newline
 
 We thus modified our code accordingly, producing the code found in Algorithm \ref{alg:CleanBeforeLocalPPIC} \newline
 
-Since, as we will see later in the performance testing section, large increase in performances can be observed through these two improvements, and since so many other improvements needed to be implemented, \textbf{we decided to use this implementation as reference for the remainder of this paper}. All further improvement were thus added separately to this version, since it would later allow us to better compare the performance gains brought by each implementation. \newline
+Since, as we will see later in the performance testing section, large increase in performances can be observed through these two improvements, and since so many other improvements needed to be implemented, \textbf{we decided to use this implementation as reference for the remainder of this paper}. All further improvements were thus added separately to this version, since it would later allow us to better compare the performance gains brought by each implementation. \newline
 
 We will thus end this implementation section with a final algorithm regrouping all implementation which showed performance improvements.
 
@@ -634,29 +652,29 @@ In this section, we will discuss the improvement we tried to bring to the transl
 
 \subsubsection{Automatic Choice of the Local Execution Algorithm}
 
-Our next attempted improvement was to automatise the choice between PPIC and Spark's local execution. Using the former only for \acrlong{SoS} problems, and the latter for \acrlong{SoSS} problems. \newline
+Our next attempted improvement was to automate the choice between PPIC and Spark's local execution. Using the former only for \acrlong{SoS} problems, and the latter for \acrlong{SoSS} problems. \newline
 
 This would allow to be more efficient by default, without needing involvement from the user to decide whether PPIC or Spark's original local execution should be used during the local-execution stage. \newline
 
-In that endeavour, we decided to recalculate the maxItemPetItemSet argument dynamically during the pre-processing stage. Since it allow us to determine whether we were dealing with a \acrshort{SoS} or \acrshort{SoSS} database, and thus, whether PPIC could be used during the local execution. \newline
+In that endeavour, we decided to recalculate the 'maxItemPetItemSet' argument dynamically during the pre-processing stage. Since it allows us to determine whether we were dealing with a \acrshort{SoS} or \acrshort{SoSS} database, and thus, whether PPIC could be used during the local execution. \newline
 
-Additionally, should maxItemPerItemSet be left to it's default value or should it have been put to a much too high value, we could theoretically slightly improve performance by refraining from searching extensions to solution pattern having already reached the max recalculated length. Of course, this theoretical performance gain would only apply for databases where the number of Items per item-set are mostly constant.\newline
+Additionally, should 'maxItemPerItemSet' be left to its default value or should it have been put to much too high a value, we could theoretically slightly improve performance by refraining from searching extensions to solution patterns having already reached the max recalculated length. Of course, this theoretical performance gain would only apply for databases where the number of Items per item-set are mostly constant.\newline
 
 But this additional feature would be worth a small loss of performance on \acrshort{SoSS}, as long as the usage of PPIC could be guaranteed on \acrshort{SoS} problems. \newline
 
 Of course, should the non-recalculated parameters be used with anything but it's default value, the algorithm would make sure only the requested solutions would be computed. \newline
 
-A pseudo-code demonstrating the implementation of this Automatic choice can be found in Algorithm \ref{alg:AutomaticSelection}
+A pseudo-code demonstrating the implementation of this automatic choice can be found in Algorithm \ref{alg:AutomaticSelection}
 
 \subsubsection{Generalised Pre-Processing Before the Local Execution}
 
 Extending our previous idea of cleaning the sequence database before PPIC's execution, we decided to create an implementation where the database would be cleaned before any local execution, including \acrshort{SoSS} problems. Wondering, if cleaning the sequence database before Spark's original local execution could bring similar improvements. \newline
 
-We thus designed a new cleaning process suited both for Spark and PPIC's local execution input. During this process, we also realised we could also easily check whether the cleaned sequences could be solved using PPIC or Spark. We thus decided to include this feature too, and to compare it's performance gain to our previous maxItemPetItemSet based implementation. \newline
+We thus designed a new cleaning process suited both for Spark and PPIC's local execution input. During this process, we also realised we could also easily check whether the cleaned sequences could be solved using PPIC or Spark. We thus decided to include this feature too, and to compare its performance gain to our previous 'maxItemPetItemSet' based implementation. \newline
 
-While creating this new implementation, we also discovered more than a few inefficiencies on the old one. Such as the use of ArrayBuffer structure instead of the much more efficient ArrayBuilder, or un-needed extra iteration during the matrices creation. \newline
+While creating this new implementation, we also discovered more than a few inefficiency on the old one. Such as the use of ArrayBuffer structure instead of the much more efficient ArrayBuilder, or un-needed extra iteration during the matrices creation. \newline
 
-We thus expected this new implementation to be more efficient on both type of sequential pattern mining problems and, hopefully, for every dataset. \newline
+We thus expected this new implementation to be more efficient on both types of sequential pattern mining problems and, hopefully, for every dataset. \newline
 
 A pseudo-code representing this implementation can be found in Algorithm \ref{alg:CleanBeforeLocal}.
 
@@ -664,50 +682,48 @@ A pseudo-code representing this implementation can be found in Algorithm \ref{al
 
 In this section, we will discuss the improvement we tried to bring to Spark's execution stages, and the results we obtained. For each improvement, we will first explain its nature and the trade-off's its implementation may encompass.
 
-\subsubsection{Position lists}
+\subsubsection{Position Lists}
 
-The first idea we had to improve Spark's performances, was to use LAPIN's position list to our advantage. \newline
+The first idea we had to improve Spark's performances was to use LAPIN's position list to our advantage. \newline
 
-In Spark's original implementation, the scalable and local stages of the algorithm perform their duty in three phases. First they receive a solution prefix which needs to be extended, and project it on the whole database, allowing them to know which sequence support that prefix. Then, in the supporting sequences only, they search for symbols which may extend the prefix. Finally, If some symbols are found and they respect the constraint applied to the solutions, Spark's will save them as solution and try to extend them further. \newline
+In Spark's original implementation, the scalable and local stages of the algorithm perform their duty in three phases. First they receive a solution prefix which needs to be extended, and project it on the whole database, allowing them to know which sequence support that prefix. Then, in the supporting sequences only, they search for symbols which may extend the prefix. Finally, if some symbols are found and they respect the constraint applied to the solutions, Spark's will save them as solutions and try to extend them further. \newline
 
 While this implementation is very efficient in a scalable environment, we thought it could be improved through the addition of position list. More specifically, during the prefix projection phase, we determined it would improve performance if the algorithm knew earlier when a sequence couldn't possibly hold the currently projected pattern, or if the algorithm didn't have to analyse half of the sequence before starting to project this aforementioned pattern. \newline
 
 Of course, the trade-off would be a more important use of memory, as the positions list would need to be kept on RDD, along-side their corresponding sequences. To adopt this solution, the measured performance improvement would thus need to be important enough to motivate the benefits of the trade-off. \newline
 
-From this idea, we implemented three new implementation. The first using only a last position list, the second using only a first position list, and the last using both position-list together. \newline
+From this idea, we created three new implementations. The first using only a last position list, the second using only a first position list, and the last using both position-lists together. \newline
 
-In Algorithm \ref{alg:posLists}, you will find a pseudo-code of the implementation including both positions lists together. To obtain he two other implementation, simply remove pieces of code concerned with either the firstPositionList or lastPositionList.
+In Algorithm \ref{alg:posLists}, you will find a pseudo-code of the implementation including both positions lists together. To obtain the two other implementation, simply remove all pieces of code concerned with either the firstPositionList or lastPositionList.
 
 \subsubsection{Specialising the Scalable Execution}
 
 To improve the scalable execution's performances further, we then had the idea to separate the scalable execution stage of \acrshort{SoS} and \acrshort{SoSS} problems. \newline
 
-This idea stemming that, for \acrshort{SoS} problems, the database's internal representation could be seriously shortened by removing unnecessary separator. Effectively reducing the size of their internal representation by two. \newline
+This idea stemming that, for \acrshort{SoS} problems, the database's internal representation could be seriously shortened by removing unnecessary separators, effectively reducing the size of their internal representation by two. Furthermore, this more compact representation would allow us to switch twice sooner to the local execution step, as the projected database is now smaller. \newline
 
-We thus implemented a new scalable stage specialised for \acrlong{SoS} problems. It's main features being the absence of spacial start and the much more compact database representation without delimiters. \newline
+We thus implemented a new scalable stage specialised for \acrlong{SoS} problems. Its main features being the absence of spacial start and the much more compact database representation without delimiters. \newline
 
 A trade-off was however made, as we now needed to detect in which type of pattern mining problem we were before starting the execution. Since we now needed to create a different internal representation depending on the database's type, and since simply removing the delimiters after a database type check wouldn't be efficient. \newline
 
-The most efficient way we found to detect the type of problem was during the frequent symbol detection part of the pre-processing step. Where we could efficiently detect whether each sequence could be use the shortened representation. \newline
+The most efficient way we found to detect the type of problem was during the frequent symbol detection part of the pre-processing step, where through a simple modification we could efficiently detect the type of each sequence, and thus whether we could use the shortened \acrshort{SoS} representation on the database. \newline
 
-The problem being that sequences which could be solved by a \acrlong{SoS} problems after cleaning would never be detected. However, since this case rarely appear over a whole database, we decided checking before cleaning would be sufficient for our purposes. \newline
-
-We thus put performance forward, implementing the code found in Algorithm \ref{alg:SpecializedScalableExec}.
+We thus implemented the code found in Algorithm \ref{alg:SpecializedScalableExec} to successfully put in practise this idea.
 
 \subsubsection{Priority Scheduling for Sub-Problems}
 
-The final idea we explored to improve Spark's performance, was to modify the order in which sub-problems are computed during the local execution stage. \newline
+The final idea we explored to improve Spark's performances, was to modify the order in which sub-problems are computed during the local execution stage. \newline
 
-In the original code, problem are decomposed until they become smaller than a size specified by the 'maxLocalProjDBSize' parameter. As mentioned before, in our reference algorithm, an extension of that idea, the subProblemLimit parameter, was also implemented to allow better control of the number of sub-problem created. \newline
+In the original code, problems are decomposed until they become smaller than a size specified by the 'maxLocalProjDBSize' parameter. As mentioned before, in our reference algorithm, an extension of that idea, the 'subProblemLimit' parameter, was also implemented to allow better control of the number of sub-problems created. \newline
 
-However, we have seen that a consequence of this new functionality is that sub-problems can largely vary in size, making some problem far harder to solve than others. Something which would rarely appear in the original version, unless the maxLocalProjDBSize parameter was put past it's default value. Coincidentally, we also realised that major drops in performance were experienced if those large problem were solved last, since some executor would be left with nothing to do while other would be stuck with atomic large workload.
+However, we have seen that a consequence of this new functionality is that sub-problems can largely vary in size, making some problem far harder to solve than others. Something which would rarely appear in the original version, unless the maxLocalProjDBSize parameter was put way past its default value. Coincidentally, we also realised that major drops in performance were experienced if those large problems were solved last, since some executor would be left with nothing to do while others would be stuck with catastrophically large workload.
 \newline
 
 The solution was clear, large problems needed to be solved first in the various executor, so that smaller workload could be shuffled between executor in the later stage of the execution.
 
 \paragraph{Analysing sub-problem creation}
 
-The piece of code which created the various sub-problems from the various projected prefixes collected during the scalable stage, was fundamentally a mapReduce process. The sequences from the original sequence database being projected one by one with different prefixes, then mapped to some reducer, depending on the prefix's ID 
+The piece of code which created the various sub-problems from the various projected prefixes collected during the scalable stage was fundamentally a mapReduce process. The sequences from the original sequence database being projected one by one with different prefixes, then mapped to some reducer, depending on the prefix's ID 
 (see Figure \ref{fig:sparkMapReduce}). \newline
 
 \begin{figure}[h]
@@ -723,14 +739,13 @@ We thus concluded that a simple solution could be implemented. According to the 
 
 But, as you will see during our performance tests, although this algorithm produced better performance. A memory issue now appeared, to the point of crashing our 10G memory executor. \newline
 
-As it turns out, to sort the various sub-problems depending on their size, Spark's obviously needs to evaluate and hold in memory all sub-problems assigned to an executor.
-Only then could Spark sort them, all the while while keeping those sub-problems either on disk or on memory. \newline
+As it turns out, to sort the various sub-problems depending on their size, Spark's obviously needed to evaluate and simultaneously hold in memory all the sub-problems assigned to an executor. Since those sub-problems were transiently created data, they were not stocked on an RDD, and thus couldn't be stored on disk.
 
-To remain scalable, we thus had to come up with another solution to sort our sub-problems. One that did not involve computing multiple sub-problem and keeping them in memory..
+To remain scalable, we thus had to come up with another solution to sort our sub-problems. One that did not involve computing multiple sub-problems while keeping them in memory..
 
 \paragraph{Sort sub-problem on the mapper}
 
-We thus realised we needed to sort our sub-problems during the mapping phase of the mapReduce process. After a few trial and error, we realised that the mapping function of Spark created sub-problem one by one, following the mapping code and sent them directly to the reducer through the groupBy function, which delivered them in the very same order they were sent. \newline
+We thus realised we needed to sort our sub-problems during the mapping phase of the mapReduce process. After a few trial and error, we realised that the mapping function of Spark created sub-problems one by one, following the mapping code and sent them directly to the reducer through the groupBy function, which delivered them in the very same order they were sent. \newline
 
 We thus modified our implementation to change the order in which we created our sub-problem, instead of sorting them afterwards. The created sub-problems would now be mapped to the reducer and computed in the same order that they were mapped.\newline
 
@@ -744,36 +759,75 @@ A pseudo-code based on the implemented changes can be found in Algorithm \ref{al
 
 \subsection{CP Based Local Execution for Sequence of Sets of Symbols}
 
-Our final implementation attempts, were to create a CP-based implementation to solve pattern mining problems involving sets of symbols. Of course, to replace the original local execution, this implementation would need to be more performant than it's predecessor.
+Our final implementation attempts were to create a CP-based implementation to solve pattern mining problems involving sets of symbols. Of course, to replace the original local execution, this implementation would need to be more performant than its predecessor.
 
 \subsubsection{Pushing PPIC's Ideas Further}
 
-Our first attempt at creating such an implementation, was to try pushing PPIC's ideas further. \newline
+Our first attempt at creating such an implementation was to try pushing PPIC's ideas further. \newline
 
 We decided to forgo all three pre-computed matrices, and to change the structure of our sequence database to fill those matrices purposes more efficiently. Instead of an array, we changed each sequence into a map containing unique symbols as key and the various positions of each the respective symbol as value. \newline
 
-Additionally, we represented the sequence's symbols positions list (including delimiter position) by a ReversibleArrayStack structure, thus allowing efficient backtracking of a symbol's remaining position  through trailing. \newline
+Additionally, we represented the sequence's symbol positions list (including delimiter position) by a ReversibleArrayStack structure, thus allowing efficient backtracking of a symbol's remaining position  through trailing. \newline
 
-This new structure's purpose was to allow us to make distant jumps and checks more efficiently, at the cost of a slightly higher memory consumption. Theoretically, finding the next position of a given symbol would be O(1), be this next, last or first position of the symbol. Should the symbol's position list be empty, or should the last recorded position be smaller than our current position in the sequence, we would also immediately know that no more such symbol were contained in the remains of the sequence. \newline
+This new structure's purpose was to allow us to make distant jumps and checks more efficiently, at the cost of a slightly higher memory consumption. Theoretically, finding the next position of a given symbol would be O(1), be this next, last or first position of the symbol. Should a symbol's position list be empty, or should the last recorded position be smaller than our current position in the sequence, we would also immediately know that no more occurrences of said symbol were contained in the remains of the sequence. \newline
 
-The trade-off lied in the number of reversible point that needed to be maintained. With one ReversibleArrayStack per symbol for each sequence. This number could grow quite quickly, the results may thus greatly vary between datasets but we had good faith it the performance tests would yield satisfying results. \newline
+The trade-off lied in the number of reversible points that needed to be maintained. With one ReversibleArrayStack per symbol for each sequence. This number could grow quite quickly, the results may thus greatly vary between datasets but we had good faith it the performance tests would yield satisfying results. \newline
 
 Translating our improvement to pseudo-code, we obtain Algorithm \ref{alg:PPICMAP}.
 
 \subsubsection{Adding Partial Projections to PPIC}
 
-We also decided to try another approach at developing an efficient CP based implementation for problems involving sequences of sets of symbols. This second attempt focusing on bringing the partialStart structure of Spark to be used in a PPIC like algorithm. \newline
+We also decided to try another approach at developing an efficient CP based implementation for problems involving sequences of sets of symbols. This second attempt focusing on bringing the partialStart structure of Spark in a PPIC-like algorithm. \newline
 
-First we realised that keeping all three matrices wouldn't be efficient. In a set of symbol pattern mining context. To keep the same function, the 'interesting position' matrix needed to be modified to indicate the next last appearance of an item in an itemset, instead of the next last appearance of an item in the sequence, as it did before. This in turn, makes this matrix useless as the next such position would nearly always be the next item of the database. \newline
+First we realised that keeping all three matrices wouldn't be efficient. In a set of symbols pattern mining context. To keep the same function, the 'interesting position' matrix needed to be modified to indicate the next last appearance of an item in an itemset, instead of the next last appearance of an item in the sequence, as it did before. This in turn, makes this matrix useless as the next such position would nearly always be the next item of the database. \newline
 
-We thus decided to remove this matrix, but to keep the first and last positions lists, as they remained relevant.
+We thus decided to remove this matrix, but to keep the first and last position lists, as they remained relevant in a sequence of sets of symbols context.
 We also modified our implementation to keep zero delimiters during cleaning and to change the partial start received from Spark during the pre-processing, so that they still referred to the same item-set after cleaning (lest the item-set completely disappear in which case that particular partial start will be scraped). \newline
 
-The disadvantage of partial starts however, was that they need to be maintained and advanced at each step of our DFS execution. This meant that, when starting a new item-set, all remaining sequences of the database would need to be fully explored. \newline
+The disadvantage of partial starts, however, was that they need to be maintained and advanced at each step of our DFS execution. This meant that, when starting a new item-set, all remaining sequences of the database would need to be fully explored. \newline
 
-For item-set extensions however, only the position list as partial starts would need to be checked, along the sub-sequent position before the next separator, thus we expect greater performance improvement the longer item-sets could extended. \newline
+For item-set extensions, however, only the position list as partial starts would need to be checked, along the sub-sequent positions appearing before the next separator. We thus expect greater performance improvement the longer item-sets could be extended in the database. \newline
 
 A pseudo-code based on the implemented changes can be found in Algorithm \ref{alg:PPICPARTIAL}.
+
+\subsection{Final implementation}
+
+Our final implementation regroups the characteristics of all performance benefiting algorithm presented above. In this section, we will first present our design choices for this final implementation as well as motivate those choices. We will then present a new functionality added exclusively to this implementation. \newline
+
+A pseudo-code representing this final implementation may be found in Algorithm \ref{alg:FINAL}
+
+\subsubsection{Reaching Greater Performances}
+
+The execution proceeds as follows : First, unfrequent symbols are cleaned from the original database. During the detection process, the algorithm also takes time to detect whether we are dealing with a database of sequences of symbols, or with a database of sequences of sets of symbols.\newline
+
+This allows us to keep the specialised scalable execution improvement which brought great performance improvements to SoS database mining problems. \newline
+
+After that, the scalable execution proceeds normally with the new functionalities added in the reference algorithm. We however removed the quicker-start 'improvement' made before the reference implementation, as it brought negative performance improvements (See 'Performances of Quicker-Start' section for details on its negative performances). \newline
+
+During the scalable execution, the algorithm will store small prefixes for the local execution stages, alongside the size of their projected database. So that, should it be necessary, sub-problems may be sorted before the beginning of the local execution stage. \newline
+
+As condition for triggering an automatic sort of the sub-problem, we decided to use the presence of a non-default value for the 'subProblemSoftLimit' parameter or a 'maxLocalProjectedDBsize' value twice greater than the default of 32000000. \newline
+
+The reason we settled on those conditions is quite straightforward. As you may see in the performance test of our implementation sorting sub-problems on the mapper, sorting may not always be beneficial when sorting sub-problems created with the default-value of 'maxLocalProjectedDBsize'. We thus decided to aim a bit higher, and settled on this value, where sorting always shows benefits. \\
+Considering the condition on our 'subProblemSoftLimit' parameter, the choice was even simpler, since this parameter is meant to be used for showing the benefits of the local-execution stage, and since performance results may become hazardous when sub-problems aren't sorted properly. \newline
+
+Finally, before each local execution stage, the projected databases will be cleaned similarly to our 'Generalised Pre-Processing Before the Local Execution' improvement. Of course, with a few minor differences as the sequences representation now differs depending on the database type. \newline
+
+An algorithm will then be chosen to solve the sequential pattern mining sub-problem locally. We settled on using PPIC for problems involving sequences of symbols, and our 'Adding Partial Projections to PPIC' implementation for problems involving sequences of sets of symbols, since it gave far better performances on the slen3 dataset than any of our position list implementation and it allows greater modularity on the constraint that can be applied to our algorithm. \newline
+
+Of course, should a problem involving sequences of sets of symbols become a problem involving only sequences of symbols, an automatic switch to PPIC's local execution would be triggered. Ensuring the most performant algorithm is always in use.
+
+\subsubsection{A New Functionality}
+
+Additionally to our performance related design choices, we also decided to add a new functionality to this final implementation, allowing a user to set precise constraint on the occurrences of symbols in solutions pattern. \newline
+
+In our final implementation, a user may thus input a list of tuples of the form (symbol, relation, count) allowing precise control of the solution patterns returned. \newline
+
+For example, by inputting the tuple ('A', <=, 1), a user can ensure that symbol A won't occur more than once in a solution pattern. If the user inputted tuples allow to rule out the presence of a symbol in solution patterns, for example with a tuple such as ('X', <, 1), our algorithm will automatically brand those items as unfrequent and clean them during the pre-processing stage. As they have no chance of appearing in a solution anyway. \newline
+
+The supported relations being '==', '!=', '<', '>', '>=', and '<='. Thus allowing a wild range of control over the solution pattern returned. Of course, if the user doesn't impose any symbol constraint, the execution proceeds correctly and doesn't restrict the solution space. \newline
+
+As before, this new functionality was also designed to affect performance as little as possible when it is not in use. By default, no constraint are applied on the occurrences of symbols.
 
 \addtocontents{toc}{\protect\newpage}
 \section{Performances}
@@ -830,9 +884,9 @@ As you can see, our datasets vary largely in their characteristic, be it in thei
 
 \subsection{Number of Partitions}
 
-As seen previously in Figure \ref{fig:hadoopVSspark}, Spark's performance may vary greatly depending on the number of partitions created from the Input dataset.\newline
+As seen previously in Figure \ref{fig:hadoopVSspark}, Spark's performances may vary greatly depending on the number of partitions created from the Input dataset.\newline
 
-The number of created partition must thus be carefully selected as, should there be too much partitions created, the algorithm will lose considerable amount of time switching its execution between partitions. Also, should there be too little partition, scalability may be affected, as executor will need to hold large partitions in memory. In extreme cases, Spark's shuffler may even crash while shuffling partitions around. \newline
+The number of created partition must thus be carefully selected as, should there be too many partitions created, the algorithm will lose considerable amount of time switching its execution between partitions. Also, should there be too little partition, scalability may be affected, as executor will need to hold large partitions in memory. In extreme cases, Spark's shuffler may even crash while shuffling partitions around. \newline
 
 We have thus decided to keep a constant, carefully selected, number of partitions for each dataset. So that our algorithm's performances can remain comparable while guaranteeing a complete absence of shuffler crash due to too large partitions.\newline
 
@@ -874,11 +928,11 @@ Our performances will be tested running different custom distribution of Spark, 
 
 Although this will take us longer to obtain results, the goal behind this choice, is that our code could then easily be proposed as the standard for future distributions of Spark.  \newline
 
-Additionally to that, unless specified otherwise, our algorithm will be executed on Spark's standalone cluster, in cluster deploy mode (not locally). More specifically, during our tests, we will run a simple architecture composed of a single master and of a worker with four executor. Each executor running three threads. A representation of this simple architecture is available in Figure \ref{fig:test_architecture}.\newline
+Additionally to that, unless specified otherwise, our algorithm will be executed on Spark's standalone cluster, in cluster deploy mode (not locally). More specifically, during our tests, we will run a simple architecture composed of a single master and of a worker with four executors, each executor running three threads. A representation of this simple architecture is available in Figure \ref{fig:test_architecture}.\newline
 
 Both the driver and the executors will also dispose of a large amount of memory (10G each) during our tests. As it serves no purpose to limit their abilities when purely comparing performances. \newline
 
-Later in our paper, scalability performances will also be tested in memory-restricted, architecture. The architecture then used shall be specified at the beginning of the concerned section.
+Later in our paper, scalable performances will also be tested in a memory-restricted architecture. The architecture then used shall be specified at the beginning of the concerned section.
 
 \begin{figure}[h]
   \centering
@@ -891,7 +945,7 @@ Later in our paper, scalability performances will also be tested in memory-restr
 
 At all time, unless specified otherwise, the program parameters will be kept at their default value, so that differences in parameters will never be reflected in our performance comparisons.\newline
 
-An exception to that rule being the 'maxPatternLength' parameter of Spark, which its default value of 10 doesn't fit our purpose as it prevent all sequences to be found on our largest datasets. We will thus use INTEGER.maxValue instead, so that every solution pattern from our datasets may be outputted.\newline
+An exception to that rule being the 'maxPatternLength' parameter of Spark, which its default value of 10 doesn't fit our purpose as it prevents all sequences to be found on our largest datasets. We will thus use INTEGER.maxValue instead, so that every solution pattern from our datasets may be outputted.\newline
 
 Also, as mentioned previously, all additional functionalities implemented have been designed to affect performance as little as possible when left to their default value. Their default value will thus similarly be used, unless specified otherwise before the performance test.
 
@@ -905,13 +959,15 @@ For our performance tests, we will measure not only the running time of our algo
 
 Since PPIC is neither scalable nor concurrent, we will exceptionally use and even simpler architecture for our test on Spark, restraining our worker to a single executor so that both implementation can work under equivalent resources. \newline
 
-As you can see in Figure \ref{fig:originalAlgorithmPerformances}, given the same resources, PPIC greatly overcomes Spark on most datasets. But, although it completely outperforms Spark's implementation on sparser dataset like protein, it fails to do so on denser datasets like Kosarak-70 or PubMed. Especially when the minimal number of supporting sequence is large, and much of the dataset can be cleaned during the pre-processing stage. \newline
+As you can see in Figure \ref{fig:originalAlgorithmPerformances}, PPIC greatly overcomes Spark on nearly every dataset given the same resources, the only exceptions being the Kosarak-70 and PubMed dataset. \newline
 
-We can also notice that PPIC's performance are far more stable, and that running additional tests for a smaller amount of minimal support may even show on inversion on denser datasets like PubMed.
+We can however notice that, on those two datasets, PPIC's performances are extremely stable. As we can see in the performance tests involving lower amount of supporting sequence on PubMed, PPIC becomes the most efficient in the long run. We have no doubt that a similar situation would happen for Kosarak-70, should we have been PPIC the opportunity in our tests. \newline
+
+As said previously, the reason behind those stable performance lies in the required pre-processing of PPIC being quite long. The small difference we can see in those stable performances are thus the running time of the main algorithm itself.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{originalAlgorithm.png} \\
+  \includegraphics[width=0.85\textwidth]{originalAlgorithm.png} \\
   \danger  Test realised on a simplified architecture \danger \\
   \begin{tabular}{c l}
   	 & \\
@@ -926,31 +982,32 @@ We can also notice that PPIC's performance are far more stable, and that running
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{first_implementation.png}
-  \danger PPIC's performance were still measured using a single thread and 10G of memory \danger \\
-  Other performances represented in this graph were measured using the 4-executor test architecture previously described.
+  \includegraphics[width=0.80\textwidth]{first_implementation.png} \\
+  \danger PPIC's performances were still measured using a single thread and 10G of memory \danger \\
+  Other performances represented in this graph were measured using the 4-executor test architecture previously described. \\
+  As you can see, when given more resources, Spark's performances slowly overcome PPIC's performances on a majority of our datasets. 
   \caption{A first implementation that makes PPIC scalable}
   \label{fig:first_scalable_CPbased_implementation}
 \end{figure}
 
-As you can see in figure \ref{fig:first_scalable_CPbased_implementation}, this first implementation, which simple merges the two algorithm by replacing Spark's local execution by PPIC, is already much more efficient on \acrlong{SoS} problems than Spark's original algorithm. We can however notice than the single-thread execution of PPIC sometimes overcome our new scalable implementation, despite the lower amount of resources of which it disposes. The worst such case being protein, a dataset on which PPIC remain far superior despite the lower resource it disposes, which may appear disconcerting at first glance. \newline
+As you can see in figure \ref{fig:first_scalable_CPbased_implementation}, this first implementation, which simple merges the two algorithms by replacing Spark's local execution by PPIC, is already much more efficient on \acrlong{SoS} problems than Spark's original algorithm. We can however notice than the single-thread execution of PPIC sometimes overcome our new scalable implementation, despite the lower amount of resources at his disposal. The worst such case being protein, a dataset on which PPIC remain far superior despite the lower resource it disposes, which may appear disconcerting at first glance. \newline
 
-Another disconcerting thing to notice may be the relative flatness of PPIC's performance measurement. Making it seem as if the decrease in amount of required support isn't really felt by the algorithm. On Kosarak and PubMed, their performance remain worse by a 10x factor which cannot be explained by the lack of resources alone. \newline
+Another disconcerting thing to notice may be the relative flatness of PPIC's performance measurement. Making it seem as if the decrease in the amount of required support isn't really felt by the algorithm. On Kosarak and PubMed, the performances of PPIC remains worse by a 10x factor which cannot be explained by the lack of resources alone. Similarly, on protein, the performance of our new algorithm remain worse by a 10x factor, despite the additional resources given to its execution. \newline
 
-In fact, those performances actually result from three major factors :
+However, those oddities in our performance measurements are perfectly explainable, they actually result from three major factors:
 
 \begin{enumerate}
-\item First, the pre-processing of the original PPIC algorithm wasn't implemented efficiently, probably since only execution time were compared on PPIC's original paper. PPIC's true efficiency was thus brought down, while our new implementation wasn't, since this pre-processing was rewritten from scratch to fit Spark's middle-put. This time, with efficiency in mind. Explaining the slow, yet stable, performances of PPIC on datasets like Kosarak.
+\item First, the pre-processing of the original PPIC algorithm wasn't implemented efficiently, probably since only the execution time had been compared on PPIC's original paper. PPIC's true efficiency was thus brought down, while our new implementation wasn't, since this pre-processing was rewritten from scratch to fit Spark's middle-put. This time, with efficiency in mind. Explaining the slow, yet stable, performances of PPIC on datasets like Kosarak and PubMed.
 
-\item Second, as explained earlier, three matrices are built from the original sequence database before the beginning of PPIC's execution. However, in PPIC's original implementation, those matrices could be very large. As their size depends not only on the number of sequences, but also on the number of unique item present in the input database. \newline
+\item Second, as explained earlier, three matrices are built from the original sequence database before the beginning of PPIC's execution. However, in PPIC's original implementation, those matrices could be very large. As their size depends not only on the number of sequences, but also on the number of unique items present in the input database. \newline
 	
-	However, our first-implementation surprisingly solved this problem. Since only the interesting parts of the sequence database are kept before launching the local execution, many items and sequences which appeared in the initial problem don't appear during the local execution. For each sub-problem treated in the local execution, the constructed matrices will thus be much smaller in size. Which explain further our new implementation's efficiency gain on dataset with large amount of distinct items.
+	However, our first-implementation surprisingly partly solved this problem. Since only the interesting parts of the sequence database are kept before launching the local execution, many items and sequences which appeared in the initial problem don't appear during the local execution. For each sub-problem treated in the local execution, the constructed matrices will thus be much smaller in size. Which explains further our new implementation's efficiency gain on datasets with large amounts of distinct items.
 	
-\item Finally, our third major factor is a major inefficiency that comes as a by-product of scalability. It appear mostly on smaller datasets composed of a small number of repeated symbols, such as our protein dataset. In those cases, since the various sub-problem created before our local execution are actually very similar to each other, our new implementation will lose and important amount of time recreating the three input matrices before launching computations on those nearly identical sequence databases. While the original PPIC implementation would create those matrices once and use them through the reminder of the execution. \newline
+\item Finally, our third major factor is a major inefficiency that comes as a by-product of scalability. It appears mostly on datasets composed of a small number of repeated symbols, such as our protein dataset. In those cases, since the various sub-problems created before our local execution are actually very similar to each other, our new implementation will lose an important amount of time recreating the three input matrices before launching computations on those nearly identical sequence databases. While the original PPIC implementation would create those matrices once and use them through the reminder of the execution. \newline
 
-Sadly, this problem cannot be dynamically fixed without seriously affecting scalability or efficiency, as it would require us to compare the projection of multiple prefixes. This means that, either we would have to project the prefixes multiple time to obtain the results of those comparison, either we would project it once and keep multiple version of the database during comparison, which would be a disaster for memory consumption and scalability.\newline
+Sadly, this problem cannot be dynamically fixed without seriously affecting scalability or efficiency, as it would require us to compare the projection of multiple prefixes. This means that, either we would have to project the prefixes multiple time to obtain the results of those comparisons, either we would project it once and keep multiple version of the database during comparison, which would be a disaster for memory consumption and scalability.\newline
 
-Fortunately, although a complete dynamic fix of the problem is unpractical for the implementation of a scalable and efficient solution. It is possible to give users the possibility to reduce or even negate the effects of this by-product inefficiency, through giving them control over the amount of sub-problem created. Since the less such sub-problems, the less those matrices will need to be recalculated. \newline
+Fortunately, although a complete dynamic fix of the problem is impractical for the implementation of a scalable and efficient solution. It is possible to give users the possibility to reduce or even negate the effects of this by-product inefficiency, through giving them control over the amount of sub-problem created. Since the less such sub-problems, the less those matrices will need to be recalculated. \newline
 
 In fact, Spark's implementation already contains a way to control the number of sub-problems created, thanks to the 'maxLocalProjDBSize' parameter. Stopping further sub-problem creation from problems that are already below the inputted parameter value in size. A more direct and precise way to control the amount of generated problems was thus added among other functionalities in the Quicker-Start implementation.
 
@@ -962,74 +1019,73 @@ On the other hand, we can notice that multi-item performance weren't impacted at
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{new_functionalities.png}
-  \caption{The performance impact of not re-calculating frequent items}
-  \todo[inline]{GRAPH ONLY WITH QUICKER-START}
+  \includegraphics[width=0.85\textwidth]{quicker_start.png}
+  \caption{The performance impact of not recalculating frequent items}
   \label{fig:new_functionalities_perf}
 \end{figure}
 
-As you can see, very small gain in time are generally made. At the exception of the Kosarak-70, slen2 and slen3 datasets, which are our datasets possessing the largest number of unique items after cleaning the database. At first, we believed those small loss of performance were due to the delay needed to transfer the already calculated frequent items to the various executor being larger than the time needed to actually recalculate those items from the small cleaned database. It was only much later, when we added the slen3 dataset, that we realised this interpretation was incomplete.\newline
+As you can see, very small gain in time are generally made. With the exception of the Kosarak-70, slen2 and slen3 datasets, which are our datasets possessing the largest number of unique items after cleaning the database. At first, we believed those small losses of performances were due to the delay needed to transfer the already calculated frequent items to the various executor being larger than the time needed to actually recalculate those items from the small cleaned database. It was only much later, when we added the slen3 dataset, that we realised this interpretation was incomplete.\newline
 
-In the original implementation, since the items need to be recalculated, they will be recalculated only on the sequences contained in the partitions of the executor. In this new version, we force every executor to receive those items and to store prefixes object for them. Those object then created will then be kept on the executor for the entirety of the execution as, should an RDD need to be recalculated, they would be a necessary input for their recreation. \newline
+In the original implementation, since the items need to be recalculated, they will be recalculated only on the sequences contained in the partitions of the executor. In this new version, we force every executor to receive those items and to store prefixes object for them. Those objects then created will then be kept on the executor for the entirety of the execution as, should an RDD need to be recalculated, they would be a necessary input for their recreation. \newline
 
-Meaning that, when the number of items are large, this additional feature will require more memory usage, and more computation time to received the items and their frequencies and create the prefixes. Especially when, as in our slen3 dataset which is a combination of multiple generated datasets, every partition generally concern a whole different set of items.\newline
+Meaning that, when the number of items are large, this additional feature will require more memory usage, and more computation time to receive the items and their frequencies and create the prefixes. Especially when, as in our slen3 dataset which is a combination of multiple generated datasets, every partition generally concerns a whole different set of items.\newline
 
-Sadly, we realised this mistake much too late, as only the slen3 dataset proved it's quite disastrous implications and, at the time, we had decided to keep this improvement despite the small inefficiency on Kosarak and slen2. Since other datasets displayed rather interesting efficiency gain at the time. This inneficiency was thus introduced in our reference algorithm, and in nearly all the subsequent implementation. \newline
+Sadly, we realised this mistake much too late, as only the slen3 dataset proved it's quite disastrous implications and, at the time, we had decided to keep this improvement despite the small inefficiency on Kosarak and slen2. Since other datasets displayed rather interesting efficiency gain at the time. This inefficiency was thus introduced in our reference algorithm, and in nearly all the subsequent implementation. \newline
 
-We will however correct this mistake in our final version of the algorithm, and remove the quicker-start functionality, since the change is harmful to the scalability of the program. \newline
+We will however correct this mistake in our final version of the algorithm, and remove the quicker-start functionality, since the change is harmful to the scalability of the program.
 
 \subsubsection{Performances of Adding Pre-processing Before PPIC's Local Execution}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{new_functionalities.png}
+  \includegraphics[width=0.85\textwidth]{new_functionalities.png}
   \caption{The performance impact of Database Pre-processing Before PPIC's Execution}
   \label{fig:clean_before_PPIC}
 \end{figure}
 
-As you can see in figure \ref{fig:clean_before_PPIC}, this additional pre-processing step allows a 3x performance speed-up on the Bible dataset and a 2x speed-up on Fifa. Lesser performance gain were also observed on protein and the latter stages of PubMed. \newline
+As you can see in figure \ref{fig:clean_before_PPIC}, this additional pre-processing step allows a 3x performance speed-up on the Bible dataset and a 2x speed-up on Fifa. Lesser performance gains were also observed on protein and the latter stages of PubMed. \newline
 
-However, we can observe worsening performances in smaller datasets and in executions with larger minsup values. Theses loss however, pales in comparison to the performance gain observed. Although at first glance they may seem large on log-scale graph, they do not even exceed ten second, while the performance can be counted in hundred of seconds on Bible and Fifa. \newline
+However, we can observe worsening performances in smaller datasets and in executions with larger minsup values. Theses losses however, pales in comparison to the performance gain observed. Although at first glance they may seem large on log-scale graph, they do not even exceed ten second, while the performance gains can be counted in hundreds of seconds on Bible and Fifa. \newline
 
-The reason being those performance gain is that the larger the dataset and the lower the minimal amount of support, the longer prefixes will need to be before being executed locally. The larger those prefixes are before local execution, the more items can be cleaned from the sequences, the faster we can search the remain of those very sequences for patterns. Finally, if less items are present in our sequences during our local execution of PPIC, the three matrices needed for PPIC's execution can be created faster. Thus, hastening performance another fold. \newline
+The reason being those performance gains is that the larger the dataset and the lower the minimal amount of support, the longer prefixes will need to be before being executed locally. The larger those prefixes are before local execution, the more items can be cleaned from the sequences, the faster we can search the remains of those very sequences for patterns. Finally, if fewer items are present in our sequences during our local execution of PPIC, the three matrices needed for PPIC's execution can be created faster. Thus, hastening performance another fold. \newline
 
 However, cleaning sequences comes with a variable cost depending on the database size. If, much like Kosarak, the database only contains uncleanable sequences, performances will be slightly worsened. Of course, since this change is only applied before PPIC, the performance measured on our three slen datasets weren't affected. \newline
 
-In the end, since such large increase in performances were observed, and since so many other improvements needed to be tested, \textbf{we decided to use the performance obtained here as reference for the remainder of this paper}. To allow better comparison of performances gain/losses, all further improvement were thus added to this version, and tested separately. Finally, by the end of this paper, a final version containing all changes providing performance improvements will be compiled into a single algorithm. Of whose the performances will be tested.
+In the end, since such large increase in performances were observed, and since so many other improvements needed to be tested, \textbf{we decided to use the performance obtained here as reference for the remainder of this paper}. To allow better comparison of performances gains/losses, all further improvements were thus added to this version, and tested separately. Finally, by the end of this paper, a final version containing all changes providing performance improvements will be compiled into a single algorithm, algorithm whose performances will be similarly tested.
 
 \subsubsection{Performances with Automatic choice of Local Execution}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{MaxItemPerItemset_recalculated.png}
+  \includegraphics[width=0.85\textwidth]{MaxItemPerItemset_recalculated.png}
   \caption[Automatic detection of item-sets type in dataset]{
   	\tabular[t]{@{}l@{}}
-		Performance improvement of recalculating maxItemPerItemset to avoid \\
+		Performance improvement of recalculating 'maxItemPerItemset' to avoid \\
 		search for multi-item extension when unnecessary
 	\endtabular}
   \label{fig:maxItemPerItemset_recalculated}
 \end{figure}
 
-As you can see on figure \ref{fig:maxItemPerItemset_recalculated}, this improvement achieves its goal with a slight performance degradation, due to the need for calculating the maxItemPetItemSet value. \newline
+As you can see on figure \ref{fig:maxItemPerItemset_recalculated}, this improvement achieves its goal with a slight performance degradation, due to the need for calculating the 'maxItemPetItemSet' value. \newline
 
-While, at first, we thought those small loss where worth this additional feature, as it guarantees the use of the much more performant PPIC. We however found soon after that there was a more efficient way to achieve the same goal, as you will see in the next section.
+While, at first, we thought those small losses were worth this additional feature, as it guarantees the use of the much more performant PPIC. We, however, found soon after that there was a more efficient way to achieve the same goal, as you will see in the next section.
 
 \subsubsection{Performances of Adding Pre-processing Before Any Local Execution}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{clean_before_localExec.png}
-  \caption{Efficiency gain of cleaning the sequence database before any local execution}
+  \includegraphics[width=0.85\textwidth]{clean_before_localExec.png}
+  \caption{Efficiency gains of cleaning the sequence database before any local execution}
   \label{fig:cleaning_before_local_exec}
 \end{figure}
 
 As you can see in figure \ref{fig:cleaning_before_local_exec}, this implementation was, as expected, much more performant, for both types of datasets. \newline
 
-Advantages are however lesser when mining sequences of sets of symbols, as the local execution still relies on Spark's implementation, which doesn't take much advantage of this additional cleaning step. The various improvement we made for cleaning sequence of symbols, on the other hand, are quite strongly reflected in these performance measurement, surpassing our expectation on their effectiveness.
+Advantages are, however, lesser when mining sequences of sets of symbols, as the local execution still relies on Spark's implementation, which doesn't take as much advantages of this additional cleaning step. The various improvement we made for cleaning sequences of symbols, on the other hand, are quite strongly reflected in these new performance measurement, surpassing our expectation on their effectiveness.
 
-While, as said earlier, cleaning before the local execution allows us to detect wish algorithm should take charge the the inputted database, another advantage also appeared. Should a sub-problem from a database of sequence of sets of symbol pattern become a database of sequence of symbol through cleaning, its local execution would be switched through PPIC, thus improving the significantly the performance on these projected database. \newline
+While, as said earlier, cleaning before the local execution allows us to detect witch algorithm should take charge the inputted database, another advantage also appeared. Should a sub-problem from a database of sequence of sets of symbols become a database of sequence of symbols through cleaning, its local execution would be switched through PPIC, thus improving the significantly the performance on these projected database. \newline
 
-Sadly those case should only appear rarely, and depend strongly on the data. Still, it remains a nice addition to have, and which give occasional small boost to performances.
+Sadly those cases should only appear rarely, and depend strongly on the inputted data. Still, it remains a nice addition to have, and which give occasional small boost to performances.
 
 \subsubsection{Performances with Position lists}
 
@@ -1040,17 +1096,17 @@ Sadly those case should only appear rarely, and depend strongly on the data. Sti
   \label{fig:positionListPerf}
 \end{figure}
 
-As you can see in Figure \ref{fig:positionListPerf}, the resulting performance of those three implementation weren't conclusive. On every database of sequence of symbols but protein, which is a very sparse dataset on which this type of techniques excel, the modified algorithms delivered worse performances than our reference algorithm. \newline
+As you can see in Figure \ref{fig:positionListPerf}, the resulting performances of those three implementations weren't conclusive. On every database of sequence of symbols but protein, which is a very sparse dataset on which this type of techniques excel, the modified algorithms delivered worse performances than our reference algorithm. \newline
 
-Those worsening performance appear because the benefit of those additional computation simply do not have enough time to appear. After being calculated during the pre-processing step, they only stay of use during the scalable execution of our algorithm. Since that, before the local execution, the sequence database will be compressed and the positions list will need to be recalculated. \newline
+Those worsening performance appears because the benefit of those additional computation simply do not have enough time to appear. After being calculated during the pre-processing step, they only stay of use during the scalable execution of our algorithm. Since that, before the local execution, the sequence database will be compressed and the positions list will need to be recalculated. \newline
 
 Another reason for those worsening performance would be the transfer time of the calculated positions list, which can be very large depending on the number of frequent items. The delay imposed by their calculation and their transfer through the executors are thus far from negligible. \newline
 
-However, while suffering from the same afflictions, an improvement in performance can be observed on database of sequences of sets of symbols, where those techniques weren't already in use during the local execution stage. Especially on the slen1 dataset, where performance improve significantly. \newline
+However, while suffering from the same afflictions, an improvement in performance can be observed on databases of sequences of sets of symbols, where those techniques weren't already in use during the local execution stage. Especially on the slen1 dataset, where the measured performances improve significantly. \newline
 
-However, at the exception of the slen1 dataset, the measured performance do not justify a doubled memory consumption (tripled in the case of the 'first\_last\_pos' improvement). Should no better implementation be found, the improvement could be restrained to only appear in Spark's local execution. Although performance improvement would be lesser, they would make more sense for a memory consumption point of vue.
+Despite the exception of the slen1 dataset, however, the measured performances gain does not justify a nearly doubled memory consumption (nearly tripled in the case of the 'first\_last\_pos' improvement). Should no better implementation be found, this improvement should thus be restrained to only appear in Spark's local execution, where additional memory consumption won't affect data transfer times. Although the measured performances improvement would thus be reduced, keeping such large RDD during the scalable execution step simply wouldn't make sense for so little gains.
 
-\subsubsection{Performances with Specialized scalable execution}
+\subsubsection{Performances with Specialised scalable execution}
 
 \begin{figure}[h]
   \centering
@@ -1059,7 +1115,7 @@ However, at the exception of the slen1 dataset, the measured performance do not 
   \label{fig:scalable_single_item}
 \end{figure}
 
-As you can see on the slen datasets of Figure \ref{fig:scalable_single_item}, this improvement introduced a small loss in performance for dataset of sequence of sets of symbols. As it needs to go through the added detection but doesn't profit of the advantages. \newline
+As you can see on the slen datasets of Figure \ref{fig:scalable_single_item}, this new implementation introduced a small loss in performance for dataset of sequence of sets of symbols. As it needs to go through the added detection but doesn't profit of the advantages. \newline
 
 However, for sequences of symbols, performances improved greatly. Not only that, but the new internal database representation make much more sense from a memory-consumption point of view. \newline
 
@@ -1074,7 +1130,7 @@ Thus, we judged these great advantages to be worth the slight loss of performanc
   \includegraphics[width=0.9\textwidth]{priority.png}
   \caption[Naive priority scheduling]{
   	\tabular[t]{@{}l@{}}
-  		Performance of a 'biggest problems first' scheduling \\
+  		Performance of a 'biggest problem first' scheduling \\
   		executed through the default sortBy() function of Spark.
   	\endtabular
   }
@@ -1104,7 +1160,7 @@ Not only have we obtained our previous boost in performance, we also avoided any
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{multi_item_map.png}
+  \includegraphics[width=0.85\textwidth]{multi_item_map.png}
   \caption[Map based - multi\_item algorithm]{
   	\tabular[t]{@{}l@{}}
   		Performance of a CP based algorithm replacing \\
@@ -1121,7 +1177,7 @@ Profiling our algorithm revealed it came from two majors factor. First, as feare
 
 The second factor was solution pruning. In PPIC, pruning our search space could be done by checking the last positions of each item, quickly asserting that if the start of a sequence was after the last position of an item in a sequence, the sequence was no longer supporting the item. \newline
 
-Here, however, the situation is different. To efficiently prune a multi-item pattern problem, checking last positions was no longer sufficient. To prune efficiently, each itemSet now needs to be checked so that its possible extensions could be deemed supported. \newline
+Here, however, the situation is different. To efficiently prune a multi-item pattern problem, checking last positions was no longer sufficient. To prune efficiently, each item-set now needs to be checked so that its possible extensions could be deemed supported. \newline
 
 Which amount to this algorithm doing twice the work for the same results. As we found out through our tests, pruning using PPIC's original method (last position list) instead of fully, as spark did, produces better performance. A comparison of the two being available in the annexes, figure \ref{fig:multi_map_comp}. \newline
 
@@ -1131,7 +1187,7 @@ Although the performance are better when not fully pruning our search space. Spa
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.9\textwidth]{multi_item_cp.png}
+  \includegraphics[width=0.85\textwidth]{multi_item_cp.png}
   \caption[PPIC with partial starts]{
   	\tabular[t]{@{}l@{}}
   		Performance of a CP based algorithm extending \\
@@ -1139,7 +1195,7 @@ Although the performance are better when not fully pruning our search space. Spa
   	\endtabular
   }
   \label{fig:multi_array}
-  (Please take notice that we are here comparing to the original Spark implementation instead of the reference algorithm. Since the featured implementation doesn't posses the early-start improvement and the comparison is, in this case, much more relevant.)
+  (Please take notice that we are here comparing to the original Spark implementation instead of the reference algorithm. Since the featured implementation don't have the early-start improvement, and since this comparison is much more relevant.)
 \end{figure}
 
 The performance tests realised at the end of our implementation, shown in figure \ref{fig:multi_array}, revealed improved efficiency in comparison to spark original algorithm and our previously created map algorithm on sequence of sets of symbols. On slen3, this implementation was even much more efficient than anything obtained earlier through positions lists. \newline
@@ -1148,12 +1204,80 @@ These performance however came at the cost of an inefficiency on dataset of sequ
 
 This implementation should thus only be used for dealing with sets of symbols, while sequence of symbols should be found through PPIC, whose efficiency was focused on this kind of problem.
 
+\subsubsection{Performances of our final implementation}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{final_ver.png}
+  \caption{Performance of our final implementation}
+  \label{fig:final_ver}
+\end{figure}
+
+As you can see in Figure \ref{fig:final_ver}, our final implementation is much more performant than both our old reference implementation, and the slightly improved 'Clean before any Local Execution' implementation. Surpassing previous performances on nearly every single dataset, but particularly on protein and Kosarak-70 where the 'Specialized Scalable Execution' improvement was extremely effective. \newline
+
+We can also observe that the performance loss brought from the quicker\_start 'improvement' have disappeared on the concerned datasets. Improving performance further on our largest datasets. \newline
+
+We a can however notice that performance worsen slightly on the slen1 dataset, a light performance loss easily explained by our choice to use our 'PPIC with Partial Projection' implementation, which showed this exact same loss of performance on slen1 but much greater performance gain on slen3, for the local execution of problems involving sequence of sets of symbols. \newline
+
+Finally we can observe that on the FIFA and BIBLE dataset, our performance tend toward the performances of our 'Clean before any Local Execution' implementation as the number of required support gets lowered. \newline
+
+It thus seems that, on those kinds of datasets, the combined improvement fail to bring out further significant performance gains.
+Of course, in comparison to the original performances of Spark, this final implementations performance remain much better. \newline
+
+Another interesting thing to note is that those performance were measured using the default parameters value. Greater performance improvement may thus be achieved by reducing the number of created sub-problems, since it would mean an earlier usage of our local execution algorithm, which are much more efficient. \newline
+
 \subsection{Scalability Tests}
+
+To conclude our performance testing section, let us measure the scalability of both Spark's original implementation and of our final implementation. \newline
+
+The tests will be conducted as follow : We will run an architecture containing 1 driver (given 5G memory to make sure all solution could be successfully received), and a variable number of workes. Each worker possessing one executor running a single thread, and disposing of only 1G ram memory. \newline
+
+Sadly, since the architecture on which we can run our tests has limited performances, running more than 10 workers will actually display slightly lowered performances, due to necessary switches between threads caused by an insufficient number of cores. We will thus limit ourselves to testing our implementation on architecture running 1,2,4, and 8 workers respectively, and compare the resulting performances under those conditions. \newline
+
+Additionally, we had to specify a reduced value of 64000 for the 'maxLocalProjectedDatabaseSize' parameter whose default value is set at 32000000, as otherwise it could use too much memory during the local execution step and surpass the 1G ram allocated to our workers.
+
+\subsubsection{Scalability of the Original Implementation of Spark}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{scalability_orig.png}
+  \caption{Scalability performances of the original implementation}
+  \label{fig:scal_orig}
+\end{figure}
+
+As you may see on Figure \ref{fig:scal_orig}, the original implementation of Spark scales really well up to a certain point. We can even notice that between 1,2, and 4 workers, doubling the number of workers means twice as good performances. We can however see this apparent linear scalability disappear when increasing the architecture to 8 workers nodes, since few changes can be seen in our measured performances. \newline
+
+The original is thus quite scalable, but has limitations beyond what can be justified by the limited performances of our architecture. More specifically, it appears that when dealing with greater number of executors, Spark gradually use more and more of it's time exchanging information instead of doing work. Thus the observed limitations. \newline
+
+\subsubsection{Scalability of our final implementation}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{scalability_final.png}
+  \caption{Scalability performances of our final implementation}
+  \label{fig:scal_final}
+\end{figure}
+
+As you may see on Figure \ref{fig:scal_final}, our final implementation also shows greatly improved performances in a scalable environment, in comparison to the original algorithm. \newline
+
+Although this implementation similarly show reduced performance gain as the number of workers increase, it has been greatly mitigated. Our implementation is thus not only more performant in general, but also more scalable. Although not quite to the point of achieving true linear scalability. \newline
+
+The greatest advantage of this new implementation being that we can launch the local execution step faster if given more memory. We thus have a closer relation, beyond simple access time to the hard drive, between allocated memory and performances. \newline
+
+A default however, would be that there is no way to allocate large sub-problems to executor disposing of extra amount of memory instead of other executor which would have more limitation. The 'maxLocalProjectedDatabaseSize' parameter must thus be chosen while taking into account the lowest amount of memory available to an executor. Otherwise, the algorithm may crash during the local execution stage due to insufficient memory.
 
 \section{Conclusion}
 
+In this paper, we have successfully developed a novel, scalable, and
+efficient CP-based sequential mining method that outperforms completely the original implementation available on Spark.\newline
+
+To do so, we used a generic map-reduce based scalable prefix-span implementation to divide the original problem in appropriately sized sub-problems. We then efficiently solved those sub-problems locally using a standard CP-solver running the PPIC algorithm for databases of sequences of symbols, and a newly designed PPIC-like CP algorithm for database of sequences of sets of symbols. Our various performance analysis then demonstrated that this novel approach not only outperformed Spark's original implementation in memory abundant environments, but also on scalable memory limited environment. \newline
+
+This approach however has one important flaw, while we have certainly demonstrated through the addition of multiple new functionalities that a certain level of modularity inherent to CP-solver was kept. It remains a fact that using a CP-solver beneath Spark's scalable framework isn't as modular and flexible as an implementation fully englobed in a CP-solver.
+
+The next step forward in progressing this research should thus be taken by incorporating Spark's parallel execution inside a CP framework. Thus allowing efficient scalable execution on large scale databases \textbf{and} great modularity through the simple addition of constraints.
+
 \clearpage
-TODO - ADD REFERENCES, CA MANQUE ENCORE
 \nocite{*}
 \addcontentsline{toc}{section}{References}
 \bibliographystyle{ieeetr}
@@ -1387,7 +1511,7 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
 				solutionPatterns += newPrefix \\
 				\If {len(newPrefix) < maxPatternLength}{
 					\tcp{len(newPrefix) == number of non-zero item in prefix}
-					\tcp{zero == separator between itemSets}
+					\tcp{zero == separator between item-sets}
 					\uIf {projDBSize > maxLocalProjDBSize} {
               			largePrefixes += newPrefix
             		} 
@@ -1466,7 +1590,7 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
    		\Fn{\Project(Item)} {
    			\If {start > len(sequence)} {\Return}
    			newPartialProjection = Array.empty \\
-   			\uIf {Item extends current ItemSet in Prefix} {
+   			\uIf {Item extends current Item-set in Prefix} {
    				\ForEach {partial $\in$ partialProjections} {
    					newPos = findNextItemInCurrentItemSet(sequence, partial, Item) \\
    					\If {Found Item in current ItemSet}{
@@ -1475,7 +1599,7 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
    				}
    				start = findSmallestPosition(newPartialProjection) + 1 \\
    			} 
-   			\ElseIf {Item start a new ItemSet in Prefix} {
+   			\ElseIf {Item start a new Item-set in Prefix} {
    				\For {Pos $\in \{start, ..., len(sequence) - 1\}$}{
    					\If {sequence[Pos] == Item} {
    						\uIf {first found in loop} {
@@ -1799,16 +1923,16 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
    			\If {start > len(sequence) or start > lastPosList(Item)} {\Return}
    			\tcp{Here, we know Item is present in remains of sequence}
    			newPartialProjection = Array.empty \\
-   			\uIf {Item extends current ItemSet in Prefix} {
+   			\uIf {Item extends current Item-set in Prefix} {
    				\ForEach {partial $\in$ partialProjections} {
    					newPos = findNextItemInCurrentItemSet(sequence, partial, Item) \\
-   					\If {Found Item in current ItemSet}{
+   					\If {Found Item in current Item-set}{
    						newPartialProjection += newPos
    					}
    				}
    				start = findSmallestPosition(newPartialProjection) + 1 \\
    			} 
-   			\ElseIf {Item start a new ItemSet in Prefix} {
+   			\ElseIf {Item start a new Item-set in Prefix} {
    				\If {start == 0} {
    					start = firstPosList(sequence)
    				}
@@ -1857,7 +1981,7 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
 		\tcp{Clean database through a map reduce phase}
     	freqItems = findFrequentItem(SSDB, $\theta$) \\
     	cleanedSequences = cleanSequenceAndRenameItem(SSDB, freqItems)\\
-    	\tcc{Find database type. If any itemSet of size greater than one found in sequences, database type will be SSDB, else SDB}
+    	\tcc{Find database type. If any item-set of size greater than one found in sequences, database type will be SSDB, else SDB}
     	databaseType = SSDB.map(sequence => findType(sequence)).reduce() \\
     	\tcp{Find frequent sequences of sets of symbols}
     	solutionPatterns = scalableExecution(cleanedSequences, databaseType, maxPatLen, maxLocalSize, $\theta$) \\
@@ -1865,7 +1989,7 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
     	\Return translateBackToOriginalItemsName(solutionPatterns)
    	}
    	\Fn{\Scalable{...}} {
-   		\tcc{Separate postfix object in two sub-objects, one which search for itemSets extension (type == SSDB) and one where it never does so (type == SDB). Initialise all sequences with one object or the other, depending on database type.}
+   		\tcc{Separate postfix object in two sub-objects, one which search for item-sets extension (type == SSDB) and one where it never does so (type == SDB). Initialise all sequences with one object or the other, depending on database type.}
    		...
    	}
 \end{algorithm}
@@ -1993,7 +2117,7 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
 					sids[j] = sid; poss[j] = pos; j = j + 1; sup = sup + 1; \\
    				}
    				\Else {
-   					\tcc{Search the sequence ItemSet by ItemSet until all elements of P's current itemSet match}
+   					\tcc{Search the sequence Item-set by Item-set until all elements of P's current item-set match}
    					\For {position $\in$ listSoughtItemPos}{
    						\If {curItemSetInSeqContainsAllItemOfCurrentItemSetInP(seq, position)} {
    							\tcp{Jump to first occurrence of the item in the sequence}
@@ -2012,7 +2136,7 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
 							projFreqs[item] = projFreqs[item] + 1
 						}
 					}
-					\tcc{For full pruning, find all itemSet in sequence that support current ItemSet in P, augment the projected frequency of all item present in those itemSets}
+					\tcc{For full pruning, find all item-set in sequence that support current Item-set in P, augment the projected frequency of all item present in those item-sets}
 				}
    			}
    			i = i+1
@@ -2073,6 +2197,53 @@ TODO - ADD REFERENCES, CA MANQUE ENCORE
    		}
    		$\phi$ = $\phi + \varphi$; $\varphi$ = sup \\
 		return projFreqs
+   	}
+\end{algorithm}
+
+\clearpage
+\RestyleAlgo{boxruled}
+\LinesNumbered
+\begin{algorithm}[h]
+	\caption{Final implementation}
+    \label{alg:FINAL}
+    
+    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwFunction{Scalable}{scalableExecution}
+    
+   	\Fn{\Scalable{$database, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $limitItemPerItemset, softSubProblemLimit, freqItemAndCount, symbolConstraints$}} {
+		\tcc{Encapsulate each sequence in a postfix, allowing to keep the current position and partial starts without copying the sequences.}
+		postfixes = $\emptyset$ \\
+		\uIf {database.type() == SDDB}{database.map(seq => PostFixSSoS(seq))}
+		\Else {database.map(seq => PostFixSoS(seq))}
+		\tcp{Init prefix list and solution list}
+		solutionPatterns = Array.empty \\
+		smallPrefixes = Array.empty \\
+		largePrefixes = [Prefix.empty] \\
+		\tcp{Start scalable execution}
+		\While {largePrefixes is not empty}{
+			\tcp{Project and extend prefix}
+			\tcc{When storing prefixes to the local execution, the algorithm also stores their projected database size, so that they can be sorted accurately later.}
+		}
+		\If {len(smallPrefixes) > 0} {
+			\tcp{For each prefix, project the whole database and solve locally}
+			\tcp{Sorting sub-problems is done only when necessary.}
+			toExecuteLocaly = postifixes.flatMap( postfix => smallPrefixes\textbf{.SortByDBSizeIfNecessary()}.flatMap( prefix => \\
+					\Indp
+					(prefix.ID, postfix.project(prefix).compress())\\
+					\Indm
+			)).groupByKey().flatMap(sequences => \\
+				\tcp{Use argument to determine which local execution to use}
+				sequences = cleanUnFrequentItemsAndRename(sequences) \\
+				matrices = generatePPICMatrices() \\
+				\uIf {sequences.type() == SSDB} {
+					solutionPatterns ++= PPICwithPartialProjections(sequences, maxPatLen, minPatLen, maxItemPerItemSet, $\theta$, matrices, prefix, symbolConstraints) \\
+				}
+				\Else {
+					solutionPatterns ++= PPIC(sequences, maxPatLen, minPatLen, maxItemPerItemSet, $\theta$, matrices, prefix, symbolConstraints) \\
+				}
+			) \\
+		}
+		\Return solutionPatterns
    	}
 \end{algorithm}
 
