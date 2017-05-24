@@ -16,7 +16,8 @@
 \usepackage{todonotes}
 \usepackage[]{algorithm2e}
 \usepackage{subcaption}
-\usepackage[toc, acronym]{glossaries}
+\usepackage[acronym, nonumberlist,style=list]{glossaries}
+\usepackage[nottoc,numbib]{tocbibind}
 
 \graphicspath{{F:/Memoire/CodeSavedOnline/New/MasterThesis/paper/SecondVersion/Graphs/}}
 
@@ -59,6 +60,7 @@
  \makebox[1.4em][c]{%
  \makebox[0pt][c]{\raisebox{.1em}{\small!}}%
  \makebox[0pt][c]{\color{red}\Large$\bigtriangleup$}}}%
+ 
 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
@@ -68,10 +70,11 @@
 %\renewcommand{\baselinestretch}{1.15}
 
 \makeglossaries
-\newglossaryentry{maths}
+\newglossaryentry{latex}
 {
-        name=mathematics,
-        description={Mathematics is what mathematicians do}
+    name=latex,
+    description={Is a mark up language specially suited 
+    for scientific documents}
 }
 \newacronym{ppic}{PPIC}{Prefix Projection Incremental Counting propagator}
 \newacronym{SoS}{SoS}{sequence of symbols}
@@ -79,7 +82,6 @@
 \newacronym{RDD}{RDD}{resilient distributed dataset}
 \newacronym{SPM}{SPM}{sequential pattern mining}
 \newacronym{CP}{CP}{constraint programming}
-
 
 \begin{document}
 
@@ -806,9 +808,10 @@ After that, the scalable execution proceeds normally with the new functionalitie
 
 During the scalable execution, the algorithm will store small prefixes for the local execution stages, alongside the size of their projected database. So that, should it be necessary, sub-problems may be sorted before the beginning of the local execution stage. \newline
 
-As condition for triggering an automatic sort of the sub-problem, we decided to use the presence of a non-default value for the 'subProblemSoftLimit' parameter or a 'maxLocalProjectedDBsize' value twice greater than the default of 32000000. \newline
+As condition for triggering an automatic sort of the sub-problem, we decided to use the presence of a non-default value for the 'subProblemSoftLimit' parameter (> 1) or , depending on the type, either a 'maxLocalProjectedDBsize' value twice greater than the default of 32000000 for sequences of sets of symbols, or a 'maxLocalProjectedDBsize' greater or equal to 32000000 for sequences of symbols . \newline
 
-The reason we settled on those conditions is quite straightforward. As you may see in the performance test of our implementation sorting sub-problems on the mapper, sorting may not always be beneficial when sorting sub-problems created with the default-value of 'maxLocalProjectedDBsize'. We thus decided to aim a bit higher, and settled on this value, where sorting always shows benefits. \\
+The reason we settled on those conditions is quite straightforward. As you may see in the performance test of our implementation 'Sorting sub-problems on the mapper', sorting may not always be beneficial when sorting sub-problems created with the default-value of 'maxLocalProjectedDBsize'. We thus decided to aim a bit higher, and settled on 64000000, where sorting always shows benefits. \newline
+
 Considering the condition on our 'subProblemSoftLimit' parameter, the choice was even simpler, since this parameter is meant to be used for showing the benefits of the local-execution stage, and since performance results may become hazardous when sub-problems aren't sorted properly. \newline
 
 Finally, before each local execution stage, the projected databases will be cleaned similarly to our 'Generalised Pre-Processing Before the Local Execution' improvement. Of course, with a few minor differences as the sequences representation now differs depending on the database type. \newline
@@ -1137,11 +1140,11 @@ Thus, we judged these great advantages to be worth the slight loss of performanc
   \label{fig:priority_scheduling_performance_comparison}
 \end{figure}
 
-As you can see in Figure \ref{fig:priority_scheduling_performance_comparison}, our first try at this implementation, impressive performance improvements can be observed, especially for the Kosarak, protein, slen2 and slen3 datasets. While BIBLE, FIFA and slen1 suffer from slight performance loss in their later stages, the damage is rather limited in comparison to the otherwise gain. Applying the sort function to the algorithm when unnecessary also isn't too damaging even when sub-problems aren't limited, as we can see with the red line, it should however be avoided in the final version. The sort function should only be called when relevant.\newline
+As you can see in Figure \ref{fig:priority_scheduling_performance_comparison}, our first try at this implementation, impressive performance improvements can be observed, especially for the Kosarak, protein, slen2 and slen3 datasets. While BIBLE, FIFA and slen1 suffer from slight performance losses in their later stages, the damage is rather limited in comparison to the otherwise gain. Applying the sort function to the algorithm when unnecessary also isn't too damaging even when sub-problems aren't limited, as we can see with the red line, it should however be avoided in the final version. The sort function should only be called when relevant.\newline
 
-At first glance, this thus looks like a nice little improvement. However, as explained in the implementation section, a huge problem remained. As you can see on protein's measurements, the black line lack its fourth point. The reason being a constant crash of the algorithm due to a lack of memory ! \newline
+At first glance, this thus looks like a nice little improvement. However, as explained in the implementation section, a huge problem remained. As you can see on protein's measurements, the black line lacks its fourth point. The reason being a constant crash of the algorithm due to a lack of memory ! (The reasons behind this failure is explained in the corresponding implementation section)\newline
 
-Thus motivating our second try at implementing this improvement, this time by sorting the problem on the mapper rather than the reducer.
+Thus motivating our second attempt at implementing this improvement, this time by sorting the problem on the mapper rather than the reducer.
 
 \paragraph{Performances of Sorting Sub-Problems on the Mapper}
 
@@ -1154,7 +1157,7 @@ Thus motivating our second try at implementing this improvement, this time by so
 
 This new implementation's performances were a huge success, as you can see on Figure \ref{fig:priority_scheduling_improved}. \newline
 
-Not only have we obtained our previous boost in performance, we also avoided any memory consumption problem. This implementation advantages should thus be kept for the final version of our algorithm, since it allows far better performances when using the correct set. However, an automatic detection should be implemented, to detect when sorting sub-problems could yield increased performances, and only sort in these circumstances.
+Not only have we obtained our previous boost in performance, we also successfully avoided any memory consumption problem. This implementation advantages should thus be kept for the final version of our algorithm, since it allows far better performances when using the correct set. However, an automatic detection should be implemented, to detect when sorting sub-problems could yield increased performances, and only sort in these circumstances.
 
 \subsubsection{Performances of using a Map Based Sequence Database Structure}
 
@@ -1167,21 +1170,21 @@ Not only have we obtained our previous boost in performance, we also avoided any
   		all three pre-processed matrices from PPIC by a Map structure
   	\endtabular
   }
-  (Please take notice that we are here comparing to the original Spark implementation instead of the reference algorithm. Since the featured implementation doesn't posses the early-start improvement and the comparison is, in this case, much more relevant.)
+  (Please take notice that we are here comparing performances with the original Spark implementation instead of the reference algorithm. Since the featured implementation doesn't possess the quicker-start improvement and the comparison is, in this case, much more relevant.)
   \label{fig:multi_map}
 \end{figure}
 
-As you can see in Figure \ref{fig:multi_map}, the performance of this implementation were terrible. \newline
+As you can see in Figure \ref{fig:multi_map}, the performances of this implementation were terrible. \newline
 
-Profiling our algorithm revealed it came from two majors factor. First, as feared, to attain the same purpose as the three matrices with our map structure, we needed many more trailing points which had to be backtracked at each step of the search. Regularly generating significant period of time were our algorithm did nothing but backtrack the various sequences of its database. \newline
+Profiling our algorithm revealed it came from two major factors. First, as feared, to attain the same purpose as the three matrices with our map structure, we needed many more trailing points which had to be backtracked at each step of the search. Regularly generating significant periods of time were our algorithm did nothing but backtrack the various sequences of its database. \newline
 
 The second factor was solution pruning. In PPIC, pruning our search space could be done by checking the last positions of each item, quickly asserting that if the start of a sequence was after the last position of an item in a sequence, the sequence was no longer supporting the item. \newline
 
-Here, however, the situation is different. To efficiently prune a multi-item pattern problem, checking last positions was no longer sufficient. To prune efficiently, each item-set now needs to be checked so that its possible extensions could be deemed supported. \newline
+Here, however, the situation is different. To efficiently prune a multi-item pattern problem, checking the last position of items was no longer sufficient. To prune efficiently, each item-set now needed to be checked so that, should it match the current prefix, every possible extensions in that item-set could be have their support increased. \newline
 
-Which amount to this algorithm doing twice the work for the same results. As we found out through our tests, pruning using PPIC's original method (last position list) instead of fully, as spark did, produces better performance. A comparison of the two being available in the annexes, figure \ref{fig:multi_map_comp}. \newline
+Which amount to this algorithm doing twice the work for the same results. As we found out through our tests, pruning using PPIC's original method (last position list) instead of fully, as spark did, produces better performance. A comparison of the two being available in the annexes, Figure \ref{fig:multi_map_comp}. \newline
 
-Although the performance are better when not fully pruning our search space. Spark's original local execution was still much more efficient.
+Although the performances were better when not fully pruning our search space. Spark's original local execution was still much more efficient.
 
 \subsubsection{Performances PPIC with Partial Projection}
 
@@ -1195,12 +1198,12 @@ Although the performance are better when not fully pruning our search space. Spa
   	\endtabular
   }
   \label{fig:multi_array}
-  (Please take notice that we are here comparing to the original Spark implementation instead of the reference algorithm. Since the featured implementation don't have the early-start improvement, and since this comparison is much more relevant.)
+  (Please take notice that we are here comparing performances with the original Spark implementation instead of the reference algorithm. Since the featured implementation doesn't possess the quicker-start improvement and the comparison is, in this case, much more relevant.)
 \end{figure}
 
-The performance tests realised at the end of our implementation, shown in figure \ref{fig:multi_array}, revealed improved efficiency in comparison to spark original algorithm and our previously created map algorithm on sequence of sets of symbols. On slen3, this implementation was even much more efficient than anything obtained earlier through positions lists. \newline
+The performance tests realised at the end of our implementation, shown in figure \ref{fig:multi_array}, revealed improved efficiency in comparison to Spark's original algorithm and our previously created map algorithm on sequence of sets of symbols. On slen3, this implementation was even much more efficient than any performances obtained earlier through the three position lists implementation. \newline
 
-These performance however came at the cost of an inefficiency on dataset of sequences of symbols, where performances fails to overcome spark's standard on anything but the FIFA dataset. \newline
+These performances, however, came at the cost of an inefficiency on datasets of sequences of symbols, where performances fail to overcome Spark's standard on anything but the FIFA dataset. \newline
 
 This implementation should thus only be used for dealing with sets of symbols, while sequence of symbols should be found through PPIC, whose efficiency was focused on this kind of problem.
 
@@ -1213,24 +1216,24 @@ This implementation should thus only be used for dealing with sets of symbols, w
   \label{fig:final_ver}
 \end{figure}
 
-As you can see in Figure \ref{fig:final_ver}, our final implementation is much more performant than both our old reference implementation, and the slightly improved 'Clean before any Local Execution' implementation. Surpassing previous performances on nearly every single dataset, but particularly on protein and Kosarak-70 where the 'Specialized Scalable Execution' improvement was extremely effective. \newline
+As you can see in Figure \ref{fig:final_ver}, our final implementation is much more performant than both our old reference implementation, and the slightly improved 'Clean before any Local Execution' implementation. Surpassing previous performances on nearly every single dataset, but particularly on protein and Kosarak-70 where the 'Specialised Scalable Execution' improvement was extremely effective. \newline
 
-We can also observe that the performance loss brought from the quicker\_start 'improvement' have disappeared on the concerned datasets. Improving performance further on our largest datasets. \newline
+We can also observe that the performance loss brought from the quicker-start 'improvement' have disappeared on the concerned datasets. Improving performance further on our largest datasets. \newline
 
-We a can however notice that performance worsen slightly on the slen1 dataset, a light performance loss easily explained by our choice to use our 'PPIC with Partial Projection' implementation, which showed this exact same loss of performance on slen1 but much greater performance gain on slen3, for the local execution of problems involving sequence of sets of symbols. \newline
+We a can, however, notice that performance worsens slightly on the slen1 dataset, a light performance loss easily explained by our choice to use our 'PPIC with Partial Projection' implementation, which showed this exact same loss of performance on slen1 but much greater performance gain on slen3, for the local execution of problems involving sequence of sets of symbols. \newline
 
-Finally we can observe that on the FIFA and BIBLE dataset, our performance tend toward the performances of our 'Clean before any Local Execution' implementation as the number of required support gets lowered. \newline
+Finally we can observe that on the FIFA and BIBLE dataset, our performance tends toward the performances of our 'Clean before any Local Execution' implementation as the number of required support gets lowered. \newline
 
 It thus seems that, on those kinds of datasets, the combined improvement fail to bring out further significant performance gains.
-Of course, in comparison to the original performances of Spark, this final implementations performance remain much better. \newline
+Of course, in comparison to the original performances of Spark, this final implementation's performances remain much better. \newline
 
-Another interesting thing to note is that those performance were measured using the default parameters value. Greater performance improvement may thus be achieved by reducing the number of created sub-problems, since it would mean an earlier usage of our local execution algorithm, which are much more efficient. \newline
+Another interesting thing to note is that those performances were measured using the default parameters value. Greater performance improvement may thus be achieved by reducing the number of created sub-problems, since it would mean an earlier usage of our local execution algorithms, which are much more efficient than the scalable stage. \newline
 
 \subsection{Scalability Tests}
 
 To conclude our performance testing section, let us measure the scalability of both Spark's original implementation and of our final implementation. \newline
 
-The tests will be conducted as follow : We will run an architecture containing 1 driver (given 5G memory to make sure all solution could be successfully received), and a variable number of workes. Each worker possessing one executor running a single thread, and disposing of only 1G ram memory. \newline
+The tests will be conducted as follows : We will run an architecture containing 1 driver (given 5G memory to make sure all solution could be successfully received), and a variable number of workes. Each worker possessing one executor running a single thread, and disposing of only 1G ram memory. \newline
 
 Sadly, since the architecture on which we can run our tests has limited performances, running more than 10 workers will actually display slightly lowered performances, due to necessary switches between threads caused by an insufficient number of cores. We will thus limit ourselves to testing our implementation on architecture running 1,2,4, and 8 workers respectively, and compare the resulting performances under those conditions. \newline
 
@@ -1245,9 +1248,9 @@ Additionally, we had to specify a reduced value of 64000 for the 'maxLocalProjec
   \label{fig:scal_orig}
 \end{figure}
 
-As you may see on Figure \ref{fig:scal_orig}, the original implementation of Spark scales really well up to a certain point. We can even notice that between 1,2, and 4 workers, doubling the number of workers means twice as good performances. We can however see this apparent linear scalability disappear when increasing the architecture to 8 workers nodes, since few changes can be seen in our measured performances. \newline
+As you may see on Figure \ref{fig:scal_orig}, the original implementation of Spark scales really well up to a certain point. We can even notice that between 1,2, and 4 workers, doubling the number of workers means twice as good performances. However, this apparent linear scalability disappears when increasing the number of workers to 8 in our architecture, since few changes can be seen in our measured performances. \newline
 
-The original is thus quite scalable, but has limitations beyond what can be justified by the limited performances of our architecture. More specifically, it appears that when dealing with greater number of executors, Spark gradually use more and more of it's time exchanging information instead of doing work. Thus the observed limitations. \newline
+The original implementation of Spark is thus quite scalable, but has limitations beyond what can be justified by the limited performances of our architecture. More specifically, it appears that when dealing with greater number of executors, Spark gradually use more and more of its time exchanging information instead of doing work. Thus the observed limitations. \newline
 
 \subsubsection{Scalability of our final implementation}
 
@@ -1260,11 +1263,11 @@ The original is thus quite scalable, but has limitations beyond what can be just
 
 As you may see on Figure \ref{fig:scal_final}, our final implementation also shows greatly improved performances in a scalable environment, in comparison to the original algorithm. \newline
 
-Although this implementation similarly show reduced performance gain as the number of workers increase, it has been greatly mitigated. Our implementation is thus not only more performant in general, but also more scalable. Although not quite to the point of achieving true linear scalability. \newline
+Although this implementation similarly shows reduced performance gain as the number of workers increase, it has been greatly mitigated. Our implementation is thus not only more performant in general, but also more scalable. Although not quite to the point of achieving true linear scalability. \newline
 
 The greatest advantage of this new implementation being that we can launch the local execution step faster if given more memory. We thus have a closer relation, beyond simple access time to the hard drive, between allocated memory and performances. \newline
 
-A default however, would be that there is no way to allocate large sub-problems to executor disposing of extra amount of memory instead of other executor which would have more limitation. The 'maxLocalProjectedDatabaseSize' parameter must thus be chosen while taking into account the lowest amount of memory available to an executor. Otherwise, the algorithm may crash during the local execution stage due to insufficient memory.
+A default, however, would be that there is no way to allocate large sub-problems to executors disposing of extra amount of memory instead of other executor which would have more limitation. The 'maxLocalProjectedDatabaseSize' parameter must thus be chosen while taking into account the lowest amount of memory available to an executor. Otherwise, the algorithm may crash during the local execution stage due to insufficient memory.
 
 \section{Conclusion}
 
@@ -1273,13 +1276,13 @@ efficient CP-based sequential mining method that outperforms completely the orig
 
 To do so, we used a generic map-reduce based scalable prefix-span implementation to divide the original problem in appropriately sized sub-problems. We then efficiently solved those sub-problems locally using a standard CP-solver running the PPIC algorithm for databases of sequences of symbols, and a newly designed PPIC-like CP algorithm for database of sequences of sets of symbols. Our various performance analysis then demonstrated that this novel approach not only outperformed Spark's original implementation in memory abundant environments, but also on scalable memory limited environment. \newline
 
-This approach however has one important flaw, while we have certainly demonstrated through the addition of multiple new functionalities that a certain level of modularity inherent to CP-solver was kept. It remains a fact that using a CP-solver beneath Spark's scalable framework isn't as modular and flexible as an implementation fully englobed in a CP-solver.
+This approach, however, has one important flaw, while we have certainly demonstrated through the addition of multiple new functionalities that a certain level of modularity inherent to CP-solver was kept. It remains a fact that using a CP-solver beneath Spark's scalable framework isn't as modular and flexible as an implementation fully englobed in a CP-solver.
 
 The next step forward in progressing this research should thus be taken by incorporating Spark's parallel execution inside a CP framework. Thus allowing efficient scalable execution on large scale databases \textbf{and} great modularity through the simple addition of constraints.
 
 \clearpage
 \nocite{*}
-\addcontentsline{toc}{section}{References}
+%\addcontentsline{toc}{section}{References}
 \bibliographystyle{ieeetr}
 \bibliography{ref}
 
@@ -1288,7 +1291,9 @@ The next step forward in progressing this research should thus be taken by incor
 
 \subsection{Glossary :}
 
-\printglossary[type=\acronymtype]
+\vspace*{-1.8cm}
+\glsaddall
+\printglossary[title=,type=\acronymtype]
 
 \subsection{Additional example images}
 
@@ -2246,6 +2251,11 @@ The next step forward in progressing this research should thus be taken by incor
 		\Return solutionPatterns
    	}
 \end{algorithm}
+
+\clearpage
+\section{Remerciements}
+
+Computational resources have been provided by the Consortium des Équipements de Calcul Intensif (CÉCI), funded by the Fonds de la Recherche Scientifique de Belgique (F.R.S.-FNRS) under Grant No. 2.5020.11
 
 \thispagestyle{empty}		
 % To suppress header and footer on the back of the cover page

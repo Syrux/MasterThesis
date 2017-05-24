@@ -1,4 +1,6 @@
 \select@language {english}
+\contentsline {section}{List of Figures}{3}{Doc-Start}
+\contentsline {section}{List of Tables}{3}{Doc-Start}
 \contentsline {section}{\numberline {1}Introduction}{5}{section.1}
 \contentsline {section}{\numberline {2}Sequential Pattern Mining}{6}{section.2}
 \contentsline {subsection}{\numberline {2.1}Sequential Pattern Mining Background}{6}{subsection.2.1}
@@ -41,7 +43,7 @@
 \contentsline {subsubsection}{\numberline {3.6.2}Adding Partial Projections to PPIC}{26}{subsubsection.3.6.2}
 \contentsline {subsection}{\numberline {3.7}Final implementation}{26}{subsection.3.7}
 \contentsline {subsubsection}{\numberline {3.7.1}Reaching Greater Performances}{27}{subsubsection.3.7.1}
-\contentsline {subsubsection}{\numberline {3.7.2}A New Functionality}{27}{subsubsection.3.7.2}
+\contentsline {subsubsection}{\numberline {3.7.2}A New Functionality}{28}{subsubsection.3.7.2}
 \newpage 
 \contentsline {section}{\numberline {4}Performances}{28}{section.4}
 \contentsline {subsection}{\numberline {4.1}Datasets}{28}{subsection.4.1}
@@ -50,9 +52,9 @@
 \contentsline {subsubsection}{\numberline {4.3.1}Distribution Choice \& Cluster Architecture}{29}{subsubsection.4.3.1}
 \contentsline {subsubsection}{\numberline {4.3.2}Program Parameters}{30}{subsubsection.4.3.2}
 \contentsline {subsubsection}{\numberline {4.3.3}Measurement Span}{30}{subsubsection.4.3.3}
-\contentsline {subsection}{\numberline {4.4}Testing the Implementations}{30}{subsection.4.4}
-\contentsline {subsubsection}{\numberline {4.4.1}Comparing Spark and PPIC's original implementations}{30}{subsubsection.4.4.1}
-\contentsline {subsubsection}{\numberline {4.4.2}Performances of our First CP Based Implementation}{32}{subsubsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4}Testing the Implementations}{31}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}Comparing Spark and PPIC's original implementations}{31}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Performances of our First CP Based Implementation}{31}{subsubsection.4.4.2}
 \contentsline {subsubsection}{\numberline {4.4.3}Performances of Quicker-Start}{34}{subsubsection.4.4.3}
 \contentsline {subsubsection}{\numberline {4.4.4}Performances of Adding Pre-processing Before PPIC's Local Execution}{35}{subsubsection.4.4.4}
 \contentsline {subsubsection}{\numberline {4.4.5}Performances with Automatic choice of Local Execution}{36}{subsubsection.4.4.5}
@@ -62,17 +64,17 @@
 \contentsline {subsubsection}{\numberline {4.4.9}Performances of Using Priority Scheduling for the Local Execution}{40}{subsubsection.4.4.9}
 \contentsline {paragraph}{\numberline {4.4.9.1}Performances of Sorting Sub-Problems on the Reducer}{40}{paragraph.4.4.9.1}
 \contentsline {paragraph}{\numberline {4.4.9.2}Performances of Sorting Sub-Problems on the Mapper}{41}{paragraph.4.4.9.2}
-\contentsline {subsubsection}{\numberline {4.4.10}Performances of using a Map Based Sequence Database Structure}{41}{subsubsection.4.4.10}
+\contentsline {subsubsection}{\numberline {4.4.10}Performances of using a Map Based Sequence Database Structure}{42}{subsubsection.4.4.10}
 \contentsline {subsubsection}{\numberline {4.4.11}Performances PPIC with Partial Projection}{43}{subsubsection.4.4.11}
 \contentsline {subsubsection}{\numberline {4.4.12}Performances of our final implementation}{44}{subsubsection.4.4.12}
 \contentsline {subsection}{\numberline {4.5}Scalability Tests}{46}{subsection.4.5}
 \contentsline {subsubsection}{\numberline {4.5.1}Scalability of the Original Implementation of Spark}{46}{subsubsection.4.5.1}
 \contentsline {subsubsection}{\numberline {4.5.2}Scalability of our final implementation}{46}{subsubsection.4.5.2}
 \contentsline {section}{\numberline {5}Conclusion}{47}{section.5}
-\contentsline {section}{References}{49}{section.5}
-\contentsline {section}{\numberline {6}Annexes}{51}{section.6}
-\contentsline {subsection}{\numberline {6.1}Glossary :}{51}{subsection.6.1}
-\contentsline {section}{Acronyms}{51}{section*.26}
-\contentsline {subsection}{\numberline {6.2}Additional example images}{51}{subsection.6.2}
-\contentsline {subsection}{\numberline {6.3}Additional Performance Comparisons :}{51}{subsection.6.3}
-\contentsline {subsection}{\numberline {6.4}Algorithms :}{55}{subsection.6.4}
+\contentsline {section}{\numberline {6}References}{49}{section.6}
+\contentsline {section}{\numberline {7}Annexes}{51}{section.7}
+\contentsline {subsection}{\numberline {7.1}Glossary :}{51}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Additional example images}{51}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Additional Performance Comparisons :}{51}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}Algorithms :}{56}{subsection.7.4}
+\contentsline {section}{\numberline {8}Remerciements}{75}{section.8}

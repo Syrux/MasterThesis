@@ -1,19 +1,19 @@
-\contentsline {algocf}{\numberline {1}{\ignorespaces Prefix Projection Incremental Counting propagator (PPIC)\relax }}{55}{algocf.1}
-\contentsline {algocf}{\numberline {2}{\ignorespaces PPIC Continued\relax }}{56}{algocf.2}
-\contentsline {algocf}{\numberline {3}{\ignorespaces Spark's original implementation : Pre-Processing\relax }}{57}{algocf.3}
-\contentsline {algocf}{\numberline {4}{\ignorespaces Spark's original implementation : Scalable execution\relax }}{58}{algocf.4}
-\contentsline {algocf}{\numberline {5}{\ignorespaces Spark's original implementation : Local execution\relax }}{59}{algocf.5}
-\contentsline {algocf}{\numberline {6}{\ignorespaces Spark's original implementation : Project and findPrefixExtension\relax }}{60}{algocf.6}
-\contentsline {algocf}{\numberline {7}{\ignorespaces First scalable CP based implementation\relax }}{61}{algocf.7}
-\contentsline {algocf}{\numberline {8}{\ignorespaces New functionalities : Scalable execution\relax }}{62}{algocf.8}
-\contentsline {algocf}{\numberline {9}{\ignorespaces Quick - Start : Scalable execution\relax }}{63}{algocf.9}
-\contentsline {algocf}{\numberline {10}{\ignorespaces Clean database before local execution of PPIC :\relax }}{64}{algocf.10}
-\contentsline {algocf}{\numberline {11}{\ignorespaces Automatic Local Execution Selection :\relax }}{65}{algocf.11}
-\contentsline {algocf}{\numberline {12}{\ignorespaces Clean database before any local execution :\relax }}{66}{algocf.12}
-\contentsline {algocf}{\numberline {13}{\ignorespaces Positions lists : Project and findPrefixExtension\relax }}{67}{algocf.13}
-\contentsline {algocf}{\numberline {14}{\ignorespaces Specialised Execution : Pre-Processing\relax }}{68}{algocf.14}
-\contentsline {algocf}{\numberline {15}{\ignorespaces Sorting sub-problems on the reducer :\relax }}{69}{algocf.15}
-\contentsline {algocf}{\numberline {16}{\ignorespaces Sorting sub-problems on the mapper :\relax }}{70}{algocf.16}
-\contentsline {algocf}{\numberline {17}{\ignorespaces PPIC with a Map based Structure (partial pruning) :\relax }}{71}{algocf.17}
-\contentsline {algocf}{\numberline {18}{\ignorespaces PPIC with partial projections :\relax }}{72}{algocf.18}
-\contentsline {algocf}{\numberline {19}{\ignorespaces Final implementation\relax }}{73}{algocf.19}
+\contentsline {algocf}{\numberline {1}{\ignorespaces Prefix Projection Incremental Counting propagator (PPIC)\relax }}{56}{algocf.1}
+\contentsline {algocf}{\numberline {2}{\ignorespaces PPIC Continued\relax }}{57}{algocf.2}
+\contentsline {algocf}{\numberline {3}{\ignorespaces Spark's original implementation : Pre-Processing\relax }}{58}{algocf.3}
+\contentsline {algocf}{\numberline {4}{\ignorespaces Spark's original implementation : Scalable execution\relax }}{59}{algocf.4}
+\contentsline {algocf}{\numberline {5}{\ignorespaces Spark's original implementation : Local execution\relax }}{60}{algocf.5}
+\contentsline {algocf}{\numberline {6}{\ignorespaces Spark's original implementation : Project and findPrefixExtension\relax }}{61}{algocf.6}
+\contentsline {algocf}{\numberline {7}{\ignorespaces First scalable CP based implementation\relax }}{62}{algocf.7}
+\contentsline {algocf}{\numberline {8}{\ignorespaces New functionalities : Scalable execution\relax }}{63}{algocf.8}
+\contentsline {algocf}{\numberline {9}{\ignorespaces Quick - Start : Scalable execution\relax }}{64}{algocf.9}
+\contentsline {algocf}{\numberline {10}{\ignorespaces Clean database before local execution of PPIC :\relax }}{65}{algocf.10}
+\contentsline {algocf}{\numberline {11}{\ignorespaces Automatic Local Execution Selection :\relax }}{66}{algocf.11}
+\contentsline {algocf}{\numberline {12}{\ignorespaces Clean database before any local execution :\relax }}{67}{algocf.12}
+\contentsline {algocf}{\numberline {13}{\ignorespaces Positions lists : Project and findPrefixExtension\relax }}{68}{algocf.13}
+\contentsline {algocf}{\numberline {14}{\ignorespaces Specialised Execution : Pre-Processing\relax }}{69}{algocf.14}
+\contentsline {algocf}{\numberline {15}{\ignorespaces Sorting sub-problems on the reducer :\relax }}{70}{algocf.15}
+\contentsline {algocf}{\numberline {16}{\ignorespaces Sorting sub-problems on the mapper :\relax }}{71}{algocf.16}
+\contentsline {algocf}{\numberline {17}{\ignorespaces PPIC with a Map based Structure (partial pruning) :\relax }}{72}{algocf.17}
+\contentsline {algocf}{\numberline {18}{\ignorespaces PPIC with partial projections :\relax }}{73}{algocf.18}
+\contentsline {algocf}{\numberline {19}{\ignorespaces Final implementation\relax }}{74}{algocf.19}

@@ -576,8 +576,7 @@ object PrefixSpan extends Logging {
       // Switch to local processing.
       val bcSmallPrefixes = sc.broadcast(smallPrefixes)
       val distributedPostfixes =
-        if (subProblemLimit > 1 || (isMultiItemDataset && maxLocalProjDBSize >= 64000000) ||
-          (!isMultiItemDataset && maxLocalProjDBSize >= 32000000)) {
+        if (subProblemLimit > 1 || maxLocalProjDBSize >= 64000000) {
           // Problem may be very big or vary largely in size, solve large problems first.
           // Generate mapping order
           val prefixesMappingOrder = sc.broadcast(
