@@ -29,6 +29,7 @@
 \newcommand{\readerone}[1]{\def\@readerone{#1}}
 \newcommand{\readertwo}[1]{\def\@readertwo{#1}}
 \newcommand{\readerthree}[1]{\def\@readerthree{#1}}
+\newcommand{\readerfour}[1]{\def\@readerfour{#1}}
 \newcommand{\years}[1]{\def\@years{#1}}
 
 % Création de la page de titre
@@ -62,6 +63,7 @@
 		Reader(s) \\
 		\textbf{\@readerone, \@readertwo}
         \ifdef{\@readerthree}{\textbf{, \@readerthree}}{}
+		\ifdef{\@readerfour}{\textbf{, \@readerfour}}{}
 		\\
 		\vspace*{12pt}
 		Academic year \@years \\

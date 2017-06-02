@@ -43,7 +43,9 @@
 %\cosupervisor{Firstname \textsc{Lastname}}	% 2nd supervisor name if applicable
 \readerone{John \textsc{Aoga}}		% 1st reader name
 \readertwo{Guillaume \textsc{Derval}}		% 2nd reader name
-%\readerthree{Firstname \textsc{Lastname}}	% 3rd reader name
+\readerthree{Nijssen \textsc{Siegfried}}	% 3rd reader name
+\readerfour{Roberto \textsc{D'Ambrosio}}	% 4rd reader name
+
 \years{2016-2017}	% Academic year
 \pagenumbering{arabic}
 
@@ -83,6 +85,9 @@
 \newacronym{SPM}{SPM}{sequential pattern mining}
 \newacronym{CP}{CP}{constraint programming}
 
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
 \begin{document}
 
 \begin{singlespacing}
@@ -100,32 +105,32 @@
 \newpage
 
 \begin{abstract}
-In this paper we propose a novel constraint programming based sequential pattern mining algorithm designed to perform large-scale data mining through parallel computations in a scalable environment. In this endeavour, we will adapt the recently designed algorithm PPIC, which managed to outperform other state-of-the-art implementations by using ideas from both data mining and CP on a generic constraint solver, to support parallel computation using Spark. We will then show through detailed experiment that, by using a generic map-reduce based scalable prefix-span implementation to divide our original sequential pattern mining problem in sufficiently small sub-problems, and by then solving those sub-problems locally using an underlying CP framework, great performance can be obtained in a scalable architecture without losing much flexibility on the supported constraints. 
+In this paper we propose a novel constraint programming based sequential pattern mining algorithm designed to perform large-scale data mining through parallel computations in a scalable environment. In this endeavour, we will adapt the recently designed algorithm PPIC, which managed to outperform other state-of-the-art implementations by using ideas from both data mining and CP on a generic constraint solver, to support parallel computation using Spark. We will then show through detailed experiment that, by using a generic map-reduce based scalable PrefixSpan implementation to divide our original sequential pattern mining problem in sufficiently small sub-problems, and by then solving those sub-problems locally using an underlying CP framework, great performance can be obtained in a scalable architecture without losing much flexibility on the supported constraints. 
 \end{abstract}
-
 
 \section{Introduction}
 
-Sequential pattern mining is a widely studied problem concerned with discovering frequent sub-sequences in a sequence database. This data mining problem has broad applications, including but not limited to : Analysis of customer purchase patterns, web-log mining, medical research, DNA sequencing, text-mining, human mobility mining, and so on\cite{mabroukeh2010taxonomy}. \newline
+Sequential pattern mining is a widely studied problem concerned with discovering frequent sub-sequences in a sequence database. This data mining problem has broad applications, including but not limited to: Analysis of customer purchase patterns, web-log mining, medical research, DNA sequencing, text-mining, human mobility mining, and so on\cite{mabroukeh2010taxonomy}. \newline
 
-First introduced by Agrawal and Srikan \cite{agrawal1995mining} in 1995, sequential pattern mining problems have since been widely studied for more efficient way to find their combinatorially explosive number of possible subsequence patterns. Through the years, many techniques have thus been proposed to efficiently solve this problem, among which we must mention apriori, GSP, SPADE, and Prefix-Span \cite{agrawal1995mining, srikant1996mining, han2001prefixspan, zaki2001spade} for being millstones in the advancement of this research. \newline
+First introduced by Agrawal and Srikant \cite{agrawal1995mining} in 1995, sequential pattern mining problems have since been widely studied for more efficient way to find their combinatorially explosive number of possible subsequence patterns. Through the years, many techniques have thus been proposed to efficiently solve this problem, among which we must mention apriori, GSP, SPADE, and PrefixSpan \cite{agrawal1995mining, srikant1996mining, han2001prefixspan, zaki2001spade} for being millstones in the advancement of this research. \newline
 
 Additionally, constraint programming (CP) has often been proposed as a framework for sequential pattern mining problems in recent years, producing various efficient algorithm such as CPSM, PP, or Gap-Seq. The main benefit of those algorithm lying in their modularity, since their implementation in CP framework allows the addition of multiple constraints to restrict the search space of our problem, and more efficiently work toward specific solutions. Those constraints encompassing a wide range of possibilities such as imposing restrictions on symbol occurrences and positions, imposing restrictions on the pattern length, ensuring the respect of regular expressions, and so on. \newline
 
 However, it was feared that this increased flexibility came with a performance cost. Many of the developed algorithm staying uncompetitive in comparison to state-of-the-art specialised methods.
-However, many recently made improvements, notably by Kemmar et al \cite{Kemmar_global, Kemmar_gap}, which had further extended this work by introducing one constraint (module) for both the pseudo-projection and the frequency pruning, and allowed CP based sequence mining algorithms to become competitive with state-of-the-art techniques such as Zaki's cPSADE \cite{zaki2001spade}. \newline
+However, many recently made improvements, notably by Kemmar et al \cite{Kemmar_global, Kemmar_gap}, which had further extended this work by introducing one constraint (module) for both the pseudo-projection and the frequency pruning, and allowed CP based sequence mining algorithms to become competitive with state-of-the-art techniques such as Zaki's cSPADE \cite{zaki2001spade}. \newline
 
 A recent paper \cite{aoga2016efficient} went even further by designing a CP based implementation that greatly out-performs state-of-the-art implementations. This PrefixSpan based algorithm called PPIC, designed to find patterns on sequences of individual symbols and implemented on the open source CP-solver OscaR \cite{oscar}, achieved those improved performances by combining ideas from pattern
 mining and constraint programming. \newline
 
-More specifically, this new algorithm improves the efficiency of computing prefix-projected databases (the usual bottle-neck of Prefix-Span based techniques) by using last-position lists such as those used in the LAPIN algorithm \cite{yang2007lapin}. This algorithm also improves the time needed to restore projected database when using a depth-first search approach through the use of trailing which avoid unnecessary copies of the data. \newline
+More specifically, this new algorithm improves the efficiency of computing prefix-projected databases (the usual bottle-neck of PrefixSpan based techniques) by using last-position lists such as those used in the LAPIN algorithm \cite{yang2007lapin}. This algorithm also improves the time needed to restore projected database when using a depth-first search approach through the use of trailing which avoid unnecessary copies of the data. \newline
 
 However, the previously mentioned implementations were not ready for the recent advent of Big Data, as they were not adapted for large-scale data processing. Those implementation thus needed to evolve and support parallel computations, so that they could be executed in scalable 'big-data' environments and display further improved performances. \newline
 
-While non-CP algorithms were quickly adapted to those new environments with the introduction of a scalable implementation based on Prefix-Span \cite{deng2014towards} and SPADE \cite{ho2000large}, CP-based approaches have yet to be adapted to support parallel computations. \newline
+While non-CP algorithms were quickly adapted to those new environments with the introduction of a scalable implementation based on PrefixSpan \cite{deng2014towards} and SPADE \cite{ho2000large}, CP-based approaches have yet to be adapted to support parallel computations. \newline
 
 Our objective in this paper is thus to adapt the recently designed PPIC algorithm to efficiently support parallel computations in a scalable architecture. Additionally, we will take extra to try keeping the inherent flexibility of CP-based implementation without sacrificing performances.
 
+\newpage
 \section{Sequential Pattern Mining}
 
 Sequence pattern mining (SPM) is a widely studied problem focusing on discovering sub-sequences in a dataset of given sequences. Each (sub) sequence being an ordered list of symbols, or sets of symbols. SPM has applications ranging from web log mining and text mining, to biological sequence analysis.
@@ -140,43 +145,43 @@ Sequence pattern mining (SPM) is a widely studied problem focusing on discoverin
 \theoremstyle{example}
 \newtheorem{example}{Example}[]
 
-\begin{definition}{\bfseries Symbol, Item and Item-sets :}
+\begin{definition}{\bfseries Symbol, Item and Item-sets:}
 A symbol (s) is an element of a sequence, symbols can be repeated in sequences but, in a given database, a symbol will keep the same meaning. Symbols can be grouped into sets of symbols. \\
 An item (i) is the integer representation of a symbol. While symbols could technically be anything from an Object to a primitive type, items are integer representation of those symbols allowing shorter representation of the database. Similarly, items can be grouped in sets, we will refer to sets of items as Item-sets. \\
 In the remainder of this paper, we will generally refer to elements of sequence as symbols, unless a representation as Item is necessary for the algorithm/concept concerned.
 \end{definition}
 
-\begin{definition}{\bfseries Sequence :}
+\begin{definition}{\bfseries Sequence:}
 A sequence seq = $\{s_1, s_2, ..., s_n\}$ of length N, is an ordered list of potentially repeating symbols. Those symbols can either be grouped into sets (in which case each set will be clearly separated from others using delimiters) or each symbol could be part of its own independent set. In the remained of this paper, we will distinguish between those two types of sequences by calling them either \acrlong{SoSS} (\acrshort{SoSS}) in the first case or \acrlong{SoS} (\acrshort{SoS}) in the second.
 \end{definition}
 
 \begin{example}{\bfseries Type of Sequences}
 \begin{itemize}
-\item  <A B C A> is a \acrlong{SoS} (\acrshort{SoS}) of length 4 containing three different symbols. Symbol A being repeated multiple times in the sequence.
-\item <(A B)(C A)> is a \acrlong{SoSS} (\acrshort{SoSS}), where parenthesis act as delimiters between symbol sets.
-\item <(A)(C)(A)> is a \acrlong{SoS} (\acrshort{SoS}), since no sets of symbols contain more than one element.
+\item $\langle$A B C A$\rangle$ is a \acrlong{SoS} (\acrshort{SoS}) of length 4 containing three different symbols. Symbol A being repeated multiple times in the sequence.
+\item $\langle$(A B)(C A)$\rangle$ is a \acrlong{SoSS} (\acrshort{SoSS}), where parenthesis act as delimiters between symbol sets.
+\item $\langle$(A)(C)(A)$\rangle$ is a \acrlong{SoS} (\acrshort{SoS}), since no sets of symbols contain more than one element.
 \end{itemize}
 \end{example}
 
 \begin{definition}{\bfseries Sub-Sequence / Super-Sequence:}
-A sequence alpha = $\{\alpha_1, \alpha_2, ..., \alpha_m\}$ is a subsequence of seq = $\{s_1, s_2, ..., s_n\}$ and seq is a super-sequence of alpha if and only if : m $\leq$ n and $\forall i \in \{1, ..., m\} \quad \exists j_i \quad such \quad that \quad 1 \leq j_1 \leq ... \leq j_m \leq n \quad and \quad \alpha_i = seq_{j_i}$
+A sequence alpha = $\{\alpha_1, \alpha_2, ..., \alpha_m\}$ is a subsequence of seq = $\{s_1, s_2, ..., s_n\}$ and seq is a super-sequence of alpha if and only if: m $\leq$ n and $\forall i \in \{1, ..., m\} \quad \exists j_i \quad such \quad that \quad 1 \leq j_1 \leq ... \leq j_m \leq n \quad and \quad \alpha_i = seq_{j_i}$
 \end{definition}
 
-\begin{definition}{\bfseries Sequence database :}
+\begin{definition}{\bfseries Sequence database:}
 A sequence database is a non-ordered collection of set of tuples (sid, seq). Where 'sid' is a sequence identifier and 'seq' a sequence. If a sequence database contains only sequences of symbols, we shall denote it as SDB in the remained of this paper. In any other case we shall refer to the database with using the acronym SSDB. \\
 Any algorithm mining sequential pattern for an SSDB should find the same solutions for SDB datasets as an SDB only algorithm. SDB specialised algorithms may never be used on SSDB. \\
-NB : SDB are SSDB but the opposite is not true ! 
+NB: SDB are SSDB but the opposite is not true ! 
 \end{definition}
 
 \begin{example}{\bfseries Type of Sequences Database}
 \begin{itemize}
-\item (<A B C A>, <D E C B>) is an SDB, since it contains only sequences of symbols.
-\item (<(A)(B)>, <(D)(E)(C)(B)>) is also an SDB, since it similarly only contains sequences of symbols, the maximal Symbol Set size being one. 
-\item (<(A)(B)(C A)>, <(D)(E)(C)(B)>) is an SSDB, since it contains at least one sequence of sets of symbols, the first sequence of the database containing (C A), a symbol set with multiple symbols.
+\item ($\langle$A B C A$\rangle$, $\langle$D E C B$\rangle$) is an SDB, since it contains only sequences of symbols.
+\item ($\langle$(A)(B)$\rangle$, $\langle$(D)(E)(C)(B)$\rangle$) is also an SDB, since it similarly only contains sequences of symbols, the maximal Symbol Set size being one. 
+\item ($\langle$(A)(B)(C A)$\rangle$, $\langle$(D)(E)(C)(B)$\rangle$) is an SSDB, since it contains at least one sequence of sets of symbols, the first sequence of the database containing (C A), a symbol set with multiple symbols.
 \end{itemize}
 \end{example}
 
-\begin{definition}{\bfseries Cover, Support, Pattern, Frequent Pattern :}
+\begin{definition}{\bfseries Cover, Support, Pattern, Frequent Pattern:}
 The \textbf{cover} of a sequence seq in SSDB, denoted by cover(seq), is the subset of sequences in SSDB that are a super-sequence of seq. 
 The \textbf{support} of a sequence seq in SSDB, denoted nbSupportSDB(seq), is the number of sequence in the cover. 
 Any sequence seq can be a \textbf{pattern} as long as it appears in the database, but we call \textbf{frequent patterns}, patterns where nbSupportSSDB(seq) $\geq \theta$, where $\theta$ is a
@@ -195,45 +200,45 @@ Let $\alpha$ be a pattern. If a sequence  $\beta$ is a super-sequence of $\alpha
 A prefix-projected database of a prefix $\alpha$, denoted by $SDB_\alpha$, is the set of prefix-projections of all sequences in SDB that are a super-sequence of $\alpha$.
 \end{definition}
 
-\subsection{Existing specialised approaches}
+\subsubsection{Existing specialised approaches}
 
-\subsubsection{apriori}
+\paragraph{apriori}
 
 The Apriori algorithm, created in 1995 \cite{agrawal1995mining}, was designed for frequent item-sets mining in a transactional database.\newline
 
 This breath first search (BFS) algorithm, whose performances are now surpassed by more modern techniques, finds all frequent item-sets by iteratively growing its sequential patterns. \newline
 
-First, at the start of each iteration, all length-N candidate will be generated (N being the number of the iteration) using the result of the previous iteration and the length-1 candidates as basis. The support of those candidates will then be checked with the databases and un-frequent pattern will be deleted. Finally, frequent length-N patterns will be sent onto the next iteration, until none can be grown. \newline
+First, at the start of each iteration, all N-length candidate will be generated (N being the number of the iteration) using the result of the previous iteration and the 1-length candidates as basis. The support of those candidates will then be checked with the databases and un-frequent pattern will be deleted. Finally, frequent N-length patterns will be sent onto the next iteration, until none can be grown. \newline
 
 While historically relevant, this algorithm was inefficiently generating all possible N-length candidates using the length N-1 candidates as basis. Among those a large amount of candidate wouldn't be frequent, and would thus waste huge amount of memory and CPU time being stocked and uselessly verified across the database. \newline
 
-One of its good points however, lies in its ability to be used to detect association rules (Example : When A is present, B has 75\% chance of being also present), which can give indications about the general trends in the database and allow human operators to get a general understanding of the inputted dataset.
+One of its good points however, lies in its ability to be used to detect association rules (Example: When A is present, B has 75\% chance of being also present), which can give indications about the general trends in the database and allow human operators to get a general understanding of the inputted dataset.
 
-\subsubsection{GSP}
+\paragraph{GSP}
 
 The Generalised Sequential Pattern (GSP) algorithm \cite{srikant1996mining} was based on the apriori algorithm but redesigned for sequential pattern mining instead of frequent item-set mining. One of the good points of this new algorithm lied in the possibility to add time constraints that specified a minimum and/or maximum time period between adjacent elements in a pattern. \newline
 
-As apriori, the algorithm start by detecting frequent length-1 pattern, it then proceeds with generating all length-2 patterns from there. However, since order now matters as items that should be grouped together can come from multiple transactions, there is now a lot more candidates to create. \newline
+As apriori, the algorithm start by detecting frequent 1-length pattern, it then proceeds with generating all 2-length patterns from there. However, since order now matters as items that should be grouped together can come from multiple transactions, there is now a lot more candidates to create. \newline
 
 More specifically, given two items A and B, the generated candidate would be AB, BA and (AB). (AB) being the representation of those two items occurring in the same transactional time frame. Those candidates will then be projected on the database, and their support will be counted. All candidates having a lesser amount of support than the threshold $\theta$ will then be cleaned. \newline
 
-The algorithm should then generate further candidates, but unlike apriori, the method has been complexified to become far more efficient. Instead of growing sequential patterns by adding all length-1 patterns to each of their end and creating a tremendous amount of unsupported patterns, we create those candidates more efficiently. \newline
+The algorithm should then generate further candidates, but unlike apriori, the method has been complexified to become far more efficient. Instead of growing sequential patterns by adding all 1-length patterns to each of their end and creating a tremendous amount of unsupported patterns, we create those candidates more efficiently. \newline
 
-First, for each sequential patterns of length-N found in the previous iterations, we detect its first and last N-1 item, thus creating two sub-sequential patterns by omitting an element either at the end or start. We will then create length-N+1 candidates by composing sequential patterns with similar end and start sub-sequential pattern. \newline
+First, for each sequential patterns of N-length found in the previous iterations, we detect its first and last N-1 item, thus creating two sub-sequential patterns by omitting an element either at the end or start. We will then create N+1-length candidates by composing sequential patterns with similar end and start sub-sequential pattern. \newline
 
-For example, given the sequential patterns AA, (AB), AB and BA, we would be able to generate the following candidates : A(AB), (AB)A, B(AB), (AB)B, ABA, BAB, AAB, BAA. \\
-Those candidates should then be pruned to remove impossible combinations found in previous iterations. In the case of our example, since BB was not retained as a length-2 sequential pattern due to being un-frequent, we can delete all candidate sequential patterns containing BB, as they similarly cannot be present. \\
-We are thus left with : A(AB), (AB)A, ABA, AAB, BAA \newline
+For example, given the sequential patterns AA, (AB), AB and BA, we would be able to generate the following candidates: A(AB), (AB)A, B(AB), (AB)B, ABA, BAB, AAB, BAA. \\
+Those candidates should then be pruned to remove impossible combinations found in previous iterations. In the case of our example, since BB was not retained as a 2-length sequential pattern due to being un-frequent, we can delete all candidate sequential patterns containing BB, as they similarly cannot be present. \\
+We are thus left with: A(AB), (AB)A, ABA, AAB, BAA \newline
 
 Finally, we will count the number of support for each candidates having passed the pruning phase, and remove unsupported sequential patterns. Another iteration of generating candidates, pruning and count support will then start, until no supported sequential patterns is found at the end of an iteration, or no candidates can be generated. \newline
 
-If after counting the support of each candidate we detect that only ABA and BAA are supported, the next iteration would only create the candidate ABAA. Since it would be our only length-4 pattern, no length-5 pattern will be generated and the execution will stop having determined that all solutions were found. \newline
+If after counting the support of each candidate we detect that only ABA and BAA are supported, the next iteration would only create the candidate ABAA. Since it would be our only 4-length pattern, no 5-length pattern will be generated and the execution will stop having determined that all solutions were found. \newline
 
 As you may expect, this new method to generate candidates allowed GSP to surpass apriori's efficiency by a wide margin. Since the algorithm additionally supported a wide range of new constraints allowing reduction of the search space, and was so efficient, it became a reference algorithm in frequent pattern mining.
 
-\subsubsection{Prefix-Span}
+\paragraph{PrefixSpan}
 
-The Prefix-Span approach \cite{pei2004mining, han2001prefixspan} relies on pattern growth. As you may see in our simple example displayed in Figure \ref{ex:PrefixSpanExample}, the idea of this algorithm is to find the complete set of patterns through iteratively growing prefixes by projecting them on the database, and finding extensions. \newline
+The PrefixSpan approach \cite{pei2004mining, han2001prefixspan} relies on pattern growth. As you may see in our simple example displayed in Figure \ref{ex:PrefixSpanExample}, the idea of this algorithm is to find the complete set of patterns through iteratively growing prefixes by projecting them on the database, and finding extensions. \newline
 
 \begin{figure}[h]
   \centering
@@ -247,28 +252,28 @@ The Prefix-Span approach \cite{pei2004mining, han2001prefixspan} relies on patte
     \includegraphics[width=0.9\textwidth]{PrefixSpanProjDB.png}
     \caption[Prefix projected database \& sequential pattern]{
 		\tabular[t]{@{}l@{}}
-			Prefix projected databases relative to length-1 sequential patterns \& \\
-			final list of sequential patterns eventually extended from those length-1 prefixes
+			Prefix projected databases relative to 1-length sequential patterns \& \\
+			final list of sequential patterns eventually extended from those 1-length prefixes
 		\endtabular
 	}
   \end{subfigure}
-  \caption{Prefix-Span example}
+  \caption{PrefixSpan example}
   \label{ex:PrefixSpanExample}
 \end{figure}
 
 The main selling point of the algorithm lies in its ability to quickly generate candidate extensions, projecting prefixes on the database significantly reducing the time needed to find prefixes extensions, as only the suffixes need to be searched for those extensions to be found. Another selling point lies in its scalability, as this method is easily implementable under a Map-Combine-Reduce programming scheme. \newline
 
-However, this method also has disadvantages, mainly in the fact that projecting databases is a time expensive process. Making building those projected databases the efficiency bottle-neck of Prefix-Span. \newline
+However, this method also has disadvantages, mainly in the fact that projecting databases is a time expensive process. Making building those projected databases the efficiency bottle-neck of PrefixSpan. \newline
 
-Fortunately, techniques exists to break past this bottle-neck and mitigate its effects. Techniques among which we should mention the 'Bi-level projection' technique, which consists in creating a triangular matrix (S-matrix [\ref{fig:smatrix}]) registering the number of supports for all length-2 sequences that can be assembled from length-1 prefixes. A quick scan of the S-matrix then allows the detection of all supported length-2 prefixes, prefixes which can then be extended again through applying the same technique on their projected database. Thus allowing a reduction of the number of necessary prefix projections during the execution of the algorithm, since only half of the prefixes will need to be projected. \newline
+Fortunately, techniques exists to break past this bottle-neck and mitigate its effects. Techniques among which we should mention the 'Bi-level projection' technique, which consists in creating a triangular matrix (S-matrix [\ref{fig:smatrix}]) registering the number of supports for all 2-length sequences that can be assembled from 1-length prefixes. A quick scan of the S-matrix then allows the detection of all supported 2-length prefixes, prefixes which can then be extended again through applying the same technique on their projected database. Thus allowing a reduction of the number of necessary prefix projections during the execution of the algorithm, since only half of the prefixes will need to be projected. \newline
 
 A second technique we should mention is the 'Pseudo-Projection' technique which is based on keeping and maintaining a start index for each sequence. This start-index registering the lowest position at which the last projected prefix was supported, thus allowing quicker projection of extending prefixes by avoiding to re-project previous prefix elements.
 
-\subsubsection{cSPADE}
+\paragraph{cSPADE}
 
 The cSPADE algorithm \cite{zaki2001spade} uses combinatorial properties to divide the original sequence pattern mining problem in smaller sub-problems that can be solved independently using simple id-list join operations. This algorithm is thus parallelisable, furthermore, the parallelisation has a linear scalability with respect to the size of the inputted database. \newline
 
-cSPADE's first step is to compute all length-1 sequential patterns using a simple database scan. Then, we generate all length-2 sequential patterns and count the number of supporting sequences for each pair of items in a bi-dimensional matrix. Counting the number of supporting sequence being realised through another database scan by first transforming the original vertical representation of the database into an horizontal representation (see Figure \ref{ex:cspadeDatabaseRepr}).
+cSPADE's first step is to compute all 1-length sequential patterns using a simple database scan. Then, we generate all 2-length sequential patterns and count the number of supporting sequences for each pair of items in a bi-dimensional matrix. Counting the number of supporting sequence being realised through another database scan by first transforming the original vertical representation of the database into an horizontal representation (see Figure \ref{ex:cspadeDatabaseRepr}).
 
 \begin{figure}[h]
   \centering
@@ -286,9 +291,9 @@ cSPADE's first step is to compute all length-1 sequential patterns using a simpl
   \label{ex:cspadeDatabaseRepr}
 \end{figure}
 
-Subsequent length-n sequence patterns can then be formed by joining length-(n-1) patterns using their id-lists (list of positions in sequences for each item, see Figure \ref{fig:cspadeIDList}). The support of each item can also be easily calculated from ID-list, as we just need to count the number of different sequences in which it appears.  \newline
+Subsequent N-length sequence patterns can then be formed by joining (N+1)-length patterns using their id-lists (list of positions in sequences for each item, see Figure \ref{fig:cspadeIDList}). The support of each item can also be easily calculated from ID-list, as we just need to count the number of different sequences in which it appears.  \newline
 
-It is also important to note that this method of joining ID-lists is only efficient from length-3 patterns onward, as ID-lists for length 1 and 2 patterns can be extremely large and potentially wouldn't fit in memory. \newline
+It is also important to note that this method of joining ID-lists is only efficient from 3-length patterns onward, as ID-lists for length 1 and 2 patterns can be extremely large and potentially wouldn't fit in memory. \newline
 
 Of course, at the end of each round, un-frequent sequential pattern should be cleaned as to guarantee only frequent patterns will be extended. This algorithm can be executed using either breadth first or depth first search, and ends its execution once no patterns can be further extended.
 
@@ -297,19 +302,19 @@ Of course, at the end of each round, un-frequent sequential pattern should be cl
   \begin{subfigure}[t]{0.54\textwidth}
   	\centering
   	\includegraphics[width=\textwidth]{cspadeVerticalIDList1.png}
-    \caption{ID-list of length-1 sequence patterns}
+    \caption{ID-list of 1-length sequence patterns}
   \end{subfigure}
   \begin{subfigure}[t]{0.45\textwidth}
   	\centering
     \includegraphics[width=\textwidth]{cspadeVerticalIDList2.png}
-    \caption{ID-list of length-2 sequence patterns}
+    \caption{ID-list of 2-length sequence patterns}
   \end{subfigure}
   \caption{cSPADE's ID-lists}
   \label{fig:cspadeIDList}
 \end{figure}
 
-\subsection{Existing CP Based approaches}
-\subsubsection{CPSM}
+\subsubsection{Existing CP Based approaches}
+\paragraph{CPSM}
 
 The CPSM approach \cite{negrevergne2015constraint} was implemented to solve sequential pattern mining problems involving only sequences of symbols (no symbols set) using generic Constraint Programming (CP) solvers. It creates a global constraint allowing a search for frequent patterns over the database. Thanks to its integration in CP solvers, it also easily support additional constraints such as size constraints or regular-expression constraints. \newline
 
@@ -321,9 +326,9 @@ If the extension is valid and its support exceeds the threshold $\theta$, the pr
 
 Since trying all possible extensions at each incremental step would be inefficient, the algorithm was also designed to prune the next possible extensions that should be considered by the solver, and only keep extensions that are sufficiently supported in the database. Thus, symbols that are considered unfrequent won't be branched over during the execution. This pruning is done by counting the number of support for each extension during the embedding existence verification. \newline
 
-Although impressive for its modularity, the efficiency of this algorithm didn't quite caught up to specialised non-CP algorithms such as Prefix-Span or cSPADE. It, however, surpassed their efficiency at searching for specific solutions thanks to its modularity.
+Although impressive for its modularity, the efficiency of this algorithm didn't quite caught up to specialised non-CP algorithms such as PrefixSpan or cSPADE. It, however, surpassed their efficiency at searching for specific solutions thanks to its modularity.
 
-\subsubsection{PP}
+\paragraph{PP}
 
 This second approach based on CPSM proposed a slightly different global constraint by taking ideas from prefix-projection \cite{kemmar2015prefix}. Similarly to its predecessor, this algorithm was designed to solve sequential pattern mining problems involving sequence of symbols (no sets of symbols).\newline
 
@@ -335,7 +340,7 @@ During the extensions pruning phase, only supportive sequences will need to be c
 
 While the rest of this global constraint implementation was very similar to CPSM, the prefix projection improvement allowed this new implementation to largely overtake its predecessors in efficiency. Making this new algorithm competitive with state-of-the-art non-CP method while keeping the improved modularity inherent to CP algorithms.
 
-\subsubsection{Gap-Seq}
+\paragraph{Gap-Seq}
 
 This new algorithm introduced a global constraint adding support for time gap constraint. This allows, for example, to analyses purchase behaviours and find products usually bought by customers at regular time intervals. \newline
 
@@ -345,25 +350,25 @@ The new global constraint, however, allow tighter search spaces where one can sp
 
 For this constraint to work efficiently, additional pruning was added when pruning for extending items, so that extensions which would violate the time gap constraints couldn't be taken into account.
 
-\subsubsection{PPIC}
+\paragraph{PPIC}
 
 Largely based on its predecessor, CPSM and PP, PPIC is an algorithm designed for solving sequence pattern mining problems involving sequences of symbols. Unlike Gap-seq, constraint over time gaps are not supported. \newline
 
 This new algorithm speciality lying in its record-breaking efficiency, surpassing even state-of-the-art non-CP solver, generally by a wide margin (see Figure \ref{fig:PPICvsOther}).
 
-PPIC's implementation is based on the Prefix-Span approach, it's execution can be separated in two stages :
+PPIC's implementation is based on the PrefixSpan approach, it's execution can be separated in two stages:
 
 \begin{enumerate}
-\item \textbf{Pre-processing :} In this first stage, we first clean the received sequences from unfrequent symbols, renaming them into unique items. Three matrices are then build from the sequence database :
+\item \textbf{Pre-processing:} In this first stage, we first clean the received sequences from unfrequent symbols, renaming them into unique items. Three matrices are then build from the sequence database:
 	\begin{enumerate}
-		\item The 'first-position' matrix : A \#SDB*N sized matrix allowing O(1) jumps to the first occurrence of a given item. 
-		\item The 'last-position' matrix : A  \#SDB*N sized matrix allowing O(1) check for the presence of a given item in the remains of a sequence.
-		\item The 'interesting-position' matrix : A matrix with the same size as the original sequence database, but whose content is changed from the items forming those sequences, to the positions of the next 'interesting' item. That is the next position where an item last appears in a sequence. \\ Although, at first glance, this matrix may seem redundant with the last-position matrix, its purpose appears when one realises that to achieve the same goal a whole column of the last-position matrix would have to be checked. Similarly, keeping only this matrix would also be less efficient, since there would be no way to efficiently check if an item is present in the remains of a sequence. Both matrices are thus needed to achieve the greatest efficiency gain. 
+		\item The 'first-position' matrix: A \#SDB*N sized matrix allowing O(1) jumps to the first occurrence of a given item. 
+		\item The 'last-position' matrix: A  \#SDB*N sized matrix allowing O(1) check for the presence of a given item in the remains of a sequence.
+		\item The 'interesting-position' matrix: A matrix with the same size as the original sequence database, but whose content is changed from the items forming those sequences, to the positions of the next 'interesting' item. That is the next position where an item last appears in a sequence. \\ Although, at first glance, this matrix may seem redundant with the last-position matrix, its purpose appears when one realises that to achieve the same goal a whole column of the last-position matrix would have to be checked. Similarly, keeping only this matrix would also be less efficient, since there would be no way to efficiently check if an item is present in the remains of a sequence. Both matrices are thus needed to achieve the greatest efficiency gain. 
 	\end{enumerate}
 	
 	The pre-processing stage will also take care of adding multiple constraints, depending on the wishes of the user. Thus restricting the search space to fit more tightly the desired solutions and improve the algorithm's performances at reaching those specific solutions.
 	
-\item \textbf{Execution :} Once the pre-processing is finished, the algorithm will truly start to run. Using the three matrices, prefixes will be extended efficiently using an incremental propagator (DFS approach). An approach possible thanks to trailing, that is more efficient than BFS approach were multiple copies of the database would need to be kept, or where the prefixes would need to be re-projected. Thanks to this incremental propagation, memory consumption will thus be minimal during the execution of the algorithm. \newline
+\item \textbf{Execution:} Once the pre-processing is finished, the algorithm will truly start to run. Using the three matrices, prefixes will be extended efficiently using an incremental propagator (DFS approach). An approach possible thanks to trailing, that is more efficient than BFS approach were multiple copies of the database would need to be kept, or where the prefixes would need to be re-projected. Thanks to this incremental propagation, memory consumption will thus be minimal during the execution of the algorithm. \newline
 
 Through each step of the DFS execution, the last item of the current prefix will be projected efficiently as, similarly to CPSM, the algorithm keeps track of the minimal index after which the previous valid pattern was considered supported. Thus, only the remains of the sequence will need to be searched for confirming the validity of the new projection. Once projected, the algorithm will then prune possible solutions for the next pattern efficiently, thanks to the lastPosition list, and continue the execution. 
 
@@ -388,38 +393,38 @@ for tree={
   align=center,
   child anchor=north
 },
-[{Input sequences : \\ <ADBABCA> \\ <ABCA> \\ <AD> \\ Number of supporting sequences necessary : 2}, align=center, name=SS
-  [{Pre-processed sequences : \\ <1421231> \\ <1231> \\ <14> \\ indexInSequence : \\ $[0, 0, 0]$ \\ supportCounter : \\ $[3, 2, 2, 2]$ \\ firstPosList: \\ $[1, 3, 6, 2]$ \\ $[1, 2, 3, 0]$ \\ $[1, 0, 0, 2]$ \\ lastPosList: \\ $[7, 5, 6, 2]$ \\ $[4, 2, 3, 0]$ \\ $[1, 0, 0, 2]$ \\ interestingPosList: \\ $[2, 5, 5, 5, 6, 7, 0]$ \\ $[2, 3, 4, 0]$ \\ $[2, 0]$}, name=PDC
-  		[{Projecting 4 : \\ indexInSequence : \\ $[2, 4, 2]$ \\ sequenceSupported : \\ $[1, 3]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+[{Input sequences: \\ $\langle$ADBABCA$\rangle$ \\ $\langle$ABCA$\rangle$ \\ $\langle$AD$\rangle$ \\ Number of supporting sequences necessary: 2}, align=center, name=SS
+  [{Pre-processed sequences: \\ $\langle$1421231$\rangle$ \\ $\langle$1231$\rangle$ \\ $\langle$14$\rangle$ \\ indexInSequence: \\ $[0, 0, 0]$ \\ supportCounter: \\ $[3, 2, 2, 2]$ \\ firstPosList: \\ $[1, 3, 6, 2]$ \\ $[1, 2, 3, 0]$ \\ $[1, 0, 0, 2]$ \\ lastPosList: \\ $[7, 5, 6, 2]$ \\ $[4, 2, 3, 0]$ \\ $[1, 0, 0, 2]$ \\ interestingPosList: \\ $[2, 5, 5, 5, 6, 7, 0]$ \\ $[2, 3, 4, 0]$ \\ $[2, 0]$}, name=PDC
+  		[{Projecting 4: \\ indexInSequence: \\ $[2, 4, 2]$ \\ sequenceSupported: \\ $[1, 3]$ \\ itemSupportCounter: \\ $[1, 1, 1, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   		]
-  		[{Projecting 1 : \\ indexInSequence : \\ $[1, 1, 1]$ \\ sequenceSupported : \\ $[1, 2, 3]$ \\ itemSupportCounter : \\ $[2, 2, 2, 2]$ \\ Extensions supported : \\ \textrm{[1, 2, 3, 4]}}
-  			[{Projecting 14 : \\ indexInSequence : \\ $[2, 4, 2]$ \\ sequenceSupported : \\ $[1, 3]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  		[{Projecting 1: \\ indexInSequence: \\ $[1, 1, 1]$ \\ sequenceSupported: \\ $[1, 2, 3]$ \\ itemSupportCounter: \\ $[2, 2, 2, 2]$ \\ Extensions supported: \\ \textrm{[1, 2, 3, 4]}}
+  			[{Projecting 14: \\ indexInSequence: \\ $[2, 4, 2]$ \\ sequenceSupported: \\ $[1, 3]$ \\ itemSupportCounter: \\ $[1, 1, 1, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   			]
-  			[{Projecting 11 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			[{Projecting 11: \\ indexInSequence: \\ $[7, 4, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[0, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   			]
-  			[{Projecting 13 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
-  				[{Projecting 131 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			[{Projecting 13: \\ indexInSequence: \\ $[6, 3, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[2, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[1]}}
+  				[{Projecting 131: \\ indexInSequence: \\ $[7, 4, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[0, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   				]
   			]
-  			[{Projecting 12 : \\ indexInSequence : \\ $[3, 2, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 1, 2, 0]$ \\ Extensions supported : \\ \textrm{[1, 3]}}
-  				[{Projecting 121 : \\ indexInSequence : \\ $[4, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			[{Projecting 12: \\ indexInSequence: \\ $[3, 2, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[2, 1, 2, 0]$ \\ Extensions supported: \\ \textrm{[1, 3]}}
+  				[{Projecting 121: \\ indexInSequence: \\ $[4, 4, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[1, 1, 1, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   				]
-  				[{Projecting 123 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
-  					[{Projecting 1231 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  				[{Projecting 123: \\ indexInSequence: \\ $[6, 3, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[2, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[1]}}
+  					[{Projecting 1231: \\ indexInSequence: \\ $[7, 4, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[0, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   					]
   				]
   			]
   		]
-  		[{Projecting 2 : \\ indexInSequence : \\ $[3, 2, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 1, 2, 0]$ \\ Extensions supported : \\ \textrm{[1, 3]}}
-  			[{Projecting 21 : \\ indexInSequence : \\ $[4, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[1, 1, 1, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  		[{Projecting 2: \\ indexInSequence: \\ $[3, 2, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[2, 1, 2, 0]$ \\ Extensions supported: \\ \textrm{[1, 3]}}
+  			[{Projecting 21: \\ indexInSequence: \\ $[4, 4, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[1, 1, 1, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   			]
-  			[{Projecting 23 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
-  				[{Projecting 231 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  			[{Projecting 23: \\ indexInSequence: \\ $[6, 3, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[2, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[1]}}
+  				[{Projecting 231: \\ indexInSequence: \\ $[7, 4, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[0, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   				]
   			]
   		]
-  		[{Projecting 3 : \\ indexInSequence : \\ $[6, 3, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[2, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[1]}}
-  			[{Projecting 31 : \\ indexInSequence : \\ $[7, 4, 2]$ \\ sequenceSupported : \\ $[1, 2]$ \\ itemSupportCounter : \\ $[0, 0, 0, 0]$ \\ Extensions supported : \\ \textrm{[]}}
+  		[{Projecting 3: \\ indexInSequence: \\ $[6, 3, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[2, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[1]}}
+  			[{Projecting 31: \\ indexInSequence: \\ $[7, 4, 2]$ \\ sequenceSupported: \\ $[1, 2]$ \\ itemSupportCounter: \\ $[0, 0, 0, 0]$ \\ Extensions supported: \\ \textrm{[]}}
   			]
   		]
   	  ]
@@ -439,7 +444,7 @@ for tree={
 
 \subsection{Parallelisation}
 
-As said previously in the introduction, our goal is to achieve a scalable implementation based on PPIC, a CP algorithm based on the Prefix-Span approach.
+As said previously in the introduction, our goal is to achieve a scalable implementation based on PPIC, a CP algorithm based on the PrefixSpan approach.
 
 \subsubsection{The Benefits of Parallelisation}
 
@@ -451,7 +456,7 @@ For both those reasons, and the fact that a large quantity of SPM problems canno
 
 \subsubsection{Tool Selection}
 
-Since, fortunately, SPM problems are embarrassingly parallel problem, we had the opportunity to choose from a selection of widely used open-source libraries. We, however, restricted ourselves to Scala compatible framework, as the CP library supporting PPIC was implemented in this language. Rapidly, we were left to choose from two major options :
+Since, fortunately, SPM problems are embarrassingly parallel problem, we had the opportunity to choose from a selection of widely used open-source libraries. We, however, restricted ourselves to Scala compatible framework, as the CP library supporting PPIC was implemented in this language. Rapidly, we were left to choose from two major options:
 
 \begin{enumerate}
 \item Hadoop mapreduce
@@ -464,7 +469,7 @@ Hadoop is an open-source framework that allows large-scale data processing acros
 
 The advantages of Hadoop thus lies in the simplicity of its usage. Aside from implementing the Map and Reduce process, Hadoop will take care of scheduling, data repartition and failure recovery. \newline
 
-Widely used since its initial release on December 10, 2011. Hadoop slowly climbed to become one of the big standards in terms of large scale computation. We thus selected it as our potential scalable framework, discovering shortly after that an efficient implementation of Prefix-Span on Hadoop was already available on the internet.
+Widely used since its initial release on December 10, 2011. Hadoop slowly climbed to become one of the big standards in terms of large scale computation. We thus selected it as our potential scalable framework, discovering shortly after that an efficient implementation of PrefixSpan on Hadoop was already available on the internet.
 
 \paragraph{Spark}
 
@@ -474,7 +479,7 @@ Originally developed at UC Berkeley in 2009, Its entire implementation revolves 
 
 Furthermore, Spark has been designed to make use of its clusters RAM memory efficiently, allowing the engine to distance itself from slow HDD memory access. Of course, should the RAM memory be insufficient, Spark is perfectly able to run using nothing but the hard-drive. \newline
 
-Spark's was thus an extremely valid choice from a technical standpoint and, similarly to Hadoop, we were surprised to discover an existing implementation of Prefix-span available in Spark's machine learning library.
+Spark's was thus an extremely valid choice from a technical standpoint and, similarly to Hadoop, we were surprised to discover an existing implementation of PrefixSpan available in Spark's machine learning library.
 
 \paragraph{Final Choice}
 
@@ -493,26 +498,27 @@ As you can see, performance-wise, Spark vastly outperform Hadoop thanks to its a
 
 In terms of extensions through CP technologies, we quickly realised that Hadoop would be far less practical. Although MapReduce can be used to execute the standard PrefixSpan algorithm, and could certainly be modified to introduce CP elements, Spark can support any coarse-grained transformation with its RDDs, allowing a more precise implementation where only required transformations would be made, instead of simple sequences of Map-Combine-Reduce. \newline
 
+\newpage
 \section{Implementation of a Scalable CP Based Algorithm}
 
 In this section, we shall present the various implementation we created in an attempt to improve Spark's original algorithm's performances. The performance of those implementations, however, will be tested in a later section.
 
 \subsection{Spark's original implementation}
 
-Before introducing our various implementation, let us present Spark's original algorithm. An algorithm based on the Prefix-Span approach, and can be separated in four stages :
+Before introducing our various implementation, let us present Spark's original algorithm. An algorithm based on the PrefixSpan approach, and can be separated in four stages:
 
 \begin{enumerate}
-\item \textbf{Pre-processing :} The goal of this stage is to replace each symbol of the sequence database by a unique item, to separate item-sets through a zero delimiter, and to clean the database from unfrequent items. \\
-For example, the sequence <(ABD)(ABC)A> will become 0120123010, assuming only symbols A, B and C are frequent in the sequence database.
-\item \textbf{Scalable execution :} The core of the algorithm. Its execution consists in extending prefixes through a three sub-stage process, starting from the empty prefix.
+\item \textbf{Pre-processing:} The goal of this stage is to replace each symbol of the sequence database by a unique item, to separate item-sets through a zero delimiter, and to clean the database from unfrequent items. \\
+For example, the sequence $\langle$(ABD)(ABC)A$\rangle$ will become 0120123010, assuming only symbols A, B and C are frequent in the sequence database.
+\item \textbf{Scalable execution:} The core of the algorithm. Its execution consists in extending prefixes through a three sub-stage process, starting from the empty prefix.
 	\begin{enumerate}
 	\item First, a large prefix is projected on the database, meaning that only the suffix of supporting sequence remain in the resulting database. When there is no prefix to project, the scalable execution comes to an end and the algorithm goes on to the next stage.
 	\item Then, from the set of supporting sequences, we discover symbols that can extend the current prefix. If no such extension exists, we try the next large prefix.
 	\item Finally, for each possible symbol extension, we extend the corresponding prefix. We then determine how long further expanding each extended prefix may take by calculating the projected database size. Depending on the calculated projected size and of the value of a user defined parameter, we then either further extend this prefix using another iteration of the scalable execution, or store it for use in the local execution stage. 
 	\end{enumerate}
-\item \textbf{Local execution :} The local execution is completely similar in its implementation to the scalable execution. Its only use is in significantly improving the algorithm's performance by calculating all extensions from a Prefix locally, instead of doing so while shuffling information around the scalable architecture. \\
+\item \textbf{Local execution:} The local execution is completely similar in its implementation to the scalable execution. Its only use is in significantly improving the algorithm's performance by calculating all extensions from a Prefix locally, instead of doing so while shuffling information around the scalable architecture. \\
 This stage is only launched once all large prefixes have been extended sufficiently, making the projected databases that need to be processed to find future extensions small enough. Depending on the parameters inputted by the user, this stage may be skipped.
-\item \textbf{Post-processing :} During the post-processing step, we translate back the unique items into the corresponding symbols they each represented. Then we send back the collected results to the user.
+\item \textbf{Post-processing:} During the post-processing step, we translate back the unique items into the corresponding symbols they each represented. Then we send back the collected results to the user.
 \end{enumerate}
 
 During the prefix projection phase of the scalable and local execution, the algorithm will also detect which item-sets in the sequence comply with what has already been projected and can still be extended in some way. Storing such items positions in a 'partial projection' list. \newline
@@ -536,28 +542,28 @@ for tree={
   align=center,
   child anchor=north
 },
-[{Input sequences : \\ <(ADB)(ABC)(A)> \\ <(ABC)A> \\ Number of supporting sequences necessary : 2}, align=center, name=SS
-  [{Pre-processed sequences : \\ <0120123010> \\ <0123010>}, name=PDC
-  	[{Empty prefix projection : \\ <|0120123010> \\ <|0123010> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions found : \\ \textrm{[01, 02, 03]}},
-  		[{Projecting 01 : \\ <01|20123010> \\ <01|23010> \\ Partial starts : \\  \textrm{[4]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[2, 3, 01]}},
-  			[{Projecting 0101 : \\ <012012301|0> \\ <012301|0> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}}]
-  			[{Projecting 013 : \\ <0120123|010> \\ <0123|010> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[01]}},
-  				[{Projecting 01301 : \\ <012012301|0> \\ <012301|0> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}}]
+[{Input sequences: \\ $\langle$(ADB)(ABC)(A)$\rangle$ \\ $\langle$(ABC)A$\rangle$ \\ Number of supporting sequences necessary: 2}, align=center, name=SS
+  [{Pre-processed sequences: \\ $\langle$0120123010$\rangle$ \\ $\langle$0123010$\rangle$}, name=PDC
+  	[{Empty prefix projection: \\ $\langle$|0120123010$\rangle$ \\ $\langle$|0123010$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions found: \\ \textrm{[01, 02, 03]}},
+  		[{Projecting 01: \\ $\langle$01|20123010$\rangle$ \\ $\langle$01|23010$\rangle$ \\ Partial starts: \\  \textrm{[4]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[2, 3, 01]}},
+  			[{Projecting 0101: \\ $\langle$012012301|0$\rangle$ \\ $\langle$012301|0$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}}]
+  			[{Projecting 013: \\ $\langle$0120123|010$\rangle$ \\ $\langle$0123|010$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[01]}},
+  				[{Projecting 01301: \\ $\langle$012012301|0$\rangle$ \\ $\langle$012301|0$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}}]
   			]
-  			[{Projecting 012 : \\ <012|0123010> \\ <012|3010> \\ Partial starts : \\  \textrm{[5]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[3, 01]}},
-  				[{Projecting 0123 : \\ <0120123|010> \\ <0123|010> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}},
-  					[{Projecting 012301 : \\ <012012301|0> \\ <012301|0> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}}]
+  			[{Projecting 012: \\ $\langle$012|0123010$\rangle$ \\ $\langle$012|3010$\rangle$ \\ Partial starts: \\  \textrm{[5]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[3, 01]}},
+  				[{Projecting 0123: \\ $\langle$0120123|010$\rangle$ \\ $\langle$0123|010$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}},
+  					[{Projecting 012301: \\ $\langle$012012301|0$\rangle$ \\ $\langle$012301|0$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}}]
   				]
-  				[{Projecting 01201 : \\ <012012301|0> \\ <012301|0> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}}]
+  				[{Projecting 01201: \\ $\langle$012012301|0$\rangle$ \\ $\langle$012301|0$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}}]
   			]
   		]
-  		[{Projecting 03 : \\ <0120123|010> \\ <0123|010> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[01]}},
-  			[{Projecting 0301 : \\ <012012301|0> \\ <012301|0> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}}]
+  		[{Projecting 03: \\ $\langle$0120123|010$\rangle$ \\ $\langle$0123|010$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[01]}},
+  			[{Projecting 0301: \\ $\langle$012012301|0$\rangle$ \\ $\langle$012301|0$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}}]
   		]
-  		[{Projecting 02 : \\ <012|0123010> \\ <012|3010> \\ Partial starts : \\  \textrm{[5]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[3, 01]}},
-  			[{Projecting 0201 : \\ <012012301|0> \\ <012301|0> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}}]
-  			[{Projecting 023 : \\ <0120123|010> \\ <0123|010> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[01]}},
-  				[{Projecting 02301 : \\ <012012301|0> \\ <012301|0> \\ Partial starts : \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported : \\ \textrm{[]}}]
+  		[{Projecting 02: \\ $\langle$012|0123010$\rangle$ \\ $\langle$012|3010$\rangle$ \\ Partial starts: \\  \textrm{[5]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[3, 01]}},
+  			[{Projecting 0201: \\ $\langle$012012301|0$\rangle$ \\ $\langle$012301|0$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}}]
+  			[{Projecting 023: \\ $\langle$0120123|010$\rangle$ \\ $\langle$0123|010$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[01]}},
+  				[{Projecting 02301: \\ $\langle$012012301|0$\rangle$ \\ $\langle$012301|0$\rangle$ \\ Partial starts: \\  \textrm{[]} \\ \textrm{[]} \\ Extensions supported: \\ \textrm{[]}}]
   			]
   		]
   	]
@@ -608,13 +614,13 @@ Additionally to those performance improving options, we also decided to prove th
 
 \subsection{Adding new functionalities}
 
-To first task we undertook was to add four new functionalities to our first CP based Implementation. The implemented functionalities were as follows :
+To first task we undertook was to add four new functionalities to our first CP based Implementation. The implemented functionalities were as follows:
 
 \begin{enumerate}
-	\item Unbounded max pattern length : Although Spark's implementation already disposed of a way to control the maximum length of a pattern, no special value existed to allow unlimited max pattern length. We thus added this minor functionality, specifying 0 as a special value that would allow searching for all solutions pattern of any length. Additionally, we changed the default value of 10 to this new special value, so that all solutions could be found by default.
-	\item Min pattern length : Although Spark's original implementation allowed to control the maximal length of a pattern. No such functionalities existed to control their minimal length. We thus added a functionality to specify the minimal length a pattern should have before being considered solution. As all patterns containing fewer non-zero items than the specified input wouldn't be outputted, we decided to set the default value of this parameter at 1, so that the returned solutions wouldn't be restricted.
-	\item Limit on the maximal number of items per item-set : This functionality was added so that users could, once again, better control their outputted results. Supposing an hypothetical business would like to find all sequences of items bought in pairs in a dataset, it would have no need for solutions where item-sets are larger than two. We can thus stop searching for further item-set extensions once the limit has been reached and, de facto, improve our algorithm performances for returning those specific solutions. Additionally, we created a special value (0) so that all item-set of any length could be outputted, and set that special value as our default for this parameter.
-	\item Soft limit on the number of sub-problems created : By default inactivated, this parameter is enabling far better performance on protein like datasets where projected databases tend to have rather similar sub-problems. Its implementation is a simple check at the beginning of each iteration of the scalable algorithm. If the number of sub-problems created is larger than the user inputted value, the implementation will forcefully put an end to the scalable stage, and switch to a local execution on each worker.
+	\item Unbounded max pattern length: Although Spark's implementation already disposed of a way to control the maximum length of a pattern, no special value existed to allow unlimited max pattern length. We thus added this minor functionality, specifying 0 as a special value that would allow searching for all solutions pattern of any length. Additionally, we changed the default value of 10 to this new special value, so that all solutions could be found by default.
+	\item Min pattern length: Although Spark's original implementation allowed to control the maximal length of a pattern. No such functionalities existed to control their minimal length. We thus added a functionality to specify the minimal length a pattern should have before being considered solution. As all patterns containing fewer non-zero items than the specified input wouldn't be outputted, we decided to set the default value of this parameter at 1, so that the returned solutions wouldn't be restricted.
+	\item Limit on the maximal number of items per item-set: This functionality was added so that users could, once again, better control their outputted results. Supposing an hypothetical business would like to find all sequences of items bought in pairs in a dataset, it would have no need for solutions where item-sets are larger than two. We can thus stop searching for further item-set extensions once the limit has been reached and, de facto, improve our algorithm performances for returning those specific solutions. Additionally, we created a special value (0) so that all item-set of any length could be outputted, and set that special value as our default for this parameter.
+	\item Soft limit on the number of sub-problems created: By default inactivated, this parameter is enabling far better performance on protein like datasets where projected databases tend to have rather similar sub-problems. Its implementation is a simple check at the beginning of each iteration of the scalable algorithm. If the number of sub-problems created is larger than the user inputted value, the implementation will forcefully put an end to the scalable stage, and switch to a local execution on each worker.
 	For the default value of this parameter, a special value (0) was created so that the number of created sub-problems wouldn't be limited.\newline
 	
 	 As you can see in Figure \ref{fig:sub_problem_limit}, performance improvement are only observed on the protein, Kosarak, slen2 and slen3 datasets, but the increase in performance is significant. The problem being that the loss of performance on other datasets is generally even more significant. This loss in performance comes from large differences in sub-problem sizes appearing due to the forced local execution. Since the largest problems tend to be created and processed last, only a few executors have problems to work on toward the end of the execution. The remaining executor staying idle for the reminder of the local execution stage. Moreover, those remaining problems take a very long time to compute, greatly slowing down the measured performance. \\
@@ -800,7 +806,7 @@ A pseudo-code representing this final implementation may be found in Algorithm \
 
 \subsubsection{Reaching Greater Performances}
 
-The execution proceeds as follows : First, unfrequent symbols are cleaned from the original database. During the detection process, the algorithm also takes time to detect whether we are dealing with a database of sequences of symbols, or with a database of sequences of sets of symbols.\newline
+The execution proceeds as follows: First, unfrequent symbols are cleaned from the original database. During the detection process, the algorithm also takes time to detect whether we are dealing with a database of sequences of symbols, or with a database of sequences of sets of symbols.\newline
 
 This allows us to keep the specialised scalable execution improvement which brought great performance improvements to SoS database mining problems. \newline
 
@@ -832,6 +838,7 @@ The supported relations being '==', '!=', '<', '>', '>=', and '<='. Thus allowin
 
 As before, this new functionality was also designed to affect performance as little as possible when it is not in use. By default, no constraint are applied on the occurrences of symbols.
 
+\newpage
 \addtocontents{toc}{\protect\newpage}
 \section{Performances}
 
@@ -839,7 +846,7 @@ To compare the performances of our various implementations, we first need to dis
 
 \subsection{Datasets}
 
-For our performance tests, eight datasets were chosen for the different characteristic they displayed. The goal being to prove the efficiency of the developed algorithm in a wide range of situations. The chosen datasets and their characteristic are displayed in Table \ref{tab:datasets} : \newline
+For our performance tests, eight datasets were chosen for the different characteristic they displayed. The goal being to prove the efficiency of the developed algorithm in a wide range of situations. The chosen datasets and their characteristic are displayed in Table \ref{tab:datasets}: \newline
 
 \begin{table}[h]
   \centerline{
@@ -974,8 +981,8 @@ As said previously, the reason behind those stable performance lies in the requi
   \danger  Test realised on a simplified architecture \danger \\
   \begin{tabular}{c l}
   	 & \\
-  	\textbf{PPIC :} & 1 thread  with 10G memory \\
-  	\textbf{Spark :} & 1 driver + 1 worker with 1 executor. 10G memory each
+  	\textbf{PPIC:} & 1 thread  with 10G memory \\
+  	\textbf{Spark:} & 1 driver + 1 worker with 1 executor. 10G memory each
   \end{tabular}
   \caption{Original performances of PPIC and Spark}
   \label{fig:originalAlgorithmPerformances}
@@ -988,7 +995,7 @@ As said previously, the reason behind those stable performance lies in the requi
   \includegraphics[width=0.80\textwidth]{first_implementation.png} \\
   \danger PPIC's performances were still measured using a single thread and 10G of memory \danger \\
   Other performances represented in this graph were measured using the 4-executor test architecture previously described. \\
-  As you can see, when given more resources, Spark's performances slowly overcome PPIC's performances on a majority of our datasets. 
+  As you can see, when given more resources, Spark's performances slowly start to overcome PPIC's performances on a majority of our datasets. 
   \caption{A first implementation that makes PPIC scalable}
   \label{fig:first_scalable_CPbased_implementation}
 \end{figure}
@@ -1233,7 +1240,7 @@ Another interesting thing to note is that those performances were measured using
 
 To conclude our performance testing section, let us measure the scalability of both Spark's original implementation and of our final implementation. \newline
 
-The tests will be conducted as follows : We will run an architecture containing 1 driver (given 5G memory to make sure all solution could be successfully received), and a variable number of workes. Each worker possessing one executor running a single thread, and disposing of only 1G ram memory. \newline
+The tests will be conducted as follows: We will run an architecture containing 1 driver (given 5G memory to make sure all solution could be successfully received), and a variable number of workes. Each worker possessing one executor running a single thread, and disposing of only 1G ram memory. \newline
 
 Sadly, since the architecture on which we can run our tests has limited performances, running more than 10 workers will actually display slightly lowered performances, due to necessary switches between threads caused by an insufficient number of cores. We will thus limit ourselves to testing our implementation on architecture running 1,2,4, and 8 workers respectively, and compare the resulting performances under those conditions. \newline
 
@@ -1269,12 +1276,13 @@ The greatest advantage of this new implementation being that we can launch the l
 
 A default, however, would be that there is no way to allocate large sub-problems to executors disposing of extra amount of memory instead of other executor which would have more limitation. The 'maxLocalProjectedDatabaseSize' parameter must thus be chosen while taking into account the lowest amount of memory available to an executor. Otherwise, the algorithm may crash during the local execution stage due to insufficient memory.
 
+\newpage
 \section{Conclusion}
 
 In this paper, we have successfully developed a novel, scalable, and
 efficient CP-based sequential mining method that outperforms completely the original implementation available on Spark.\newline
 
-To do so, we used a generic map-reduce based scalable prefix-span implementation to divide the original problem in appropriately sized sub-problems. We then efficiently solved those sub-problems locally using a standard CP-solver running the PPIC algorithm for databases of sequences of symbols, and a newly designed PPIC-like CP algorithm for database of sequences of sets of symbols. Our various performance analysis then demonstrated that this novel approach not only outperformed Spark's original implementation in memory abundant environments, but also on scalable memory limited environment. \newline
+To do so, we used a generic map-reduce based scalable PrefixSpan implementation to divide the original problem in appropriately sized sub-problems. We then efficiently solved those sub-problems locally using a standard CP-solver running the PPIC algorithm for databases of sequences of symbols, and a newly designed PPIC-like CP algorithm for database of sequences of sets of symbols. Our various performance analysis then demonstrated that this novel approach not only outperformed Spark's original implementation in memory abundant environments, but also on scalable memory limited environment. \newline
 
 This approach, however, has one important flaw, while we have certainly demonstrated through the addition of multiple new functionalities that a certain level of modularity inherent to CP-solver was kept. It remains a fact that using a CP-solver beneath Spark's scalable framework isn't as modular and flexible as an implementation fully englobed in a CP-solver.
 
@@ -1289,7 +1297,7 @@ The next step forward in progressing this research should thus be taken by incor
 \clearpage
 \section{Annexes}
 
-\subsection{Glossary :}
+\subsection{Glossary:}
 
 \vspace*{-1.8cm}
 \glsaddall
@@ -1311,11 +1319,11 @@ The next step forward in progressing this research should thus be taken by incor
   \end{subfigure}
   \vspace{5px} \\
   S-M[a, b] = (4, 2, 2) => support(AB) = 4; support(BA) = 2; support((AB)) = 2;
-  \caption{Example of an S-matrix for Prefix-Span bi-level projection}
+  \caption{Example of an S-matrix for PrefixSpan bi-level projection}
   \label{fig:smatrix}
 \end{figure*}
 
-\subsection{Additional Performance Comparisons :}
+\subsection{Additional Performance Comparisons:}
 
 \begin{figure}[h]
   \centering
@@ -1358,7 +1366,7 @@ The next step forward in progressing this research should thus be taken by incor
 \end{figure}
 
 \clearpage
-\subsection{Algorithms :}
+\subsection{Algorithms:}
 
 \RestyleAlgo{boxruled}
 \LinesNumbered
@@ -1369,10 +1377,10 @@ The next step forward in progressing this research should thus be taken by incor
     \KwData{Given a sequence of symbol database (SDB), an array of reversible int representing our search space (P), and minimal number of support ($\theta$)}
     \KwResult{PPIC return the set of frequent sequence of symbol contained in SDB, such that any returned pattern appear at least $\theta$ times in the database.}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Propagate}{propagate}
 
-	\tcp{Init global param :}
+	\tcp{Init global param:}
 	sids = [0, ..., len(SDB)]; poss = [0] * len(SDB); \\
 	$\phi = 0$; $\varphi = len(SDB)$ \\
 	projFreq = Array such that projFreq[i] contains the number of sequence initially supporting symbol i; \\
@@ -1409,7 +1417,7 @@ The next step forward in progressing this research should thus be taken by incor
 	\caption{PPIC Continued}
     \label{alg:PPIC2}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Proj}{projAndGetFreqs}
     
    	\Fn{\Proj{$SDB, itemToProject, \theta, sids, poss, \phi, \varphi$}} {
@@ -1453,13 +1461,13 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Spark's original implementation : Pre-Processing}
+	\caption{Spark's original implementation: Pre-Processing}
     \label{alg:SPARK1}
   
     \KwData{Given a sequence of sets of symbol database (SSDB), a minimal number of supporting sequence ($\theta$), a maximal pattern length (maxPatLen), and a maximal local projected database size (maxLocalSize)}
     \KwResult{Return the set of frequent sequence of sets of symbol contained in SDB. Such that any returned pattern appear at least $\theta$ times in the database.}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Pre}{PreProcessing}
 
 	\Fn{\Pre{$SSDB, maxPatLen, maxLocalSize, \theta$}} {
@@ -1476,10 +1484,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Spark's original implementation : Scalable execution}
+	\caption{Spark's original implementation: Scalable execution}
     \label{alg:SPARK2}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, maxPatLen, maxLocalSize, \theta$}} {
@@ -1548,10 +1556,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Spark's original implementation : Local execution}
+	\caption{Spark's original implementation: Local execution}
     \label{alg:SPARK3}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Local}{localExecution}
     
    	\Fn{\Local{$SSDB, maxPatLen, \theta$}} {
@@ -1579,11 +1587,11 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Spark's original implementation : Project and findPrefixExtension}
+	\caption{Spark's original implementation: Project and findPrefixExtension}
     \label{alg:SPARK4}
     
-    \SetKwProg{Class}{Class}{ :}{end}
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Class}{Class}{:}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Postfix}{Postfix}
     \SetKwFunction{Project}{project}
     
@@ -1643,7 +1651,7 @@ The next step forward in progressing this research should thus be taken by incor
 	\caption{First scalable CP based implementation}
     \label{alg:FirstImplem}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, maxPatLen, maxLocalSize, \theta, hasSetsOfSymbols$}} {
@@ -1683,10 +1691,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{New functionalities : Scalable execution}
+	\caption{New functionalities: Scalable execution}
     \label{alg:NF}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $limitItemPerItemset, softSubProblemLimit$}} {
@@ -1738,10 +1746,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Quick - Start : Scalable execution}
+	\caption{Quick - Start: Scalable execution}
     \label{alg:QuickStart}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $limitItemPerItemset, softSubProblemLimit, frequentItemAndCount$}} {
@@ -1767,10 +1775,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Clean database before local execution of PPIC :}
+	\caption{Clean database before local execution of PPIC:}
     \label{alg:CleanBeforeLocalPPIC}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $hasSetsOfSymbols, limitItemPerItemset, softSubProblemLimit, freqItemAndCount$}} {
@@ -1812,10 +1820,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Automatic Local Execution Selection :}
+	\caption{Automatic Local Execution Selection:}
     \label{alg:AutomaticSelection}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $limitItemPerItemset, softSubProblemLimit, freqItemAndCount$}} {
@@ -1862,10 +1870,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Clean database before any local execution :}
+	\caption{Clean database before any local execution:}
     \label{alg:CleanBeforeLocal}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $ limitItemPerItemset, softSubProblemLimit, freqItemAndCount$}} {
@@ -1891,7 +1899,7 @@ The next step forward in progressing this research should thus be taken by incor
 			)).groupByKey().flatMap(sequences => \\
 				\tcp{Clean sequences}
 				(sequences, canUsePPIC) = removeUnFrequentItemsEfficiently(sequences) 
-				\tcp{NB : Partial starts must also be modified to remain correct}
+				\tcp{NB: Partial starts must also be modified to remain correct}
 				\tcp{Determine which local execution to use}
 				
 				\uIf {! canUsePPIC} {
@@ -1911,11 +1919,11 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Positions lists : Project and findPrefixExtension}
+	\caption{Positions lists: Project and findPrefixExtension}
     \label{alg:posLists}
     
-    \SetKwProg{Class}{Class}{ :}{end}
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Class}{Class}{:}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Postfix}{Postfix}
     \SetKwFunction{Project}{project}
     
@@ -1975,10 +1983,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Specialised Execution : Pre-Processing}
+	\caption{Specialised Execution: Pre-Processing}
     \label{alg:SpecializedScalableExec}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Pre}{PreProcessing}
     \SetKwFunction{Scalable}{scalableExecution}
 
@@ -2002,10 +2010,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Sorting sub-problems on the reducer :}
+	\caption{Sorting sub-problems on the reducer:}
     \label{alg:sortReducer}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $hasSetsOfSymbols, limitItemPerItemset, softSubProblemLimit, freqItemAndCount$}} {
@@ -2047,10 +2055,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{Sorting sub-problems on the mapper :}
+	\caption{Sorting sub-problems on the mapper:}
     \label{alg:sortMapper}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$SSDB, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $hasSetsOfSymbols, limitItemPerItemset, softSubProblemLimit, freqItemAndCount$}} {
@@ -2094,14 +2102,14 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{PPIC with a Map based Structure (partial pruning) :}
+	\caption{PPIC with a Map based Structure (partial pruning):}
     \label{alg:PPICMAP}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Proj}{projAndGetFreqs}
     \SetKwFunction{Propagate}{propagate}
 
-	\tcp{Init global param :}
+	\tcp{Init global param:}
 	... \\
 	\Fn{\Propagate{$SSDB,P,i,\theta$}} {
 		... \tcp{Same propagate as PPIC, but the database is an SSDB instead}
@@ -2154,10 +2162,10 @@ The next step forward in progressing this research should thus be taken by incor
 \RestyleAlgo{boxruled}
 \LinesNumbered
 \begin{algorithm}[h]
-	\caption{PPIC with partial projections :}
+	\caption{PPIC with partial projections:}
     \label{alg:PPICPARTIAL}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Propagate}{propagate}
 
    	\Fn{\Proj{$SSDB, itemToProject, \theta, sids, poss, \phi, \varphi, partialProj$}} {
@@ -2212,7 +2220,7 @@ The next step forward in progressing this research should thus be taken by incor
 	\caption{Final implementation}
     \label{alg:FINAL}
     
-    \SetKwProg{Fn}{Function}{ :}{end}
+    \SetKwProg{Fn}{Function}{:}{end}
     \SetKwFunction{Scalable}{scalableExecution}
     
    	\Fn{\Scalable{$database, minPatLen, maxPatLen, maxLocalSize, \theta,$ \\ $limitItemPerItemset, softSubProblemLimit, freqItemAndCount, symbolConstraints$}} {
@@ -2253,7 +2261,7 @@ The next step forward in progressing this research should thus be taken by incor
 \end{algorithm}
 
 \clearpage
-\section{Remerciements}
+\section{Acknowledgment}
 
 Computational resources have been provided by the Consortium des Équipements de Calcul Intensif (CÉCI), funded by the Fonds de la Recherche Scientifique de Belgique (F.R.S.-FNRS) under Grant No. 2.5020.11
 
