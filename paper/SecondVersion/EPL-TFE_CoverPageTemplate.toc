@@ -6,75 +6,75 @@
 \contentsline {subsection}{\numberline {2.1}Sequential Pattern Mining Background}{7}{subsection.2.1}
 \contentsline {subsubsection}{\numberline {2.1.1}Definitions and Concepts}{7}{subsubsection.2.1.1}
 \contentsline {subsubsection}{\numberline {2.1.2}Existing specialised approaches}{8}{subsubsection.2.1.2}
-\contentsline {paragraph}{\numberline {2.1.2.1}apriori}{8}{paragraph.2.1.2.1}
-\contentsline {paragraph}{\numberline {2.1.2.2}GSP}{8}{paragraph.2.1.2.2}
-\contentsline {paragraph}{\numberline {2.1.2.3}PrefixSpan}{9}{paragraph.2.1.2.3}
-\contentsline {paragraph}{\numberline {2.1.2.4}cSPADE}{11}{paragraph.2.1.2.4}
-\contentsline {subsubsection}{\numberline {2.1.3}Existing CP Based approaches}{11}{subsubsection.2.1.3}
-\contentsline {paragraph}{\numberline {2.1.3.1}CPSM}{11}{paragraph.2.1.3.1}
-\contentsline {paragraph}{\numberline {2.1.3.2}PP}{12}{paragraph.2.1.3.2}
+\contentsline {paragraph}{\numberline {2.1.2.1}Apriori}{8}{paragraph.2.1.2.1}
+\contentsline {paragraph}{\numberline {2.1.2.2}GSP}{9}{paragraph.2.1.2.2}
+\contentsline {paragraph}{\numberline {2.1.2.3}PrefixSpan}{10}{paragraph.2.1.2.3}
+\contentsline {paragraph}{\numberline {2.1.2.4}cSPADE}{10}{paragraph.2.1.2.4}
+\contentsline {subsubsection}{\numberline {2.1.3}Existing CP Based approaches}{12}{subsubsection.2.1.3}
+\contentsline {paragraph}{\numberline {2.1.3.1}CPSM}{12}{paragraph.2.1.3.1}
+\contentsline {paragraph}{\numberline {2.1.3.2}PP}{13}{paragraph.2.1.3.2}
 \contentsline {paragraph}{\numberline {2.1.3.3}Gap-Seq}{13}{paragraph.2.1.3.3}
-\contentsline {paragraph}{\numberline {2.1.3.4}PPIC}{13}{paragraph.2.1.3.4}
-\contentsline {subsection}{\numberline {2.2}Parallelisation}{14}{subsection.2.2}
-\contentsline {subsubsection}{\numberline {2.2.1}The Benefits of Parallelisation}{14}{subsubsection.2.2.1}
+\contentsline {paragraph}{\numberline {2.1.3.4}PPIC}{14}{paragraph.2.1.3.4}
+\contentsline {subsection}{\numberline {2.2}Parallelisation}{15}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}The Benefits of Parallelisation}{15}{subsubsection.2.2.1}
 \contentsline {subsubsection}{\numberline {2.2.2}Tool Selection}{15}{subsubsection.2.2.2}
-\contentsline {paragraph}{\numberline {2.2.2.1}Hadoop}{16}{paragraph.2.2.2.1}
-\contentsline {paragraph}{\numberline {2.2.2.2}Spark}{16}{paragraph.2.2.2.2}
-\contentsline {paragraph}{\numberline {2.2.2.3}Final Choice}{16}{paragraph.2.2.2.3}
-\contentsline {section}{\numberline {3}Implementation of a Scalable CP Based Algorithm}{18}{section.3}
-\contentsline {subsection}{\numberline {3.1}Spark's original implementation}{18}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}A First Scalable CP Based Implementation}{20}{subsection.3.2}
-\contentsline {subsubsection}{\numberline {3.2.1}Improvements Pathways}{20}{subsubsection.3.2.1}
-\contentsline {subsection}{\numberline {3.3}Adding new functionalities}{21}{subsection.3.3}
-\contentsline {subsubsection}{\numberline {3.3.1}Quicker - Start}{22}{subsubsection.3.3.1}
-\contentsline {subsubsection}{\numberline {3.3.2}Cleaning Sequence before the Local Execution}{22}{subsubsection.3.3.2}
-\contentsline {subsection}{\numberline {3.4}Improving the Switch to a CP Local Execution}{22}{subsection.3.4}
-\contentsline {subsubsection}{\numberline {3.4.1}Automatic Choice of the Local Execution Algorithm}{22}{subsubsection.3.4.1}
-\contentsline {subsubsection}{\numberline {3.4.2}Generalised Pre-Processing Before the Local Execution}{23}{subsubsection.3.4.2}
-\contentsline {subsection}{\numberline {3.5}Improving the Scalable Execution}{23}{subsection.3.5}
-\contentsline {subsubsection}{\numberline {3.5.1}Position Lists}{23}{subsubsection.3.5.1}
-\contentsline {subsubsection}{\numberline {3.5.2}Specialising the Scalable Execution}{24}{subsubsection.3.5.2}
-\contentsline {subsubsection}{\numberline {3.5.3}Priority Scheduling for Sub-Problems}{25}{subsubsection.3.5.3}
-\contentsline {paragraph}{\numberline {3.5.3.1}Analysing sub-problem creation}{25}{paragraph.3.5.3.1}
-\contentsline {paragraph}{\numberline {3.5.3.2}Sort sub-problem on the reducer}{25}{paragraph.3.5.3.2}
-\contentsline {paragraph}{\numberline {3.5.3.3}Sort sub-problem on the mapper}{26}{paragraph.3.5.3.3}
-\contentsline {subsection}{\numberline {3.6}CP Based Local Execution for Sequence of Sets of Symbols}{26}{subsection.3.6}
-\contentsline {subsubsection}{\numberline {3.6.1}Pushing PPIC's Ideas Further}{26}{subsubsection.3.6.1}
-\contentsline {subsubsection}{\numberline {3.6.2}Adding Partial Projections to PPIC}{27}{subsubsection.3.6.2}
-\contentsline {subsection}{\numberline {3.7}Final implementation}{27}{subsection.3.7}
-\contentsline {subsubsection}{\numberline {3.7.1}Reaching Greater Performances}{28}{subsubsection.3.7.1}
-\contentsline {subsubsection}{\numberline {3.7.2}A New Functionality}{29}{subsubsection.3.7.2}
+\contentsline {paragraph}{\numberline {2.2.2.1}Hadoop}{15}{paragraph.2.2.2.1}
+\contentsline {paragraph}{\numberline {2.2.2.2}Spark}{17}{paragraph.2.2.2.2}
+\contentsline {paragraph}{\numberline {2.2.2.3}Final Choice}{17}{paragraph.2.2.2.3}
+\contentsline {section}{\numberline {3}Implementation of a Scalable CP Based Algorithm}{19}{section.3}
+\contentsline {subsection}{\numberline {3.1}Spark's original implementation}{19}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}A First Scalable CP Based Implementation}{21}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Improvements Pathways}{21}{subsubsection.3.2.1}
+\contentsline {subsection}{\numberline {3.3}Adding new functionalities}{22}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Quicker - Start}{23}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Cleaning Sequence before the Local Execution}{23}{subsubsection.3.3.2}
+\contentsline {subsection}{\numberline {3.4}Improving the Switch to a CP Local Execution}{23}{subsection.3.4}
+\contentsline {subsubsection}{\numberline {3.4.1}Automatic Choice of the Local Execution Algorithm}{23}{subsubsection.3.4.1}
+\contentsline {subsubsection}{\numberline {3.4.2}Generalised Pre-Processing Before the Local Execution}{24}{subsubsection.3.4.2}
+\contentsline {subsection}{\numberline {3.5}Improving the Scalable Execution}{24}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {3.5.1}Position Lists}{24}{subsubsection.3.5.1}
+\contentsline {subsubsection}{\numberline {3.5.2}Specialising the Scalable Execution}{25}{subsubsection.3.5.2}
+\contentsline {subsubsection}{\numberline {3.5.3}Priority Scheduling for Sub-Problems}{26}{subsubsection.3.5.3}
+\contentsline {paragraph}{\numberline {3.5.3.1}Analysing sub-problem creation}{26}{paragraph.3.5.3.1}
+\contentsline {paragraph}{\numberline {3.5.3.2}Sort sub-problem on the reducer}{26}{paragraph.3.5.3.2}
+\contentsline {paragraph}{\numberline {3.5.3.3}Sort sub-problem on the mapper}{27}{paragraph.3.5.3.3}
+\contentsline {subsection}{\numberline {3.6}CP Based Local Execution for Sequence of Sets of Symbols}{27}{subsection.3.6}
+\contentsline {subsubsection}{\numberline {3.6.1}Pushing PPIC's Ideas Further}{27}{subsubsection.3.6.1}
+\contentsline {subsubsection}{\numberline {3.6.2}Adding Partial Projections to PPIC}{28}{subsubsection.3.6.2}
+\contentsline {subsection}{\numberline {3.7}Final implementation}{28}{subsection.3.7}
+\contentsline {subsubsection}{\numberline {3.7.1}Reaching Greater Performances}{29}{subsubsection.3.7.1}
+\contentsline {subsubsection}{\numberline {3.7.2}A New Functionality}{30}{subsubsection.3.7.2}
 \newpage 
-\contentsline {section}{\numberline {4}Performances}{30}{section.4}
-\contentsline {subsection}{\numberline {4.1}Datasets}{30}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Number of Partitions}{30}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Performance Testing Procedure}{31}{subsection.4.3}
-\contentsline {subsubsection}{\numberline {4.3.1}Distribution Choice \& Cluster Architecture}{31}{subsubsection.4.3.1}
-\contentsline {subsubsection}{\numberline {4.3.2}Program Parameters}{31}{subsubsection.4.3.2}
-\contentsline {subsubsection}{\numberline {4.3.3}Measurement Span}{32}{subsubsection.4.3.3}
-\contentsline {subsection}{\numberline {4.4}Testing the Implementations}{32}{subsection.4.4}
-\contentsline {subsubsection}{\numberline {4.4.1}Comparing Spark and PPIC's original implementations}{32}{subsubsection.4.4.1}
-\contentsline {subsubsection}{\numberline {4.4.2}Performances of our First CP Based Implementation}{32}{subsubsection.4.4.2}
-\contentsline {subsubsection}{\numberline {4.4.3}Performances of Quicker-Start}{35}{subsubsection.4.4.3}
-\contentsline {subsubsection}{\numberline {4.4.4}Performances of Adding Pre-processing Before PPIC's Local Execution}{36}{subsubsection.4.4.4}
-\contentsline {subsubsection}{\numberline {4.4.5}Performances with Automatic choice of Local Execution}{38}{subsubsection.4.4.5}
-\contentsline {subsubsection}{\numberline {4.4.6}Performances of Adding Pre-processing Before Any Local Execution}{39}{subsubsection.4.4.6}
-\contentsline {subsubsection}{\numberline {4.4.7}Performances with Position lists}{40}{subsubsection.4.4.7}
-\contentsline {subsubsection}{\numberline {4.4.8}Performances with Specialised scalable execution}{41}{subsubsection.4.4.8}
-\contentsline {subsubsection}{\numberline {4.4.9}Performances of Using Priority Scheduling for the Local Execution}{42}{subsubsection.4.4.9}
-\contentsline {paragraph}{\numberline {4.4.9.1}Performances of Sorting Sub-Problems on the Reducer}{42}{paragraph.4.4.9.1}
-\contentsline {paragraph}{\numberline {4.4.9.2}Performances of Sorting Sub-Problems on the Mapper}{43}{paragraph.4.4.9.2}
-\contentsline {subsubsection}{\numberline {4.4.10}Performances of using a Map Based Sequence Database Structure}{44}{subsubsection.4.4.10}
-\contentsline {subsubsection}{\numberline {4.4.11}Performances PPIC with Partial Projection}{45}{subsubsection.4.4.11}
-\contentsline {subsubsection}{\numberline {4.4.12}Performances of our final implementation}{45}{subsubsection.4.4.12}
-\contentsline {subsection}{\numberline {4.5}Scalability Tests}{47}{subsection.4.5}
-\contentsline {subsubsection}{\numberline {4.5.1}Scalability of the Original Implementation of Spark}{48}{subsubsection.4.5.1}
-\contentsline {subsubsection}{\numberline {4.5.2}Scalability of our final implementation}{49}{subsubsection.4.5.2}
-\contentsline {section}{\numberline {5}Conclusion}{51}{section.5}
-\contentsline {section}{\numberline {6}References}{52}{section.6}
-\contentsline {section}{\numberline {7}Annexes}{54}{section.7}
-\contentsline {subsection}{\numberline {7.1}Glossary:}{54}{subsection.7.1}
-\contentsline {subsection}{\numberline {7.2}Additional example images}{54}{subsection.7.2}
-\contentsline {subsection}{\numberline {7.3}Additional Performance Comparisons:}{54}{subsection.7.3}
-\contentsline {subsection}{\numberline {7.4}Algorithms:}{59}{subsection.7.4}
+\contentsline {section}{\numberline {4}Performances}{32}{section.4}
+\contentsline {subsection}{\numberline {4.1}Datasets}{32}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Number of Partitions}{32}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Performance Testing Procedure}{33}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Distribution Choice \& Cluster Architecture}{33}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}Program Parameters}{33}{subsubsection.4.3.2}
+\contentsline {subsubsection}{\numberline {4.3.3}Measurement Span}{34}{subsubsection.4.3.3}
+\contentsline {subsection}{\numberline {4.4}Testing the Implementations}{34}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}Comparing Spark and PPIC's original implementations}{34}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Performances of our First CP Based Implementation}{34}{subsubsection.4.4.2}
+\contentsline {subsubsection}{\numberline {4.4.3}Performances of Quicker-Start}{37}{subsubsection.4.4.3}
+\contentsline {subsubsection}{\numberline {4.4.4}Performances of Adding Pre-processing Before PPIC's Local Execution}{38}{subsubsection.4.4.4}
+\contentsline {subsubsection}{\numberline {4.4.5}Performances with Automatic choice of Local Execution}{40}{subsubsection.4.4.5}
+\contentsline {subsubsection}{\numberline {4.4.6}Performances of Adding Pre-processing Before Any Local Execution}{41}{subsubsection.4.4.6}
+\contentsline {subsubsection}{\numberline {4.4.7}Performances with Position lists}{42}{subsubsection.4.4.7}
+\contentsline {subsubsection}{\numberline {4.4.8}Performances with Specialised scalable execution}{43}{subsubsection.4.4.8}
+\contentsline {subsubsection}{\numberline {4.4.9}Performances of Using Priority Scheduling for the Local Execution}{44}{subsubsection.4.4.9}
+\contentsline {paragraph}{\numberline {4.4.9.1}Performances of Sorting Sub-Problems on the Reducer}{44}{paragraph.4.4.9.1}
+\contentsline {paragraph}{\numberline {4.4.9.2}Performances of Sorting Sub-Problems on the Mapper}{45}{paragraph.4.4.9.2}
+\contentsline {subsubsection}{\numberline {4.4.10}Performances of using a Map Based Sequence Database Structure}{46}{subsubsection.4.4.10}
+\contentsline {subsubsection}{\numberline {4.4.11}Performances PPIC with Partial Projection}{47}{subsubsection.4.4.11}
+\contentsline {subsubsection}{\numberline {4.4.12}Performances of our final implementation}{47}{subsubsection.4.4.12}
+\contentsline {subsection}{\numberline {4.5}Scalability Tests}{48}{subsection.4.5}
+\contentsline {subsubsection}{\numberline {4.5.1}Scalability of the Original Implementation of Spark}{50}{subsubsection.4.5.1}
+\contentsline {subsubsection}{\numberline {4.5.2}Scalability of our final implementation}{50}{subsubsection.4.5.2}
+\contentsline {section}{\numberline {5}Conclusion}{52}{section.5}
+\contentsline {section}{\numberline {6}References}{53}{section.6}
+\contentsline {section}{\numberline {7}Annexes}{55}{section.7}
+\contentsline {subsection}{\numberline {7.1}Glossary:}{55}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Additional example images}{55}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Additional Performance Comparisons:}{55}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}Algorithms:}{60}{subsection.7.4}
 \contentsline {section}{\numberline {8}Acknowledgment}{78}{section.8}

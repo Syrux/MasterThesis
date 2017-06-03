@@ -1,0 +1,28 @@
+
+done - Assure toi de ne pas mal écrit le nom des auteurs, ni ceux des méthodes (par exemple c'est Srikant et non Srikan, cSPADE et non cPSADE)
+doing - Harmoniser la notation dans le document.  Pour les séquences par exemple, if faut qu'elle soit entre \langle et \rangle et non < et >. Pareil pour les noms de méthode si tu décide d'écrire PrefixSpan comme ça il faut que ça soit comme ca dans tout le texte donc il ne peut plus avoir Prefix-Span ailleurs. Pour dire pattern de taille 2 adopte la forme 2-length au lieu de length-2 ainsi de suite.
+done - en anglais il n'y pas d'espace entre le mot et ":"
+- restructure la section 2 en : 
+   done - 2.1 (inchangé) - [dire], 2.2 et 2.3 devienne 2.2.1 et 2.2.2 et 2.2 sera serial implementation et 2.3 parallelisation
+   - fusionne Apriori et GSP et soit plus concis (tu gagneras un peu de place)
+   - fusionne aussi PP et GapSeq
+cad ? - le nom des algo: au moins la première lettre en majuscule et si veux en italique => apriori -> Apriori
+- il faut ramener l'algorithm final (algo19) dans la section 3.7 et donc comment le un peu.
+done - titre 8 Remerciement -> Acknowledgment
+
+
+
+-> Mettre debut PP dans gap-seq
+
+
+
+
+- ABSTRACT + same for conclusion
+
+	- GENERALITE
+	- DEFINITION PROBLEME
+	- MOTIVATION du changement
+	- CE QUE JE FAIS -> LE PLUS IMPORTANT + intention
+	- 
+
+-> more math in definitions, no problem if plagiat

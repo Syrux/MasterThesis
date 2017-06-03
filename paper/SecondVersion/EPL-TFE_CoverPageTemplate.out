@@ -5,7 +5,7 @@
 \BOOKMARK [2][-]{subsection.2.1}{Sequential Pattern Mining Background}{section.2}% 5
 \BOOKMARK [3][-]{subsubsection.2.1.1}{Definitions and Concepts}{subsection.2.1}% 6
 \BOOKMARK [3][-]{subsubsection.2.1.2}{Existing specialised approaches}{subsection.2.1}% 7
-\BOOKMARK [4][-]{paragraph.2.1.2.1}{apriori}{subsubsection.2.1.2}% 8
+\BOOKMARK [4][-]{paragraph.2.1.2.1}{Apriori}{subsubsection.2.1.2}% 8
 \BOOKMARK [4][-]{paragraph.2.1.2.2}{GSP}{subsubsection.2.1.2}% 9
 \BOOKMARK [4][-]{paragraph.2.1.2.3}{PrefixSpan}{subsubsection.2.1.2}% 10
 \BOOKMARK [4][-]{paragraph.2.1.2.4}{cSPADE}{subsubsection.2.1.2}% 11
